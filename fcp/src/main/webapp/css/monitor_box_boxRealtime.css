@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+.keyName{font-weight:bold;font-size:13px;display:-moz-inline-box; display:inline-block;width:70px;text-align:right;}
+.value1{display:-moz-inline-box; display:inline-block;width:50px;text-align:left;margin-left:10px;font-weight:bold;font-size:13px;color: #8085E9;}
+
+
+.keyNameNormal{font-weight:normal;font-size:13px;margin-left:10px;}
+.value2{margin-left:10px;font-weight:bold;font-size:13px;display:-moz-inline-box; display:inline-block;width:40px;color: #8085E9;}
+
+.value3{margin-left:10px;font-weight:bold;font-size:13px;color: #8085E9;}
+
+

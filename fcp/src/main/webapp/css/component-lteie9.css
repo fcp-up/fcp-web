@@ -1,0 +1,5 @@
+@CHARSET "UTF-8";
+.file-field-wrap>input{*font-size: 12px; *background: #fff; *top: 1px; *left: 1px; *height: 20px; font-size: 12px\0; background: #fff\0; top: 1px\0; left: 1px\0; height: 21px\0;}
+.file-field-wrap>.filename, .file-field-wrap>.button{*display: none; display: none\0;}
+
+

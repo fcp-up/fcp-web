@@ -1,0 +1,22 @@
+	<insert id="$fn.get('add')" parameterType="java.util.Map"#if(${cfg.increase}) useGeneratedKeys="true" keyProperty="params.${cfg.increase}" keyColumn="${cols.get(${cfg.increase})}"#end>
+		insert into ${table}
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+#foreach(${col} in ${cols.entrySet()})
+#if(!${cfg.increase} || ${cfg.increase} != $col.key)
+			<if test='params.containsKey("$col.key") == true'>
+				$col.value,
+			</if>
+#end
+#end
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+#foreach(${col} in ${cols.entrySet()})
+#if(!${cfg.increase} || ${cfg.increase} != $col.key)
+			<if test='params.containsKey("$col.key") == true'>
+				<if test='params.get("$col.key") != null'>#{params.$col.key},</if>
+				<if test='params.get("$col.key") == null'>null,</if>
+			</if>
+#end
+#end
+		</trim>
+	</insert>

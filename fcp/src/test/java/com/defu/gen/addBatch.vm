@@ -1,0 +1,6 @@
+	<insert id="$fn.get('addBatch')" parameterType="java.util.Map"#if(${cfg.increase}) useGeneratedKeys="true" keyProperty="${cfg.increase}" keyColumn="${cols.get(${cfg.increase})}"#end>
+		insert into ${table} (#foreach(${col} in ${cols.entrySet()})#if(!${cfg.increase} || ${cfg.increase} != $col.key)$col.value#if(${velocityCount}<${cols.size()}), #end#end#end) values
+		<foreach collection="params" item="item" index="index" separator=",">
+			(#foreach(${col} in ${cols.entrySet()})#if(!${cfg.increase} || ${cfg.increase} != $col.key)#{item.$col.key}#if(${velocityCount}<${cols.size()}), #end#end#end)
+		</foreach>
+	</insert>

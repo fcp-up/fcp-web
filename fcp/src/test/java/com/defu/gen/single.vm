@@ -1,0 +1,38 @@
+	<select id="$fn.get('single')" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+#foreach(${col} in ${cols.entrySet()})
+			$col.value as $col.key#if(${velocityCount}<${cols.size()}),#end
+
+#end
+		from ${table}
+		<where>
+#foreach(${col} in ${cols.entrySet()})
+			<if test='params.containsKey("$col.key") == true'>
+				<if test='params.get("$col.key") != null'>and $col.value = #{params.$col.key}</if>
+				<if test='params.get("$col.key") == null'>and $col.value is null</if>
+			</if>
+#set($fcuPro = $col.key.substring(0, 1).toUpperCase() + $col.key.substring(1))
+#set($listProperty=$col.key + "List")
+#set($minProperty="min" + $fcuPro)
+#set($maxProperty="max" + $fcuPro)
+#set($subProperty="sub" + $fcuPro)
+#set($startsWithProperty="startsWith" + $fcuPro)
+#set($endsWithProperty="endsWith" + $fcuPro)
+			<if test='params.get("$listProperty") != null'>
+				and $col.value in(<foreach collection="params.$listProperty" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("$minProperty") != null'>and $col.value >= ${jinh}{params.${minProperty}}</if>
+			<if test='params.get("$maxProperty") != null'>and $col.value &lt; ${jinh}{params.${maxProperty}}</if>
+			<if test='params.get("$subProperty") != null'>and $col.value like '%${dollar}{params.${subProperty}}%'</if>
+			<if test='params.get("$startsWithProperty") != null'>and $col.value like '%${dollar}{params.${startsWithProperty}}'</if>
+			<if test='params.get("$endsWithProperty") != null'>and $col.value like '${dollar}{params.${endsWithProperty}}%'</if>
+#end
+		</where>
+		<if test="params.sort != null">
+    		order by 
+    		<foreach collection="params.sort" item="item" index="index" separator=",">
+    			${item.name} <if test="item.sort == 1">desc</if>
+    		</foreach>
+		</if>
+		limit 0, 1
+	</select>

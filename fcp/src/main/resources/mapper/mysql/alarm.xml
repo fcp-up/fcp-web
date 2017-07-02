@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.defu.fcp.alarm.dao.IDaoAlarm">
+	<insert id="add" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="params.id" keyColumn="f_id">
+		insert into tb_alarm
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test='params.containsKey("isAlarm") == true'>
+				f_isAlarm,
+			</if>
+			<if test='params.containsKey("centerNo") == true'>
+				f_centerNo,
+			</if>
+			<if test='params.containsKey("pressure") == true'>
+				f_pressure,
+			</if>
+			<if test='params.containsKey("status") == true'>
+				f_status,
+			</if>
+			<if test='params.containsKey("crtTime") == true'>
+				f_crtTime,
+			</if>
+			<if test='params.containsKey("sendTime") == true'>
+				f_sendTime,
+			</if>
+			<if test='params.containsKey("devId") == true'>
+				f_devId,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test='params.containsKey("isAlarm") == true'>
+				<if test='params.get("isAlarm") != null'>#{params.isAlarm},</if>
+				<if test='params.get("isAlarm") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("centerNo") == true'>
+				<if test='params.get("centerNo") != null'>#{params.centerNo},</if>
+				<if test='params.get("centerNo") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("pressure") == true'>
+				<if test='params.get("pressure") != null'>#{params.pressure},</if>
+				<if test='params.get("pressure") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("status") == true'>
+				<if test='params.get("status") != null'>#{params.status},</if>
+				<if test='params.get("status") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("crtTime") == true'>
+				<if test='params.get("crtTime") != null'>#{params.crtTime},</if>
+				<if test='params.get("crtTime") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("sendTime") == true'>
+				<if test='params.get("sendTime") != null'>#{params.sendTime},</if>
+				<if test='params.get("sendTime") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("devId") == true'>
+				<if test='params.get("devId") != null'>#{params.devId},</if>
+				<if test='params.get("devId") == null'>null,</if>
+			</if>
+		</trim>
+	</insert>
+	<insert id="addBatch" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id" keyColumn="f_id">
+		insert into tb_alarm (f_isAlarm, f_centerNo, f_pressure, f_status, f_crtTime, f_sendTime, f_devId) values
+		<foreach collection="params" item="item" index="index" separator=",">
+			(#{item.isAlarm}, #{item.centerNo}, #{item.pressure}, #{item.status}, #{item.crtTime}, #{item.sendTime}, #{item.devId})
+		</foreach>
+	</insert>
+
+	<delete id="delete" parameterType="java.util.Map">
+		delete from tb_alarm
+		<where>
+			<if test='params.containsKey("id") == true'>
+				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") == null'>and f_id is null</if>
+			</if>
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
+			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
+			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
+			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.containsKey("isAlarm") == true'>
+				<if test='params.get("isAlarm") != null'>and f_isAlarm = #{params.isAlarm}</if>
+				<if test='params.get("isAlarm") == null'>and f_isAlarm is null</if>
+			</if>
+			<if test='params.get("isAlarmList") != null'>
+				and f_isAlarm in(<foreach collection="params.isAlarmList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minIsAlarm") != null'>and f_isAlarm >= #{params.minIsAlarm}</if>
+			<if test='params.get("maxIsAlarm") != null'>and f_isAlarm &lt; #{params.maxIsAlarm}</if>
+			<if test='params.get("subIsAlarm") != null'>and f_isAlarm like '%${params.subIsAlarm}%'</if>
+			<if test='params.get("startsWithIsAlarm") != null'>and f_isAlarm like '%${params.startsWithIsAlarm}'</if>
+			<if test='params.get("endsWithIsAlarm") != null'>and f_isAlarm like '${params.endsWithIsAlarm}%'</if>
+			<if test='params.containsKey("centerNo") == true'>
+				<if test='params.get("centerNo") != null'>and f_centerNo = #{params.centerNo}</if>
+				<if test='params.get("centerNo") == null'>and f_centerNo is null</if>
+			</if>
+			<if test='params.get("centerNoList") != null'>
+				and f_centerNo in(<foreach collection="params.centerNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minCenterNo") != null'>and f_centerNo >= #{params.minCenterNo}</if>
+			<if test='params.get("maxCenterNo") != null'>and f_centerNo &lt; #{params.maxCenterNo}</if>
+			<if test='params.get("subCenterNo") != null'>and f_centerNo like '%${params.subCenterNo}%'</if>
+			<if test='params.get("startsWithCenterNo") != null'>and f_centerNo like '%${params.startsWithCenterNo}'</if>
+			<if test='params.get("endsWithCenterNo") != null'>and f_centerNo like '${params.endsWithCenterNo}%'</if>
+			<if test='params.containsKey("pressure") == true'>
+				<if test='params.get("pressure") != null'>and f_pressure = #{params.pressure}</if>
+				<if test='params.get("pressure") == null'>and f_pressure is null</if>
+			</if>
+			<if test='params.get("pressureList") != null'>
+				and f_pressure in(<foreach collection="params.pressureList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minPressure") != null'>and f_pressure >= #{params.minPressure}</if>
+			<if test='params.get("maxPressure") != null'>and f_pressure &lt; #{params.maxPressure}</if>
+			<if test='params.get("subPressure") != null'>and f_pressure like '%${params.subPressure}%'</if>
+			<if test='params.get("startsWithPressure") != null'>and f_pressure like '%${params.startsWithPressure}'</if>
+			<if test='params.get("endsWithPressure") != null'>and f_pressure like '${params.endsWithPressure}%'</if>
+			<if test='params.containsKey("status") == true'>
+				<if test='params.get("status") != null'>and f_status = #{params.status}</if>
+				<if test='params.get("status") == null'>and f_status is null</if>
+			</if>
+			<if test='params.get("statusList") != null'>
+				and f_status in(<foreach collection="params.statusList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minStatus") != null'>and f_status >= #{params.minStatus}</if>
+			<if test='params.get("maxStatus") != null'>and f_status &lt; #{params.maxStatus}</if>
+			<if test='params.get("subStatus") != null'>and f_status like '%${params.subStatus}%'</if>
+			<if test='params.get("startsWithStatus") != null'>and f_status like '%${params.startsWithStatus}'</if>
+			<if test='params.get("endsWithStatus") != null'>and f_status like '${params.endsWithStatus}%'</if>
+			<if test='params.containsKey("crtTime") == true'>
+				<if test='params.get("crtTime") != null'>and f_crtTime = #{params.crtTime}</if>
+				<if test='params.get("crtTime") == null'>and f_crtTime is null</if>
+			</if>
+			<if test='params.get("crtTimeList") != null'>
+				and f_crtTime in(<foreach collection="params.crtTimeList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minCrtTime") != null'>and f_crtTime >= #{params.minCrtTime}</if>
+			<if test='params.get("maxCrtTime") != null'>and f_crtTime &lt; #{params.maxCrtTime}</if>
+			<if test='params.get("subCrtTime") != null'>and f_crtTime like '%${params.subCrtTime}%'</if>
+			<if test='params.get("startsWithCrtTime") != null'>and f_crtTime like '%${params.startsWithCrtTime}'</if>
+			<if test='params.get("endsWithCrtTime") != null'>and f_crtTime like '${params.endsWithCrtTime}%'</if>
+			<if test='params.containsKey("sendTime") == true'>
+				<if test='params.get("sendTime") != null'>and f_sendTime = #{params.sendTime}</if>
+				<if test='params.get("sendTime") == null'>and f_sendTime is null</if>
+			</if>
+			<if test='params.get("sendTimeList") != null'>
+				and f_sendTime in(<foreach collection="params.sendTimeList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minSendTime") != null'>and f_sendTime >= #{params.minSendTime}</if>
+			<if test='params.get("maxSendTime") != null'>and f_sendTime &lt; #{params.maxSendTime}</if>
+			<if test='params.get("subSendTime") != null'>and f_sendTime like '%${params.subSendTime}%'</if>
+			<if test='params.get("startsWithSendTime") != null'>and f_sendTime like '%${params.startsWithSendTime}'</if>
+			<if test='params.get("endsWithSendTime") != null'>and f_sendTime like '${params.endsWithSendTime}%'</if>
+			<if test='params.containsKey("devId") == true'>
+				<if test='params.get("devId") != null'>and f_devId = #{params.devId}</if>
+				<if test='params.get("devId") == null'>and f_devId is null</if>
+			</if>
+			<if test='params.get("devIdList") != null'>
+				and f_devId in(<foreach collection="params.devIdList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minDevId") != null'>and f_devId >= #{params.minDevId}</if>
+			<if test='params.get("maxDevId") != null'>and f_devId &lt; #{params.maxDevId}</if>
+			<if test='params.get("subDevId") != null'>and f_devId like '%${params.subDevId}%'</if>
+			<if test='params.get("startsWithDevId") != null'>and f_devId like '%${params.startsWithDevId}'</if>
+			<if test='params.get("endsWithDevId") != null'>and f_devId like '${params.endsWithDevId}%'</if>
+		</where>
+	</delete>
+
+	<update id="update">
+		update tb_alarm
+		<set>
+			<if test="obj != null">
+				<if test='obj.containsKey("id") == true'>
+					<if test='obj.get("id") != null'>f_id = #{obj.id},</if>
+					<if test='obj.get("id") == null'>f_id = null,</if>
+				</if>
+				<if test='obj.containsKey("isAlarm") == true'>
+					<if test='obj.get("isAlarm") != null'>f_isAlarm = #{obj.isAlarm},</if>
+					<if test='obj.get("isAlarm") == null'>f_isAlarm = null,</if>
+				</if>
+				<if test='obj.containsKey("centerNo") == true'>
+					<if test='obj.get("centerNo") != null'>f_centerNo = #{obj.centerNo},</if>
+					<if test='obj.get("centerNo") == null'>f_centerNo = null,</if>
+				</if>
+				<if test='obj.containsKey("pressure") == true'>
+					<if test='obj.get("pressure") != null'>f_pressure = #{obj.pressure},</if>
+					<if test='obj.get("pressure") == null'>f_pressure = null,</if>
+				</if>
+				<if test='obj.containsKey("status") == true'>
+					<if test='obj.get("status") != null'>f_status = #{obj.status},</if>
+					<if test='obj.get("status") == null'>f_status = null,</if>
+				</if>
+				<if test='obj.containsKey("crtTime") == true'>
+					<if test='obj.get("crtTime") != null'>f_crtTime = #{obj.crtTime},</if>
+					<if test='obj.get("crtTime") == null'>f_crtTime = null,</if>
+				</if>
+				<if test='obj.containsKey("sendTime") == true'>
+					<if test='obj.get("sendTime") != null'>f_sendTime = #{obj.sendTime},</if>
+					<if test='obj.get("sendTime") == null'>f_sendTime = null,</if>
+				</if>
+				<if test='obj.containsKey("devId") == true'>
+					<if test='obj.get("devId") != null'>f_devId = #{obj.devId},</if>
+					<if test='obj.get("devId") == null'>f_devId = null,</if>
+				</if>
+			</if>
+		</set>
+		<where>
+			<if test="tag != null">
+				<if test='tag.containsKey("id") == true'>
+					<if test='tag.get("id") != null'>and f_id = #{tag.id}</if>
+					<if test='tag.get("id") == null'>and f_id is null</if>
+				</if>
+				<if test='tag.containsKey("isAlarm") == true'>
+					<if test='tag.get("isAlarm") != null'>and f_isAlarm = #{tag.isAlarm}</if>
+					<if test='tag.get("isAlarm") == null'>and f_isAlarm is null</if>
+				</if>
+				<if test='tag.containsKey("centerNo") == true'>
+					<if test='tag.get("centerNo") != null'>and f_centerNo = #{tag.centerNo}</if>
+					<if test='tag.get("centerNo") == null'>and f_centerNo is null</if>
+				</if>
+				<if test='tag.containsKey("pressure") == true'>
+					<if test='tag.get("pressure") != null'>and f_pressure = #{tag.pressure}</if>
+					<if test='tag.get("pressure") == null'>and f_pressure is null</if>
+				</if>
+				<if test='tag.containsKey("status") == true'>
+					<if test='tag.get("status") != null'>and f_status = #{tag.status}</if>
+					<if test='tag.get("status") == null'>and f_status is null</if>
+				</if>
+				<if test='tag.containsKey("crtTime") == true'>
+					<if test='tag.get("crtTime") != null'>and f_crtTime = #{tag.crtTime}</if>
+					<if test='tag.get("crtTime") == null'>and f_crtTime is null</if>
+				</if>
+				<if test='tag.containsKey("sendTime") == true'>
+					<if test='tag.get("sendTime") != null'>and f_sendTime = #{tag.sendTime}</if>
+					<if test='tag.get("sendTime") == null'>and f_sendTime is null</if>
+				</if>
+				<if test='tag.containsKey("devId") == true'>
+					<if test='tag.get("devId") != null'>and f_devId = #{tag.devId}</if>
+					<if test='tag.get("devId") == null'>and f_devId is null</if>
+				</if>
+			</if>
+		</where>
+	</update>
+
+	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			f_id as id,
+			f_isAlarm as isAlarm,
+			f_centerNo as centerNo,
+			f_pressure as pressure,
+			f_status as status,
+			f_crtTime as crtTime,
+			f_sendTime as sendTime,
+			f_devId as devId
+		from tb_alarm
+		<where>
+			<if test='params.containsKey("id") == true'>
+				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") == null'>and f_id is null</if>
+			</if>
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
+			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
+			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
+			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.containsKey("isAlarm") == true'>
+				<if test='params.get("isAlarm") != null'>and f_isAlarm = #{params.isAlarm}</if>
+				<if test='params.get("isAlarm") == null'>and f_isAlarm is null</if>
+			</if>
+			<if test='params.get("isAlarmList") != null'>
+				and f_isAlarm in(<foreach collection="params.isAlarmList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minIsAlarm") != null'>and f_isAlarm >= #{params.minIsAlarm}</if>
+			<if test='params.get("maxIsAlarm") != null'>and f_isAlarm &lt; #{params.maxIsAlarm}</if>
+			<if test='params.get("subIsAlarm") != null'>and f_isAlarm like '%${params.subIsAlarm}%'</if>
+			<if test='params.get("startsWithIsAlarm") != null'>and f_isAlarm like '%${params.startsWithIsAlarm}'</if>
+			<if test='params.get("endsWithIsAlarm") != null'>and f_isAlarm like '${params.endsWithIsAlarm}%'</if>
+			<if test='params.containsKey("centerNo") == true'>
+				<if test='params.get("centerNo") != null'>and f_centerNo = #{params.centerNo}</if>
+				<if test='params.get("centerNo") == null'>and f_centerNo is null</if>
+			</if>
+			<if test='params.get("centerNoList") != null'>
+				and f_centerNo in(<foreach collection="params.centerNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minCenterNo") != null'>and f_centerNo >= #{params.minCenterNo}</if>
+			<if test='params.get("maxCenterNo") != null'>and f_centerNo &lt; #{params.maxCenterNo}</if>
+			<if test='params.get("subCenterNo") != null'>and f_centerNo like '%${params.subCenterNo}%'</if>
+			<if test='params.get("startsWithCenterNo") != null'>and f_centerNo like '%${params.startsWithCenterNo}'</if>
+			<if test='params.get("endsWithCenterNo") != null'>and f_centerNo like '${params.endsWithCenterNo}%'</if>
+			<if test='params.containsKey("pressure") == true'>
+				<if test='params.get("pressure") != null'>and f_pressure = #{params.pressure}</if>
+				<if test='params.get("pressure") == null'>and f_pressure is null</if>
+			</if>
+			<if test='params.get("pressureList") != null'>
+				and f_pressure in(<foreach collection="params.pressureList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minPressure") != null'>and f_pressure >= #{params.minPressure}</if>
+			<if test='params.get("maxPressure") != null'>and f_pressure &lt; #{params.maxPressure}</if>
+			<if test='params.get("subPressure") != null'>and f_pressure like '%${params.subPressure}%'</if>
+			<if test='params.get("startsWithPressure") != null'>and f_pressure like '%${params.startsWithPressure}'</if>
+			<if test='params.get("endsWithPressure") != null'>and f_pressure like '${params.endsWithPressure}%'</if>
+			<if test='params.containsKey("status") == true'>
+				<if test='params.get("status") != null'>and f_status = #{params.status}</if>
+				<if test='params.get("status") == null'>and f_status is null</if>
+			</if>
+			<if test='params.get("statusList") != null'>
+				and f_status in(<foreach collection="params.statusList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minStatus") != null'>and f_status >= #{params.minStatus}</if>
+			<if test='params.get("maxStatus") != null'>and f_status &lt; #{params.maxStatus}</if>
+			<if test='params.get("subStatus") != null'>and f_status like '%${params.subStatus}%'</if>
+			<if test='params.get("startsWithStatus") != null'>and f_status like '%${params.startsWithStatus}'</if>
+			<if test='params.get("endsWithStatus") != null'>and f_status like '${params.endsWithStatus}%'</if>
+			<if test='params.containsKey("crtTime") == true'>
+				<if test='params.get("crtTime") != null'>and f_crtTime = #{params.crtTime}</if>
+				<if test='params.get("crtTime") == null'>and f_crtTime is null</if>
+			</if>
+			<if test='params.get("crtTimeList") != null'>
+				and f_crtTime in(<foreach collection="params.crtTimeList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minCrtTime") != null'>and f_crtTime >= #{params.minCrtTime}</if>
+			<if test='params.get("maxCrtTime") != null'>and f_crtTime &lt; #{params.maxCrtTime}</if>
+			<if test='params.get("subCrtTime") != null'>and f_crtTime like '%${params.subCrtTime}%'</if>
+			<if test='params.get("startsWithCrtTime") != null'>and f_crtTime like '%${params.startsWithCrtTime}'</if>
+			<if test='params.get("endsWithCrtTime") != null'>and f_crtTime like '${params.endsWithCrtTime}%'</if>
+			<if test='params.containsKey("sendTime") == true'>
+				<if test='params.get("sendTime") != null'>and f_sendTime = #{params.sendTime}</if>
+				<if test='params.get("sendTime") == null'>and f_sendTime is null</if>
+			</if>
+			<if test='params.get("sendTimeList") != null'>
+				and f_sendTime in(<foreach collection="params.sendTimeList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minSendTime") != null'>and f_sendTime >= #{params.minSendTime}</if>
+			<if test='params.get("maxSendTime") != null'>and f_sendTime &lt; #{params.maxSendTime}</if>
+			<if test='params.get("subSendTime") != null'>and f_sendTime like '%${params.subSendTime}%'</if>
+			<if test='params.get("startsWithSendTime") != null'>and f_sendTime like '%${params.startsWithSendTime}'</if>
+			<if test='params.get("endsWithSendTime") != null'>and f_sendTime like '${params.endsWithSendTime}%'</if>
+			<if test='params.containsKey("devId") == true'>
+				<if test='params.get("devId") != null'>and f_devId = #{params.devId}</if>
+				<if test='params.get("devId") == null'>and f_devId is null</if>
+			</if>
+			<if test='params.get("devIdList") != null'>
+				and f_devId in(<foreach collection="params.devIdList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minDevId") != null'>and f_devId >= #{params.minDevId}</if>
+			<if test='params.get("maxDevId") != null'>and f_devId &lt; #{params.maxDevId}</if>
+			<if test='params.get("subDevId") != null'>and f_devId like '%${params.subDevId}%'</if>
+			<if test='params.get("startsWithDevId") != null'>and f_devId like '%${params.startsWithDevId}'</if>
+			<if test='params.get("endsWithDevId") != null'>and f_devId like '${params.endsWithDevId}%'</if>
+		</where>
+		<if test="params.sort != null">
+    		order by 
+    		<foreach collection="params.sort" item="item" index="index" separator=",">
+    			${item.name} <if test="item.sort == 1">desc</if>
+    		</foreach>
+		</if>
+		<if test="params.start != null and params.limit != null">
+			limit ${params.start}, ${params.limit}
+		</if>
+	</select>
+
+	<select id="single" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			f_id as id,
+			f_isAlarm as isAlarm,
+			f_centerNo as centerNo,
+			f_pressure as pressure,
+			f_status as status,
+			f_crtTime as crtTime,
+			f_sendTime as sendTime,
+			f_devId as devId
+		from tb_alarm
+		<where>
+			<if test='params.containsKey("id") == true'>
+				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") == null'>and f_id is null</if>
+			</if>
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
+			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
+			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
+			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.containsKey("isAlarm") == true'>
+				<if test='params.get("isAlarm") != null'>and f_isAlarm = #{params.isAlarm}</if>
+				<if test='params.get("isAlarm") == null'>and f_isAlarm is null</if>
+			</if>
+			<if test='params.get("isAlarmList") != null'>
+				and f_isAlarm in(<foreach collection="params.isAlarmList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minIsAlarm") != null'>and f_isAlarm >= #{params.minIsAlarm}</if>
+			<if test='params.get("maxIsAlarm") != null'>and f_isAlarm &lt; #{params.maxIsAlarm}</if>
+			<if test='params.get("subIsAlarm") != null'>and f_isAlarm like '%${params.subIsAlarm}%'</if>
+			<if test='params.get("startsWithIsAlarm") != null'>and f_isAlarm like '%${params.startsWithIsAlarm}'</if>
+			<if test='params.get("endsWithIsAlarm") != null'>and f_isAlarm like '${params.endsWithIsAlarm}%'</if>
+			<if test='params.containsKey("centerNo") == true'>
+				<if test='params.get("centerNo") != null'>and f_centerNo = #{params.centerNo}</if>
+				<if test='params.get("centerNo") == null'>and f_centerNo is null</if>
+			</if>
+			<if test='params.get("centerNoList") != null'>
+				and f_centerNo in(<foreach collection="params.centerNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minCenterNo") != null'>and f_centerNo >= #{params.minCenterNo}</if>
+			<if test='params.get("maxCenterNo") != null'>and f_centerNo &lt; #{params.maxCenterNo}</if>
+			<if test='params.get("subCenterNo") != null'>and f_centerNo like '%${params.subCenterNo}%'</if>
+			<if test='params.get("startsWithCenterNo") != null'>and f_centerNo like '%${params.startsWithCenterNo}'</if>
+			<if test='params.get("endsWithCenterNo") != null'>and f_centerNo like '${params.endsWithCenterNo}%'</if>
+			<if test='params.containsKey("pressure") == true'>
+				<if test='params.get("pressure") != null'>and f_pressure = #{params.pressure}</if>
+				<if test='params.get("pressure") == null'>and f_pressure is null</if>
+			</if>
+			<if test='params.get("pressureList") != null'>
+				and f_pressure in(<foreach collection="params.pressureList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minPressure") != null'>and f_pressure >= #{params.minPressure}</if>
+			<if test='params.get("maxPressure") != null'>and f_pressure &lt; #{params.maxPressure}</if>
+			<if test='params.get("subPressure") != null'>and f_pressure like '%${params.subPressure}%'</if>
+			<if test='params.get("startsWithPressure") != null'>and f_pressure like '%${params.startsWithPressure}'</if>
+			<if test='params.get("endsWithPressure") != null'>and f_pressure like '${params.endsWithPressure}%'</if>
+			<if test='params.containsKey("status") == true'>
+				<if test='params.get("status") != null'>and f_status = #{params.status}</if>
+				<if test='params.get("status") == null'>and f_status is null</if>
+			</if>
+			<if test='params.get("statusList") != null'>
+				and f_status in(<foreach collection="params.statusList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minStatus") != null'>and f_status >= #{params.minStatus}</if>
+			<if test='params.get("maxStatus") != null'>and f_status &lt; #{params.maxStatus}</if>
+			<if test='params.get("subStatus") != null'>and f_status like '%${params.subStatus}%'</if>
+			<if test='params.get("startsWithStatus") != null'>and f_status like '%${params.startsWithStatus}'</if>
+			<if test='params.get("endsWithStatus") != null'>and f_status like '${params.endsWithStatus}%'</if>
+			<if test='params.containsKey("crtTime") == true'>
+				<if test='params.get("crtTime") != null'>and f_crtTime = #{params.crtTime}</if>
+				<if test='params.get("crtTime") == null'>and f_crtTime is null</if>
+			</if>
+			<if test='params.get("crtTimeList") != null'>
+				and f_crtTime in(<foreach collection="params.crtTimeList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minCrtTime") != null'>and f_crtTime >= #{params.minCrtTime}</if>
+			<if test='params.get("maxCrtTime") != null'>and f_crtTime &lt; #{params.maxCrtTime}</if>
+			<if test='params.get("subCrtTime") != null'>and f_crtTime like '%${params.subCrtTime}%'</if>
+			<if test='params.get("startsWithCrtTime") != null'>and f_crtTime like '%${params.startsWithCrtTime}'</if>
+			<if test='params.get("endsWithCrtTime") != null'>and f_crtTime like '${params.endsWithCrtTime}%'</if>
+			<if test='params.containsKey("sendTime") == true'>
+				<if test='params.get("sendTime") != null'>and f_sendTime = #{params.sendTime}</if>
+				<if test='params.get("sendTime") == null'>and f_sendTime is null</if>
+			</if>
+			<if test='params.get("sendTimeList") != null'>
+				and f_sendTime in(<foreach collection="params.sendTimeList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minSendTime") != null'>and f_sendTime >= #{params.minSendTime}</if>
+			<if test='params.get("maxSendTime") != null'>and f_sendTime &lt; #{params.maxSendTime}</if>
+			<if test='params.get("subSendTime") != null'>and f_sendTime like '%${params.subSendTime}%'</if>
+			<if test='params.get("startsWithSendTime") != null'>and f_sendTime like '%${params.startsWithSendTime}'</if>
+			<if test='params.get("endsWithSendTime") != null'>and f_sendTime like '${params.endsWithSendTime}%'</if>
+			<if test='params.containsKey("devId") == true'>
+				<if test='params.get("devId") != null'>and f_devId = #{params.devId}</if>
+				<if test='params.get("devId") == null'>and f_devId is null</if>
+			</if>
+			<if test='params.get("devIdList") != null'>
+				and f_devId in(<foreach collection="params.devIdList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minDevId") != null'>and f_devId >= #{params.minDevId}</if>
+			<if test='params.get("maxDevId") != null'>and f_devId &lt; #{params.maxDevId}</if>
+			<if test='params.get("subDevId") != null'>and f_devId like '%${params.subDevId}%'</if>
+			<if test='params.get("startsWithDevId") != null'>and f_devId like '%${params.startsWithDevId}'</if>
+			<if test='params.get("endsWithDevId") != null'>and f_devId like '${params.endsWithDevId}%'</if>
+		</where>
+		<if test="params.sort != null">
+    		order by 
+    		<foreach collection="params.sort" item="item" index="index" separator=",">
+    			${item.name} <if test="item.sort == 1">desc</if>
+    		</foreach>
+		</if>
+		limit 0, 1
+	</select>
+
+	<select id="count" parameterType="java.util.Map" resultType="Integer">
+		select count(f_id)
+		from tb_alarm
+		<where>
+			<if test='params.containsKey("id") == true'>
+				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") == null'>and f_id is null</if>
+			</if>
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
+			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
+			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
+			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.containsKey("isAlarm") == true'>
+				<if test='params.get("isAlarm") != null'>and f_isAlarm = #{params.isAlarm}</if>
+				<if test='params.get("isAlarm") == null'>and f_isAlarm is null</if>
+			</if>
+			<if test='params.get("isAlarmList") != null'>
+				and f_isAlarm in(<foreach collection="params.isAlarmList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minIsAlarm") != null'>and f_isAlarm >= #{params.minIsAlarm}</if>
+			<if test='params.get("maxIsAlarm") != null'>and f_isAlarm &lt; #{params.maxIsAlarm}</if>
+			<if test='params.get("subIsAlarm") != null'>and f_isAlarm like '%${params.subIsAlarm}%'</if>
+			<if test='params.get("startsWithIsAlarm") != null'>and f_isAlarm like '%${params.startsWithIsAlarm}'</if>
+			<if test='params.get("endsWithIsAlarm") != null'>and f_isAlarm like '${params.endsWithIsAlarm}%'</if>
+			<if test='params.containsKey("centerNo") == true'>
+				<if test='params.get("centerNo") != null'>and f_centerNo = #{params.centerNo}</if>
+				<if test='params.get("centerNo") == null'>and f_centerNo is null</if>
+			</if>
+			<if test='params.get("centerNoList") != null'>
+				and f_centerNo in(<foreach collection="params.centerNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minCenterNo") != null'>and f_centerNo >= #{params.minCenterNo}</if>
+			<if test='params.get("maxCenterNo") != null'>and f_centerNo &lt; #{params.maxCenterNo}</if>
+			<if test='params.get("subCenterNo") != null'>and f_centerNo like '%${params.subCenterNo}%'</if>
+			<if test='params.get("startsWithCenterNo") != null'>and f_centerNo like '%${params.startsWithCenterNo}'</if>
+			<if test='params.get("endsWithCenterNo") != null'>and f_centerNo like '${params.endsWithCenterNo}%'</if>
+			<if test='params.containsKey("pressure") == true'>
+				<if test='params.get("pressure") != null'>and f_pressure = #{params.pressure}</if>
+				<if test='params.get("pressure") == null'>and f_pressure is null</if>
+			</if>
+			<if test='params.get("pressureList") != null'>
+				and f_pressure in(<foreach collection="params.pressureList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minPressure") != null'>and f_pressure >= #{params.minPressure}</if>
+			<if test='params.get("maxPressure") != null'>and f_pressure &lt; #{params.maxPressure}</if>
+			<if test='params.get("subPressure") != null'>and f_pressure like '%${params.subPressure}%'</if>
+			<if test='params.get("startsWithPressure") != null'>and f_pressure like '%${params.startsWithPressure}'</if>
+			<if test='params.get("endsWithPressure") != null'>and f_pressure like '${params.endsWithPressure}%'</if>
+			<if test='params.containsKey("status") == true'>
+				<if test='params.get("status") != null'>and f_status = #{params.status}</if>
+				<if test='params.get("status") == null'>and f_status is null</if>
+			</if>
+			<if test='params.get("statusList") != null'>
+				and f_status in(<foreach collection="params.statusList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minStatus") != null'>and f_status >= #{params.minStatus}</if>
+			<if test='params.get("maxStatus") != null'>and f_status &lt; #{params.maxStatus}</if>
+			<if test='params.get("subStatus") != null'>and f_status like '%${params.subStatus}%'</if>
+			<if test='params.get("startsWithStatus") != null'>and f_status like '%${params.startsWithStatus}'</if>
+			<if test='params.get("endsWithStatus") != null'>and f_status like '${params.endsWithStatus}%'</if>
+			<if test='params.containsKey("crtTime") == true'>
+				<if test='params.get("crtTime") != null'>and f_crtTime = #{params.crtTime}</if>
+				<if test='params.get("crtTime") == null'>and f_crtTime is null</if>
+			</if>
+			<if test='params.get("crtTimeList") != null'>
+				and f_crtTime in(<foreach collection="params.crtTimeList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minCrtTime") != null'>and f_crtTime >= #{params.minCrtTime}</if>
+			<if test='params.get("maxCrtTime") != null'>and f_crtTime &lt; #{params.maxCrtTime}</if>
+			<if test='params.get("subCrtTime") != null'>and f_crtTime like '%${params.subCrtTime}%'</if>
+			<if test='params.get("startsWithCrtTime") != null'>and f_crtTime like '%${params.startsWithCrtTime}'</if>
+			<if test='params.get("endsWithCrtTime") != null'>and f_crtTime like '${params.endsWithCrtTime}%'</if>
+			<if test='params.containsKey("sendTime") == true'>
+				<if test='params.get("sendTime") != null'>and f_sendTime = #{params.sendTime}</if>
+				<if test='params.get("sendTime") == null'>and f_sendTime is null</if>
+			</if>
+			<if test='params.get("sendTimeList") != null'>
+				and f_sendTime in(<foreach collection="params.sendTimeList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minSendTime") != null'>and f_sendTime >= #{params.minSendTime}</if>
+			<if test='params.get("maxSendTime") != null'>and f_sendTime &lt; #{params.maxSendTime}</if>
+			<if test='params.get("subSendTime") != null'>and f_sendTime like '%${params.subSendTime}%'</if>
+			<if test='params.get("startsWithSendTime") != null'>and f_sendTime like '%${params.startsWithSendTime}'</if>
+			<if test='params.get("endsWithSendTime") != null'>and f_sendTime like '${params.endsWithSendTime}%'</if>
+			<if test='params.containsKey("devId") == true'>
+				<if test='params.get("devId") != null'>and f_devId = #{params.devId}</if>
+				<if test='params.get("devId") == null'>and f_devId is null</if>
+			</if>
+			<if test='params.get("devIdList") != null'>
+				and f_devId in(<foreach collection="params.devIdList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minDevId") != null'>and f_devId >= #{params.minDevId}</if>
+			<if test='params.get("maxDevId") != null'>and f_devId &lt; #{params.maxDevId}</if>
+			<if test='params.get("subDevId") != null'>and f_devId like '%${params.subDevId}%'</if>
+			<if test='params.get("startsWithDevId") != null'>and f_devId like '%${params.startsWithDevId}'</if>
+			<if test='params.get("endsWithDevId") != null'>and f_devId like '${params.endsWithDevId}%'</if>
+		</where>
+	</select>
+</mapper>

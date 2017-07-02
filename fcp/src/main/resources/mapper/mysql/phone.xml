@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.defu.fcp.phone.dao.IDaoPhone">
+	<insert id="add" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="params.id" keyColumn="f_id">
+		insert into tb_phone
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test='params.containsKey("phoneNo") == true'>
+				f_phoneNo,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test='params.containsKey("phoneNo") == true'>
+				<if test='params.get("phoneNo") != null'>#{params.phoneNo},</if>
+				<if test='params.get("phoneNo") == null'>null,</if>
+			</if>
+		</trim>
+	</insert>
+	<insert id="addBatch" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id" keyColumn="f_id">
+		insert into tb_phone (f_phoneNo) values
+		<foreach collection="params" item="item" index="index" separator=",">
+			(#{item.phoneNo})
+		</foreach>
+	</insert>
+
+	<delete id="delete" parameterType="java.util.Map">
+		delete from tb_phone
+		<where>
+			<if test='params.containsKey("id") == true'>
+				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") == null'>and f_id is null</if>
+			</if>
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
+			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
+			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
+			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.containsKey("phoneNo") == true'>
+				<if test='params.get("phoneNo") != null'>and f_phoneNo = #{params.phoneNo}</if>
+				<if test='params.get("phoneNo") == null'>and f_phoneNo is null</if>
+			</if>
+			<if test='params.get("phoneNoList") != null'>
+				and f_phoneNo in(<foreach collection="params.phoneNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minPhoneNo") != null'>and f_phoneNo >= #{params.minPhoneNo}</if>
+			<if test='params.get("maxPhoneNo") != null'>and f_phoneNo &lt; #{params.maxPhoneNo}</if>
+			<if test='params.get("subPhoneNo") != null'>and f_phoneNo like '%${params.subPhoneNo}%'</if>
+			<if test='params.get("startsWithPhoneNo") != null'>and f_phoneNo like '%${params.startsWithPhoneNo}'</if>
+			<if test='params.get("endsWithPhoneNo") != null'>and f_phoneNo like '${params.endsWithPhoneNo}%'</if>
+		</where>
+	</delete>
+
+	<update id="update">
+		update tb_phone
+		<set>
+			<if test="obj != null">
+				<if test='obj.containsKey("id") == true'>
+					<if test='obj.get("id") != null'>f_id = #{obj.id},</if>
+					<if test='obj.get("id") == null'>f_id = null,</if>
+				</if>
+				<if test='obj.containsKey("phoneNo") == true'>
+					<if test='obj.get("phoneNo") != null'>f_phoneNo = #{obj.phoneNo},</if>
+					<if test='obj.get("phoneNo") == null'>f_phoneNo = null,</if>
+				</if>
+			</if>
+		</set>
+		<where>
+			<if test="tag != null">
+				<if test='tag.containsKey("id") == true'>
+					<if test='tag.get("id") != null'>and f_id = #{tag.id}</if>
+					<if test='tag.get("id") == null'>and f_id is null</if>
+				</if>
+				<if test='tag.containsKey("phoneNo") == true'>
+					<if test='tag.get("phoneNo") != null'>and f_phoneNo = #{tag.phoneNo}</if>
+					<if test='tag.get("phoneNo") == null'>and f_phoneNo is null</if>
+				</if>
+			</if>
+		</where>
+	</update>
+
+	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			f_id as id,
+			f_phoneNo as phoneNo
+		from tb_phone
+		<where>
+			<if test='params.containsKey("id") == true'>
+				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") == null'>and f_id is null</if>
+			</if>
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
+			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
+			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
+			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.containsKey("phoneNo") == true'>
+				<if test='params.get("phoneNo") != null'>and f_phoneNo = #{params.phoneNo}</if>
+				<if test='params.get("phoneNo") == null'>and f_phoneNo is null</if>
+			</if>
+			<if test='params.get("phoneNoList") != null'>
+				and f_phoneNo in(<foreach collection="params.phoneNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minPhoneNo") != null'>and f_phoneNo >= #{params.minPhoneNo}</if>
+			<if test='params.get("maxPhoneNo") != null'>and f_phoneNo &lt; #{params.maxPhoneNo}</if>
+			<if test='params.get("subPhoneNo") != null'>and f_phoneNo like '%${params.subPhoneNo}%'</if>
+			<if test='params.get("startsWithPhoneNo") != null'>and f_phoneNo like '%${params.startsWithPhoneNo}'</if>
+			<if test='params.get("endsWithPhoneNo") != null'>and f_phoneNo like '${params.endsWithPhoneNo}%'</if>
+		</where>
+		<if test="params.sort != null">
+    		order by 
+    		<foreach collection="params.sort" item="item" index="index" separator=",">
+    			${item.name} <if test="item.sort == 1">desc</if>
+    		</foreach>
+		</if>
+		<if test="params.start != null and params.limit != null">
+			limit ${params.start}, ${params.limit}
+		</if>
+	</select>
+
+	<select id="single" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			f_id as id,
+			f_phoneNo as phoneNo
+		from tb_phone
+		<where>
+			<if test='params.containsKey("id") == true'>
+				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") == null'>and f_id is null</if>
+			</if>
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
+			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
+			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
+			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.containsKey("phoneNo") == true'>
+				<if test='params.get("phoneNo") != null'>and f_phoneNo = #{params.phoneNo}</if>
+				<if test='params.get("phoneNo") == null'>and f_phoneNo is null</if>
+			</if>
+			<if test='params.get("phoneNoList") != null'>
+				and f_phoneNo in(<foreach collection="params.phoneNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minPhoneNo") != null'>and f_phoneNo >= #{params.minPhoneNo}</if>
+			<if test='params.get("maxPhoneNo") != null'>and f_phoneNo &lt; #{params.maxPhoneNo}</if>
+			<if test='params.get("subPhoneNo") != null'>and f_phoneNo like '%${params.subPhoneNo}%'</if>
+			<if test='params.get("startsWithPhoneNo") != null'>and f_phoneNo like '%${params.startsWithPhoneNo}'</if>
+			<if test='params.get("endsWithPhoneNo") != null'>and f_phoneNo like '${params.endsWithPhoneNo}%'</if>
+		</where>
+		<if test="params.sort != null">
+    		order by 
+    		<foreach collection="params.sort" item="item" index="index" separator=",">
+    			${item.name} <if test="item.sort == 1">desc</if>
+    		</foreach>
+		</if>
+		limit 0, 1
+	</select>
+
+	<select id="count" parameterType="java.util.Map" resultType="Integer">
+		select count(f_id)
+		from tb_phone
+		<where>
+			<if test='params.containsKey("id") == true'>
+				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") == null'>and f_id is null</if>
+			</if>
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
+			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
+			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
+			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.containsKey("phoneNo") == true'>
+				<if test='params.get("phoneNo") != null'>and f_phoneNo = #{params.phoneNo}</if>
+				<if test='params.get("phoneNo") == null'>and f_phoneNo is null</if>
+			</if>
+			<if test='params.get("phoneNoList") != null'>
+				and f_phoneNo in(<foreach collection="params.phoneNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minPhoneNo") != null'>and f_phoneNo >= #{params.minPhoneNo}</if>
+			<if test='params.get("maxPhoneNo") != null'>and f_phoneNo &lt; #{params.maxPhoneNo}</if>
+			<if test='params.get("subPhoneNo") != null'>and f_phoneNo like '%${params.subPhoneNo}%'</if>
+			<if test='params.get("startsWithPhoneNo") != null'>and f_phoneNo like '%${params.startsWithPhoneNo}'</if>
+			<if test='params.get("endsWithPhoneNo") != null'>and f_phoneNo like '${params.endsWithPhoneNo}%'</if>
+		</where>
+	</select>
+</mapper>

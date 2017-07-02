@@ -1,0 +1,8 @@
+#set($maxProperty="maxA")
+#set($minProperty="minA")
+#set($subProperty="subA")
+#set($dollar='$')
+#set($jinh='#')
+<if test='params.get("$minProperty") != null'>and $col.get("column") >= ${jinh}{params.${minProperty}}</if>
+<if test='params.get("$maxProperty") != null'>and $col.get("column") &lt; ${jinh}{params.${maxProperty}}</if>
+<if test='params.get("$subProperty") != null'>and $col.get("column") like '%${dollar}{params.${subProperty}}%'</if>

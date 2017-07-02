@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+#set($dollar='$')
+#set($jinh='#')
+<mapper namespace="${cfg.interface}">
+#if(${fn.add})
+#parse("add.vm")
+#end
+
+#if(${fn.addBatch})
+#parse("addBatch.vm")
+#end
+
+
+#if(${fn.delete})
+#parse("delete.vm")
+#end
+
+
+#if(${fn.update})
+#parse("update.vm")
+#end
+
+
+#if(${fn.list})
+#parse("list.vm")
+#end
+
+
+#if(${fn.single})
+#parse("single.vm")
+#end
+
+
+#if(${fn.count})
+#parse("count.vm")
+#end
+
+</mapper>

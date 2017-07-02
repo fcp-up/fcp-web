@@ -1,0 +1,23 @@
+	<update id="$fn.get('update')">
+		update ${table}
+		<set>
+			<if test="obj != null">
+#foreach(${col} in ${cols.entrySet()})
+				<if test='obj.containsKey("$col.key") == true'>
+					<if test='obj.get("$col.key") != null'>$col.value = #{obj.$col.key},</if>
+					<if test='obj.get("$col.key") == null'>$col.value = null,</if>
+				</if>
+#end
+			</if>
+		</set>
+		<where>
+			<if test="tag != null">
+#foreach(${col} in ${cols.entrySet()})
+				<if test='tag.containsKey("$col.key") == true'>
+					<if test='tag.get("$col.key") != null'>and $col.value = #{tag.$col.key}</if>
+					<if test='tag.get("$col.key") == null'>and $col.value is null</if>
+				</if>
+#end
+			</if>
+		</where>
+	</update>
