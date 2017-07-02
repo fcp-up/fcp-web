@@ -1,0 +1,2 @@
+﻿1.根据操作系统将对应32or64文件夹中的rxtxSerial.dll拷贝到当前使用jdk的bin目录下，和javac.exe在一个文件夹。
+2.smslib-3.5.2.jar是工程用到的包，其余包参看工程pom.xml。smslib-3.5.2.jar包在公网中找不到maven。
