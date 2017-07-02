@@ -1,8 +1,8 @@
 package com.defu.fcp.alarm.service.impl;
 
 import java.net.URLEncoder;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +15,7 @@ import javax.annotation.PreDestroy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.defu.fcp.ThreadPool;
@@ -29,7 +30,8 @@ import com.defu.sms.IPhoneMessage;
 public class SvcAlarm extends AbstractService implements Runnable, ISvcAlarm {
 	@Autowired IDaoAlarm dao;
 	@Autowired ISvcPhone phoneSvc;
-	@Autowired IPhoneMessage phonesms;
+	@Autowired @Qualifier("catsms") IPhoneMessage catsms;
+	@Autowired @Qualifier("yunpiansms") IPhoneMessage yunpiansms;
 
 	// 编码格式。发送编码格式统一用UTF-8
 	private static String ENCODING = "UTF-8";
@@ -72,19 +74,50 @@ public class SvcAlarm extends AbstractService implements Runnable, ISvcAlarm {
 		
 	}
 	
-	private void alarm(Map<String, Object> mp) {
+	private void alarm(final Map<String, Object> mp) {
 		List<Map<String, Object>> phones = phoneSvc.list(new HashMap<String, Object>());
 		
-		List<String> phonenos = new ArrayList<>();
+		final List<String> phonenos = new ArrayList<>();
 		for(Map<String, Object> p: phones) phonenos.add(p.get("phoneNo").toString());
 		
 		if(phonenos.size() < 1) return;
 		
-		alarmPhonic(mp, phonenos);
-		alarmText(mp, phonenos);
+		//通过云片发送语音短信
+		ThreadPool.execute(new Runnable(){
+			public void run(){
+				alarmPhonicByYunpian(mp, phonenos);
+			}
+		});
+
+		//通过短信猫发送文本短信
+		ThreadPool.execute(new Runnable(){
+			public void run(){
+				alarmTextByCat(mp, phonenos);
+			}
+		});
 	}
 	
-	protected void alarmText(Map<String, Object> mp, List<String> phoneNo) {
+	protected void alarmTextByCat(Map<String, Object> mp, List<String> phoneNo) {
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			sb.append(mp.get("devId").toString());
+			sb.append("发生险情");
+			
+			for(String no: phoneNo) {
+				catsms.sendTextMsg(sb.toString(), no);
+			}
+			
+		}
+		catch(Exception ex){
+		}
+	}
+	
+	protected void alarmPhonicByCat(Map<String, Object> mp, List<String> phoneNo) {
+		return;
+	}
+	
+	protected void alarmTextByYunpian(Map<String, Object> mp, List<String> phoneNo) {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
@@ -97,7 +130,7 @@ public class SvcAlarm extends AbstractService implements Runnable, ISvcAlarm {
 			sb.append(URLEncoder.encode("发生险情", ENCODING));
 			
 			for(String no: phoneNo) {
-				phonesms.sendTextMsg(sb.toString(), no, "1842546");
+				yunpiansms.sendTextMsg(sb.toString(), no, "1842546");
 			}
 			
 		}
@@ -105,7 +138,7 @@ public class SvcAlarm extends AbstractService implements Runnable, ISvcAlarm {
 		}
 	}
 	
-	protected void alarmPhonic(Map<String, Object> mp, List<String> phoneNo) {
+	protected void alarmPhonicByYunpian(Map<String, Object> mp, List<String> phoneNo) {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
@@ -113,7 +146,7 @@ public class SvcAlarm extends AbstractService implements Runnable, ISvcAlarm {
 			sb.append("=");
 			sb.append(URLEncoder.encode(mp.get("devId").toString(), ENCODING));
 			
-			phonesms.sendPhonicMsg(URLEncoder.encode(sb.toString(), ENCODING), phoneNo, "1842616");
+			yunpiansms.sendPhonicMsg(URLEncoder.encode(sb.toString(), ENCODING), phoneNo, "1842616");
 		}
 		catch(Exception ex){
 		}
@@ -143,6 +176,10 @@ public class SvcAlarm extends AbstractService implements Runnable, ISvcAlarm {
 			Map<String, Object> mp = msg.poll();
 			if(mp != null) {
 				alarm(mp);
+				try {
+					//休息3秒，防止大量短信爆击，导致短信猫挂了。
+					Thread.sleep(3000);
+				} catch (Exception ex) {}
 			}
 			else {
 				try {

@@ -20,6 +20,15 @@ public final class Const {
 	
 	public static final String yunpiankey = null;
 	
+	public static final class SmsCatCfg {
+		public static final String comId = null;
+		public static final String com = null;
+		public static final Integer baudRate = null;
+		public static final String manufacturer = null;
+		public static final String model = null;
+		public static final String simPin = null;
+	}
+	
 	/**
 	 * 相对路径，统一管理文件路径
 	 * @author likeajin

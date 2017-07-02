@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -18,6 +20,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 public class YunpianMessage {
+	protected final Log log = LogFactory.getLog(getClass());
+	
 	// 修改为您的apikey.apikey可在官网（http://www.yuanpian.com)登录后获取
 	private String apikey;
 	
@@ -51,8 +55,13 @@ public class YunpianMessage {
 	 * @throws IOException
 	 */
 	public String sendTextMsg(String msg, String phoneNo, String tplId) throws IOException {
+		if (log.isDebugEnabled()) log.debug("发送文本短信：" + msg);
 		/**************** 使用指定模版接口发短信(推荐) *****************/
-		return sendSms(apikey, tplId, msg, phoneNo, URI_TPL_SEND_SMS);
+		msg = sendSms(apikey, tplId, msg, phoneNo, URI_TPL_SEND_SMS);
+		
+		if (log.isDebugEnabled()) log.debug("云片响应：" + msg);
+		
+		return msg;
 
 	}
 
@@ -65,6 +74,7 @@ public class YunpianMessage {
 	 * @throws IOException
 	 */
 	public String sendTextMsg(String msg, List<String> phoneNo, String tplId) throws IOException {
+		if (log.isDebugEnabled()) log.debug("发送文本短信：" + msg);
 		StringBuilder sb = new StringBuilder();
 		boolean append = false;
 		
@@ -75,7 +85,10 @@ public class YunpianMessage {
 		}
 		
 		/**************** 使用指定模版接口发短信(推荐) *****************/
-		return sendSms(apikey, tplId, msg, sb.toString(), URI_TPL_BATCH_SEND_SMS);
+		msg = sendSms(apikey, tplId, msg, sb.toString(), URI_TPL_BATCH_SEND_SMS);
+
+		if (log.isDebugEnabled()) log.debug("云片响应：" + msg);
+		return msg;
 
 	}
 
@@ -88,9 +101,14 @@ public class YunpianMessage {
 	 * @throws IOException
 	 */
 	public String sendPhonicMsg(String msg, String phoneNo, String tplid) throws IOException {
+		if (log.isDebugEnabled()) log.debug("发送语音短信：" + msg);
 
 		/**************** 使用接口发语音验证码 *****************/
-		return sendVoice(apikey, tplid, msg, phoneNo, URI_SEND_VOICE);
+		msg = sendVoice(apikey, tplid, msg, phoneNo, URI_SEND_VOICE);
+
+		if (log.isDebugEnabled()) log.debug("云片响应：" + msg);
+		
+		return msg;
 	}
 	
 
