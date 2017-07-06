@@ -33,15 +33,16 @@ public class SmsCat {
 	public void startService() {
 		if (log.isDebugEnabled()) log.debug("开始初始化短信猫服务！");
 		
-		// 初始化网关，参数信息依次为：COMID,COM号,比特率,制造商,Modem模式
-		gateway = new SerialModemGateway(comId, comPort, baudRate, manufacturer, model);
-
-		gateway.setInbound(true);
-		gateway.setOutbound(true);
-		gateway.setSimPin(pin);
-
-		service = Service.getInstance();
 		if (service == null) {
+			// 初始化网关，参数信息依次为：COMID,COM号,比特率,制造商,Modem模式
+			gateway = new SerialModemGateway(comId, comPort, baudRate, manufacturer, model);
+
+			gateway.setInbound(true);
+			gateway.setOutbound(true);
+			gateway.setSimPin(pin);
+
+			service = Service.getInstance();
+			
 			if (log.isWarnEnabled()) log.warn("短信猫服务初始化失败！");
 			return;
 		}
