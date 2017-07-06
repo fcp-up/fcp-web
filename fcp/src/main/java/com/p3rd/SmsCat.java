@@ -1,13 +1,5 @@
 package com.p3rd;
 
-import gnu.io.PortInUseException;
-import gnu.io.UnsupportedCommOperationException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.TooManyListenersException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.smslib.AGateway;
@@ -15,8 +7,6 @@ import org.smslib.IOutboundMessageNotification;
 import org.smslib.Message.MessageEncodings;
 import org.smslib.OutboundMessage;
 import org.smslib.Service;
-import org.smslib.helper.CommPortIdentifier;
-import org.smslib.helper.SerialPort;
 import org.smslib.modem.SerialModemGateway;
 
 public class SmsCat {
