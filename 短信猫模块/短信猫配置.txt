@@ -1,2 +1,6 @@
 ﻿1.根据操作系统将对应32or64文件夹中的rxtxSerial.dll拷贝到当前使用jdk的bin目录下，和javac.exe在一个文件夹。
 2.smslib-3.5.2.jar是工程用到的包，其余包参看工程pom.xml。smslib-3.5.2.jar包在公网中找不到maven。
+3.注册第三方库到私服nexus仓库
+ mvn install:install-file -DgroupId=org.smslib -DartifactId=smslib -Dversion=3.5.2 -Dpackaging=jar -Dfile=D:\3th-jar\smslib-3.5.2.jar
+4.备忘： 
+	启动nexus /run   <url>http://localhost:8081/repository/maven-public</url>
