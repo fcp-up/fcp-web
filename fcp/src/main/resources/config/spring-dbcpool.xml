@@ -28,7 +28,7 @@
 		<property name="acquireRetryAttempts" value="30" />
 		
 		<!-- 获取数据库连接等待时间，映射为连接数据库超时时间，单位毫秒，设为0为无限期等待。Default:0 -->
-		<property name="checkoutTimeout" value="300000" />
+		<property name="checkoutTimeout" value="30000" />
 		
 		<!--两次连接中间隔时间，单位毫秒。Default: 1000 -->
 		<property name="acquireRetryDelay" value="1000" />

@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>    
+	<title>消防物联网</title>
+    <link rel="shortcut icon" href="/css/favicon.icon" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" media="all" type="text/css" href="javascript/common/jquery-ui/jquery-ui.min.css" />
+	<link rel="stylesheet" media="all" type="text/css" href="javascript/common/bootstrap-dtp/min.css" />
+	<link rel="stylesheet" media="all" type="text/css" href="css/layout.css" />
+	<link rel="stylesheet" media="all" type="text/css" href="css/component.css" />
+   	<script type="text/javascript" src="javascript/common/jquery-1.11.2.js"></script>
+	<script type="text/javascript" src="javascript/common/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="javascript/common/bootstrap-dtp/min.js"></script>
+	<script type="text/javascript" src="javascript/common/ext.js"></script>
+	<script type="text/javascript" src="javascript/common/component.js"></script>
+	<script type="text/javascript" src="javascript/common/tools.js"></script>
+	<script type="text/javascript" src="javascript/common/const.js"></script>
+	<style>
+	body>.window, .window{display: line-block; float: left; position: relative; margin: 20px; left: auto; top: auto; right: auto; bottom: auto;}
+	</style>
+</head>
+<body>
+<div class="window show" id="alarmFormWin">
+	<style>
+	#alarmFormWin{width: 300px; height: 200px;}
+	#alarmFormWin input{width: 100px;}
+	#alarmFormWin .label{width: 70px; text-align: right; margin-right: 5px;}
+	</style>
+	<div class="close"></div>
+	<div class="panel-title">告警测试</div>
+	<form class="panel-body form">
+		<div><label class="label">设备编号</label><input name="deviceNo" /></div>
+		<div><label class="label">是否报警</label><select name="isAlarm"><option value="1">是</option><option value="0">否</option></select></div>
+		<div><label class="label">当前压力值</label><input name="pressure" /></div>
+		<div><label class="label">电话号码</label><input name="telephone" /></div>
+	</form>
+	<div class="panel-footer">
+		<div class="button" handler="save"><span class="icon-16 icon-save"></span>提交</div>
+	</div>
+</div>
+<div class="window show" id="termStateFormWin">
+	<style>
+	#termStateFormWin{width: 300px; height: 200px;}
+	#termStateFormWin input{width: 100px;}
+	#termStateFormWin .label{width: 70px; text-align: right; margin-right: 5px;}
+	</style>
+	<div class="close"></div>
+	<div class="panel-title">终端上下线测试</div>
+	<form class="panel-body form">
+		<div><label class="label">终端编号</label><input name="terminalNo" /></div>
+		<div><label class="label">上下线</label><select name="state"><option value="1">上线</option><option value="0">下线</option></select></div>
+	</form>
+	<div class="panel-footer">
+		<div class="button" handler="save"><span class="icon-16 icon-save"></span>提交</div>
+	</div>
+</div>
+<script>
+var alarmFormWin = $('#alarmFormWin').formpanel({
+	saveUrl: 'terminal/requestAlarm',
+	fixedPostValue: function(obj){return [obj];},
+	maskOnSaving: false
+});
+var termStateFormWin = $('#termStateFormWin').formpanel({
+	saveUrl: 'terminal/postOnline',
+	fixedPostValue: function(obj){return [obj];},
+	maskOnSaving: false
+});
+</script>
+</body>
+</html>

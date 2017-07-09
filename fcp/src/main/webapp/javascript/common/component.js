@@ -1456,6 +1456,13 @@ $.FormWindow = $.extendClass($.Window, {
 
 (function(){
 	var prototype = {
+		/**
+		 * 在保存时使用遮罩
+		 */
+		maskOnSaving: true,
+		/**
+		 * 允许文本框中展示线索
+		 */
 		enableHint: false,
 		/**
 		 * 是否在输入回车后提交执行保存方法
@@ -1860,6 +1867,9 @@ $.FormWindow = $.extendClass($.Window, {
 		fixedFormValue: function(obj){
 			return obj;
 		},
+		fixedPostValue: function(obj){
+			return obj;
+		},
 		getFieldValue: function(k, f){
 			var t = f.type() || '';
 			switch(t.toLowerCase()) {
@@ -1882,13 +1892,13 @@ $.FormWindow = $.extendClass($.Window, {
 			return 'post';
 		},
 		save: function(){
-			var vd = this.validate(this.getFormValue(), this.form);
+			var vd = this.fixedPostValue(this.validate(this.getFormValue(), this.form));
 			if(vd === false) return;
-			this.el.mask().progress('数据保存中...');
+			if(this.maskOnSaving) this.el.mask().progress('数据保存中...');
 			$.ajax({
 				url: this.getSaveUrl(vd, this.form), data: tools.serializeParams(vd), type: this.getRequestType(vd, this.form), dataType: 'json', context: this, 
 				success: function(d){
-					this.el.unprogress().unmask();
+					if(this.maskOnSaving) this.el.unprogress().unmask();
 					if(d.state == 0) {
 						if(this.saveSuccess(d.data, vd) !== false) {
 							this.close();
@@ -1899,7 +1909,7 @@ $.FormWindow = $.extendClass($.Window, {
 					}
 				},
 				error: function(){
-					this.el.unprogress().unmask();
+					if(this.maskOnSaving) this.el.unprogress().unmask();
 					this.saveError('请求后台出错。');
 				}
 			});

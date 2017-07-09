@@ -1,5 +1,16 @@
 package com.p3rd;
 
+import gnu.io.CommPortIdentifier;
+import gnu.io.PortInUseException;
+import gnu.io.SerialPort;
+import gnu.io.UnsupportedCommOperationException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Enumeration;
+import java.util.TooManyListenersException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.smslib.AGateway;
@@ -33,27 +44,29 @@ public class SmsCat {
 	public void startService() {
 		if (log.isDebugEnabled()) log.debug("开始初始化短信猫服务！");
 		
-		if (service == null) {
-			// 初始化网关，参数信息依次为：COMID,COM号,比特率,制造商,Modem模式
-			gateway = new SerialModemGateway(comId, comPort, baudRate, manufacturer, model);
-
-			gateway.setInbound(true);
-			gateway.setOutbound(true);
-			gateway.setSimPin(pin);
-
-			service = Service.getInstance();
-			
-			if (log.isWarnEnabled()) log.warn("短信猫服务初始化失败！");
-			return;
-		}
-
-		service.setOutboundMessageNotification(new IOutboundMessageNotification(){
-			public void process(AGateway gateway, OutboundMessage msg) {
-				if (log.isWarnEnabled()) log.warn(String.format("短信猫接受到消息：to\t%s\t%s", msg.getRecipient(), msg.getText()));
-			}
-		});
-		
 		try {
+			if (service == null) {
+				// 初始化网关，参数信息依次为：COMID,COM号,比特率,制造商,Modem模式
+				gateway = new SerialModemGateway(comId, comPort, baudRate, manufacturer, model);
+
+				gateway.setInbound(true);
+				gateway.setOutbound(true);
+				gateway.setSimPin(pin);
+
+				service = Service.getInstance();
+			}
+			
+			if(service == null) {
+				if (log.isWarnEnabled()) log.warn("短信猫服务初始化失败！");
+				return;
+			}
+
+			service.setOutboundMessageNotification(new IOutboundMessageNotification(){
+				public void process(AGateway gateway, OutboundMessage msg) {
+					if (log.isWarnEnabled()) log.warn(String.format("短信猫接受到消息：to\t%s\t%s", msg.getRecipient(), msg.getText()));
+				}
+			});
+			
 			service.addGateway(gateway);
 			if (log.isDebugEnabled()) log.debug("短信猫服务初始化完毕，开启短信猫服务！");
 			service.startService();
@@ -116,7 +129,7 @@ public class SmsCat {
 		try {
 			// 发送信息
 			if (log.isDebugEnabled()) log.debug("发送信息");
-			return Service.getInstance().sendMessage(msg);
+			return service.sendMessage(msg);
 		} catch (Exception e) {
 			if (log.isDebugEnabled()) log.debug("发送信息异常，重启短信猫服务。");
 			stopService();
@@ -124,7 +137,60 @@ public class SmsCat {
 			return false;
 		} 
 	}
+
+	@SuppressWarnings("unchecked")
+	private CommPortIdentifier getPortP(String port) {
+		CommPortIdentifier comm = null;
+		for (Enumeration<CommPortIdentifier> e = CommPortIdentifier
+				.getPortIdentifiers(); e.hasMoreElements();) {
+
+			CommPortIdentifier portId = e.nextElement();
+
+			if (portId.getName().equals(port)) {
+				comm = portId;
+				break;
+			}
+		}
+		return comm;
+	}
 	
+	public void tel(String telephone) throws PortInUseException,
+			UnsupportedCommOperationException,
+
+			TooManyListenersException, IOException, InterruptedException {
+
+		CommPortIdentifier portId = getPortP(comPort);
+		if (portId != null) {
+			final SerialPort serialPort = (SerialPort)portId.open("wavecom1", 1000);
+
+			serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN);
+
+			serialPort.setSerialPortParams(baudRate,// 波特率
+
+					SerialPort.DATABITS_8,// 数据位数
+
+					SerialPort.STOPBITS_1, // 停止位
+
+					SerialPort.PARITY_NONE);// 奇偶位
+
+			System.out.println("端口已打开。\n发送AT指令 …");
+
+			InputStream inputStream = serialPort.getInputStream();
+
+			OutputStream outputStream = serialPort.getOutputStream();
+
+			String at_cmd = "AT+DUI" + telephone.trim() + ";\r";
+
+			outputStream.write(at_cmd.getBytes());
+
+			Thread.sleep(2000);
+
+			inputStream.close();
+			outputStream.close();
+			serialPort.close();
+			System.out.println("关闭端口。");
+		}
+	}
 	
 	public SmsCat(String comId, String comPort, Integer baudRate,
 			String manufacturer, String model, String pin) {

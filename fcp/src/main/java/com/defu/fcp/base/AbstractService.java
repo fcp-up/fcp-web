@@ -27,6 +27,7 @@ public abstract class AbstractService implements IAbstractService {
 	@Override
 	public Map<String, Object> add(Map<String, Object> params) {
 		Map<String, Object> rst = new HashMap<>();
+		beforeAdd(params);
 		int i = params == null ? 0 : getDao().add(params);
 		rst.put("count", i);
 		afterAdd(params, i, rst);
@@ -36,6 +37,7 @@ public abstract class AbstractService implements IAbstractService {
 	@Override
 	public Map<String, Object> add(List<Map<String, Object>> params) {
 		Map<String, Object> rst = new HashMap<>();
+		beforeAdd(params);
 		int i = params == null ? 0 : getDao().addBatch(params);
 		rst.put("count", i);
 		afterAdd(params, i, rst);
@@ -67,7 +69,24 @@ public abstract class AbstractService implements IAbstractService {
 	public AbstractDao getDao() {
 		return null;
 	}
-	
+
+	/**
+	 * 添加前动作
+	 * @param params 被添加的对象
+	 * @param count 影响数据库的记录数
+	 * @param rst 添加的执行结果
+	 */
+	public void beforeAdd(Map<String, Object> params) {
+	}
+
+	/**
+	 * 添加前动作
+	 * @param params 被添加的对象
+	 * @param count 影响数据库的记录数
+	 * @param rst 添加的执行结果
+	 */
+	public void beforeAdd(List<Map<String, Object>> params) {
+	}
 
 	/**
 	 * 添加后动作

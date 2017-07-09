@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.defu.fcp.terminal.dao.IDaoTerminal">
+	<insert id="add" parameterType="java.util.Map">
+		insert into tb_terminal
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test='params.containsKey("no") == true'>
+				f_no,
+			</if>
+			<if test='params.containsKey("onlineState") == true'>
+				f_onlineState,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test='params.containsKey("no") == true'>
+				<if test='params.get("no") != null'>#{params.no},</if>
+				<if test='params.get("no") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("onlineState") == true'>
+				<if test='params.get("onlineState") != null'>#{params.onlineState},</if>
+				<if test='params.get("onlineState") == null'>null,</if>
+			</if>
+		</trim>
+	</insert>
+	<insert id="addBatch" parameterType="java.util.Map">
+		insert into tb_terminal (f_no, f_onlineState) values
+		<foreach collection="params" item="item" index="index" separator=",">
+			(#{item.no}, #{item.onlineState})
+		</foreach>
+	</insert>
+
+	<delete id="delete" parameterType="java.util.Map">
+		delete from tb_terminal
+		<where>
+			<if test='params.containsKey("no") == true'>
+				<if test='params.get("no") != null'>and f_no = #{params.no}</if>
+				<if test='params.get("no") == null'>and f_no is null</if>
+			</if>
+			<if test='params.get("noList") != null'>
+				and f_no in(<foreach collection="params.noList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minNo") != null'>and f_no >= #{params.minNo}</if>
+			<if test='params.get("maxNo") != null'>and f_no &lt; #{params.maxNo}</if>
+			<if test='params.get("subNo") != null'>and f_no like '%${params.subNo}%'</if>
+			<if test='params.get("startsWithNo") != null'>and f_no like '%${params.startsWithNo}'</if>
+			<if test='params.get("endsWithNo") != null'>and f_no like '${params.endsWithNo}%'</if>
+			<if test='params.containsKey("onlineState") == true'>
+				<if test='params.get("onlineState") != null'>and f_onlineState = #{params.onlineState}</if>
+				<if test='params.get("onlineState") == null'>and f_onlineState is null</if>
+			</if>
+			<if test='params.get("onlineStateList") != null'>
+				and f_onlineState in(<foreach collection="params.onlineStateList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minOnlineState") != null'>and f_onlineState >= #{params.minOnlineState}</if>
+			<if test='params.get("maxOnlineState") != null'>and f_onlineState &lt; #{params.maxOnlineState}</if>
+			<if test='params.get("subOnlineState") != null'>and f_onlineState like '%${params.subOnlineState}%'</if>
+			<if test='params.get("startsWithOnlineState") != null'>and f_onlineState like '%${params.startsWithOnlineState}'</if>
+			<if test='params.get("endsWithOnlineState") != null'>and f_onlineState like '${params.endsWithOnlineState}%'</if>
+		</where>
+	</delete>
+
+	<update id="update">
+		update tb_terminal
+		<set>
+			<if test="obj != null">
+				<if test='obj.containsKey("no") == true'>
+					<if test='obj.get("no") != null'>f_no = #{obj.no},</if>
+					<if test='obj.get("no") == null'>f_no = null,</if>
+				</if>
+				<if test='obj.containsKey("onlineState") == true'>
+					<if test='obj.get("onlineState") != null'>f_onlineState = #{obj.onlineState},</if>
+					<if test='obj.get("onlineState") == null'>f_onlineState = null,</if>
+				</if>
+			</if>
+		</set>
+		<where>
+			<if test="tag != null">
+				<if test='tag.containsKey("no") == true'>
+					<if test='tag.get("no") != null'>and f_no = #{tag.no}</if>
+					<if test='tag.get("no") == null'>and f_no is null</if>
+				</if>
+				<if test='tag.containsKey("onlineState") == true'>
+					<if test='tag.get("onlineState") != null'>and f_onlineState = #{tag.onlineState}</if>
+					<if test='tag.get("onlineState") == null'>and f_onlineState is null</if>
+				</if>
+			</if>
+		</where>
+	</update>
+
+	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			f_no as no,
+			f_onlineState as onlineState
+		from tb_terminal
+		<where>
+			<if test='params.containsKey("no") == true'>
+				<if test='params.get("no") != null'>and f_no = #{params.no}</if>
+				<if test='params.get("no") == null'>and f_no is null</if>
+			</if>
+			<if test='params.get("noList") != null'>
+				and f_no in(<foreach collection="params.noList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minNo") != null'>and f_no >= #{params.minNo}</if>
+			<if test='params.get("maxNo") != null'>and f_no &lt; #{params.maxNo}</if>
+			<if test='params.get("subNo") != null'>and f_no like '%${params.subNo}%'</if>
+			<if test='params.get("startsWithNo") != null'>and f_no like '%${params.startsWithNo}'</if>
+			<if test='params.get("endsWithNo") != null'>and f_no like '${params.endsWithNo}%'</if>
+			<if test='params.containsKey("onlineState") == true'>
+				<if test='params.get("onlineState") != null'>and f_onlineState = #{params.onlineState}</if>
+				<if test='params.get("onlineState") == null'>and f_onlineState is null</if>
+			</if>
+			<if test='params.get("onlineStateList") != null'>
+				and f_onlineState in(<foreach collection="params.onlineStateList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minOnlineState") != null'>and f_onlineState >= #{params.minOnlineState}</if>
+			<if test='params.get("maxOnlineState") != null'>and f_onlineState &lt; #{params.maxOnlineState}</if>
+			<if test='params.get("subOnlineState") != null'>and f_onlineState like '%${params.subOnlineState}%'</if>
+			<if test='params.get("startsWithOnlineState") != null'>and f_onlineState like '%${params.startsWithOnlineState}'</if>
+			<if test='params.get("endsWithOnlineState") != null'>and f_onlineState like '${params.endsWithOnlineState}%'</if>
+		</where>
+		<if test="params.sort != null">
+    		order by 
+    		<foreach collection="params.sort" item="item" index="index" separator=",">
+    			${item.name} <if test="item.sort == 1">desc</if>
+    		</foreach>
+		</if>
+		<if test="params.start != null and params.limit != null">
+			limit ${params.start}, ${params.limit}
+		</if>
+	</select>
+
+	<select id="single" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			f_no as no,
+			f_onlineState as onlineState
+		from tb_terminal
+		<where>
+			<if test='params.containsKey("no") == true'>
+				<if test='params.get("no") != null'>and f_no = #{params.no}</if>
+				<if test='params.get("no") == null'>and f_no is null</if>
+			</if>
+			<if test='params.get("noList") != null'>
+				and f_no in(<foreach collection="params.noList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minNo") != null'>and f_no >= #{params.minNo}</if>
+			<if test='params.get("maxNo") != null'>and f_no &lt; #{params.maxNo}</if>
+			<if test='params.get("subNo") != null'>and f_no like '%${params.subNo}%'</if>
+			<if test='params.get("startsWithNo") != null'>and f_no like '%${params.startsWithNo}'</if>
+			<if test='params.get("endsWithNo") != null'>and f_no like '${params.endsWithNo}%'</if>
+			<if test='params.containsKey("onlineState") == true'>
+				<if test='params.get("onlineState") != null'>and f_onlineState = #{params.onlineState}</if>
+				<if test='params.get("onlineState") == null'>and f_onlineState is null</if>
+			</if>
+			<if test='params.get("onlineStateList") != null'>
+				and f_onlineState in(<foreach collection="params.onlineStateList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minOnlineState") != null'>and f_onlineState >= #{params.minOnlineState}</if>
+			<if test='params.get("maxOnlineState") != null'>and f_onlineState &lt; #{params.maxOnlineState}</if>
+			<if test='params.get("subOnlineState") != null'>and f_onlineState like '%${params.subOnlineState}%'</if>
+			<if test='params.get("startsWithOnlineState") != null'>and f_onlineState like '%${params.startsWithOnlineState}'</if>
+			<if test='params.get("endsWithOnlineState") != null'>and f_onlineState like '${params.endsWithOnlineState}%'</if>
+		</where>
+		<if test="params.sort != null">
+    		order by 
+    		<foreach collection="params.sort" item="item" index="index" separator=",">
+    			${item.name} <if test="item.sort == 1">desc</if>
+    		</foreach>
+		</if>
+		limit 0, 1
+	</select>
+
+	<select id="count" parameterType="java.util.Map" resultType="Integer">
+		select count(*)
+		from tb_terminal
+		<where>
+			<if test='params.containsKey("no") == true'>
+				<if test='params.get("no") != null'>and f_no = #{params.no}</if>
+				<if test='params.get("no") == null'>and f_no is null</if>
+			</if>
+			<if test='params.get("noList") != null'>
+				and f_no in(<foreach collection="params.noList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minNo") != null'>and f_no >= #{params.minNo}</if>
+			<if test='params.get("maxNo") != null'>and f_no &lt; #{params.maxNo}</if>
+			<if test='params.get("subNo") != null'>and f_no like '%${params.subNo}%'</if>
+			<if test='params.get("startsWithNo") != null'>and f_no like '%${params.startsWithNo}'</if>
+			<if test='params.get("endsWithNo") != null'>and f_no like '${params.endsWithNo}%'</if>
+			<if test='params.containsKey("onlineState") == true'>
+				<if test='params.get("onlineState") != null'>and f_onlineState = #{params.onlineState}</if>
+				<if test='params.get("onlineState") == null'>and f_onlineState is null</if>
+			</if>
+			<if test='params.get("onlineStateList") != null'>
+				and f_onlineState in(<foreach collection="params.onlineStateList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minOnlineState") != null'>and f_onlineState >= #{params.minOnlineState}</if>
+			<if test='params.get("maxOnlineState") != null'>and f_onlineState &lt; #{params.maxOnlineState}</if>
+			<if test='params.get("subOnlineState") != null'>and f_onlineState like '%${params.subOnlineState}%'</if>
+			<if test='params.get("startsWithOnlineState") != null'>and f_onlineState like '%${params.startsWithOnlineState}'</if>
+			<if test='params.get("endsWithOnlineState") != null'>and f_onlineState like '${params.endsWithOnlineState}%'</if>
+		</where>
+	</select>
+</mapper>
