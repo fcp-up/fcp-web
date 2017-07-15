@@ -16,4 +16,5 @@ public interface ITxtFileApi extends IFileApi {
 	public List<String> read(InputStream inputStream, String encode) throws IOException, UnsupportedEncodingException;
 	public List<String> read(File file, String encode) throws IOException, UnsupportedEncodingException;
 	public List<String> read(String filePath, String encode) throws IOException, UnsupportedEncodingException;
+	public void write(String filePath, String encode, String txt) throws IOException;
 }

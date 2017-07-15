@@ -6,35 +6,35 @@ body{background: #5A8DAD;}
 body>div{position: relative; z-index: 1;}
 /*页头*/
 #pageHeader{position: relative;}
-#pageHeader>.bg{height:50px; width:100%; background: url(image/header-bg.png) repeat-x; position: relative; top:0; left:0; bottom:0; right:0;z-index:-9999;}
-#pageHeader>.product-logo{background: url(image/product-logo.png) no-repeat; width: 250px; height: 50px; float: left; position: absolute; top: 0; left: 0;}
-#pageHeader>.line{height:6px; width:100%; background: url(image/header-line.png) repeat-x; position: relative; top:2px; overflow:hidden;}
+#pageHeader>.x-bg{height:50px; width:100%; background: url(image/header-bg.png) repeat-x; position: relative; top:0; left:0; bottom:0; right:0;z-index:-9999;}
+#pageHeader>.x-product-logo{background: url(image/product-logo.png) no-repeat; width: 250px; height: 50px; float: left; position: absolute; top: 0; left: 0;}
+#pageHeader>.x-line{height:6px; width:100%; background: url(image/header-line.png) repeat-x; position: relative; top:2px; overflow:hidden;}
 
-.iris{
+.x-iris{
 	position: absolute; top: 50%; left: 50%; width: 596px; height: 366px; margin-left: -298px; margin-top: -183px; z-index: 2;
 	background: url(image/iris.png) no-repeat;
 }
 
-.login-form{
+.x-login-form{
 	position: absolute; top: 50%; left: 50%; width: 414px; height: 254px; margin-left: -207px; margin-top: -127px; z-index: 2;
 	background: url(image/login-form.png) no-repeat;
 }
 
-.login-form .label{color: #fff; margin-right: 10px;}
+.x-login-form .x-label{color: #fff; margin-right: 10px;}
 
 input, select, option{height: 24px; line-height: 24px; outline: none; padding: 0 3px;}
 select{padding: 0;}
 input: focus{outline: none;}
-.label{font-weight: 700; width: 72px; white-space: pre;}
+.x-label{font-weight: 700; width: 72px; white-space: pre;}
 
 #vcode{font-weight: 900; font-size: 16px; display: inline-block; width: 50px; margin: 5px; text-align: center;}
 
-.login-button{
+.x-login-button{
 	cursor: pointer; height: 32px; line-height: 32px; padding: 5px 0; width: 100px; text-align: center; border-radius: 5px; display: inline-block;
 	border: 1px solid #4D5E91; box-shadow: 0 0 0 1px #F7FFFF inset; 
 	background: #D8EDFF; background: linear-gradient(#E4F3FF, #D8EDFF, #C2D8F2, #C6DCF6);
 }
-.login-button:active{
+.x-login-button:active{
 	border: 1px solid #4D5E91; box-shadow: 0 0 3px 1px #C9DDF6 inset; 
 	background: #BFD2E6; background: linear-gradient(#B6CBE4, #BFD2E6, #C0D3E6, #98C5F6);
 }

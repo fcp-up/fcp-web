@@ -2,6 +2,7 @@ package com.defu.fcp.alarm.service.impl;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +64,15 @@ public class SvcAlarm extends AbstractService implements Runnable, ISvcAlarm {
 	}
 
 	public void beforeAdd(Map<String, Object> params) {
+		String tel = (String)params.get(Alarm.toTelephone);
+		
+		if(tel == null || tel.trim().length() < 1) {
+			final List<String> phonenos = new ArrayList<>();
+			List<Map<String, Object>> phones = phoneSvc.list(new HashMap<String, Object>());
+			for(Map<String, Object> p: phones) phonenos.add(p.get(com.defu.fcp.phone.attr.Phone.phoneNo).toString());
+			params.put(Alarm.toTelephone, StringUtils.join(phonenos.toArray(), ","));
+		}
+		
 		if (log.isDebugEnabled())
 			log.debug("请求告警：" + params);
 		if(msg.size() > queueSize) {
@@ -75,16 +86,17 @@ public class SvcAlarm extends AbstractService implements Runnable, ISvcAlarm {
 		
 	}
 	
+	private boolean needAlarm(final Map<String, Object> mp) {
+		return "1".equals(mp.get(Alarm.isAlarm).toString());
+	}
+	
 	private void alarm(final Map<String, Object> mp) {
+		if(!needAlarm(mp)) return;
 		final List<String> phonenos = new ArrayList<>();
 		String tel = (String)mp.get(Alarm.toTelephone);
 		
 		if(tel != null && tel.trim().length() > 0) {
-			phonenos.add(mp.get(Alarm.toTelephone).toString());
-		}
-		else {
-			List<Map<String, Object>> phones = phoneSvc.list(new HashMap<String, Object>());
-			for(Map<String, Object> p: phones) phonenos.add(p.get(com.defu.fcp.phone.attr.Phone.phoneNo).toString());
+			phonenos.addAll(Arrays.asList(mp.get(Alarm.toTelephone).toString().split(",")));
 		}
 		
 		if(phonenos.size() < 1) return;
@@ -184,7 +196,9 @@ public class SvcAlarm extends AbstractService implements Runnable, ISvcAlarm {
 			if(mp != null) {
 				try {
 					alarm(mp);
-				} catch (Exception ex) {}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 				try {
 					//休息3秒，防止大量短信爆击，导致短信猫挂了。
 					Thread.sleep(3000);

@@ -84,7 +84,7 @@ $.copy(tools, {
 		pno = [];
 		if($.isString(t)) tpl = t;
 		if(tpl == null) tpl = [
-			'<div class="nodeitem">',
+			'<div class="x-nodeitem">',
 				'<div class="{class}"{__atr__}>{__content__}</div>{__children__}',
 			'</div>'
 		].join('');
@@ -112,8 +112,8 @@ $.copy(tools, {
 			var p = node.parent, hs = [], ecc;
 			if(node['class']) node['class'] += ' ';
 			else node['class'] = '';
-			node['class'] += 'node' + (node.leaf ? ' leaf' : node.expanded ? ' expand' : '') + (node.last ? ' last' : '');
-//			ecc = 'icon-ec-' + (node.leaf ? 'l' : node.expanded ? 'e' : 'c') + (node.last ? 'l' : '');IE6
+			node['class'] += 'x-node' + (node.leaf ? ' x-leaf' : node.expanded ? ' x-expand' : '') + (node.last ? ' last' : '');
+//			ecc = 'x-icon-ec-' + (node.leaf ? 'l' : node.expanded ? 'e' : 'c') + (node.last ? 'l' : '');IE6
 			$.each(atr, function(i, a){
 				if(node[a] != null) hs.push(a + '="' + node[a] + '"');
 			});
@@ -121,14 +121,14 @@ $.copy(tools, {
 			
 			hs = [];
 			while(p && p != root) {
-//				if(p.parent && $.inArray(p, p.parent.children) == p.parent.children.length - 1) hs.unshift('<span class="icon-blank"></span>');
-				if(p && p.last) hs.unshift('<span class="icon-blank"></span>');
-				else hs.unshift('<span class="icon-elbow"></span>');
+//				if(p.parent && $.inArray(p, p.parent.children) == p.parent.children.length - 1) hs.unshift('<span class="x-icon-blank"></span>');
+				if(p && p.last) hs.unshift('<span class="x-icon-blank"></span>');
+				else hs.unshift('<span class="x-icon-elbow"></span>');
 				p = p.parent;
 			}
 			if(node[dspatr]) {
-//				hs.push('<span class="icon-ec ', ecc, '"></span><span class="', node.iconCls || 'icon-node', '"></span><span class="txt">', node[dspatr], '</span>');IE6
-				hs.push('<span class="icon-ec"></span><span class="', node.iconCls || 'icon-node', '"></span><span class="txt">', ct(node, ctpl), '</span>');
+//				hs.push('<span class="x-icon-ec ', ecc, '"></span><span class="', node.iconCls || 'x-icon-node', '"></span><span class="x-txt">', node[dspatr], '</span>');IE6
+				hs.push('<span class="x-icon-ec"></span><span class="', node.iconCls || 'x-icon-node', '"></span><span class="x-txt">', ct(node, ctpl), '</span>');
 			}
 			
 			node.__content__ = hs.join('');
@@ -153,7 +153,7 @@ $.copy(tools, {
 //					hs.push(evt(y));
 //				});
 				if(hs.join('').length > 0) {
-					hs.unshift('<div class="nodelist' + (node.expanded ? ' expand' : '') + '">');
+					hs.unshift('<div class="x-nodelist' + (node.expanded ? ' x-expand' : '') + '">');
 					hs.push('</div>');
 				}
 				node.__children__ = hs.join('');
@@ -186,7 +186,7 @@ $.copy(tools, {
 //			c.last = i == root.children.length - 1;
 //			pno.push(evt(c));
 //		});
-		pno.unshift('<div class="nodelist expand">');
+		pno.unshift('<div class="x-nodelist x-expand">');
 		pno.push('</div>');
 		root = evt = t = null;
 		return pno.join('');
@@ -215,14 +215,14 @@ $.copy(tools, {
 		fn = fn || $.emptyFn;
 		
 		$('#simplemsg').setClass(opt.msgCls || '').
-			children('.text').html(msg).setClass([opt.txtCls || '', 'text'].join(' ')).
+			children('.x-text').html(msg).setClass([opt.txtCls || '', 'x-text'].join(' ')).
 			prev().setClass(opt.iconCls || '').
 			parent().fadeIn().delay(tl * 1000).fadeOut(function(){
 				fn.apply(scope || window, ps || []);
 			});
 		
 		return;
-		$('#simplemsg').html(msg).animate({bottom: '2px'}, 'slow').delay(tl * 1000).animate({bottom: '-310px'}, 'slow', function(){
+		$('#simplemsg').html(msg).animate({bottom: '2px'}, 'x-slow').delay(tl * 1000).animate({bottom: '-310px'}, 'x-slow', function(){
 			fn.apply(scope || window, ps || []);
 		});
 	},
@@ -249,10 +249,10 @@ $.copy(tools, {
 		var box = $('#messagebox'), focusEl = opt.focusBtn && $('#messagebox').find('.' + opt.focusBtn);
 		if(box.length < 1) return;
 		
-		var btn1 = $('#messagebox .positive'), btn2 = $('#messagebox .negative'), btn3 = $('#messagebox .other'), btn4 = $('#messagebox .close');
+		var btn1 = $('#messagebox .x-positive'), btn2 = $('#messagebox .x-negative'), btn3 = $('#messagebox .x-other'), btn4 = $('#messagebox .x-close');
 		
-		$('#messagebox .panel-title>.text').html(opt.title || '');
-		$('#messagebox .panel-body>.text').html(opt.msg || '').prev().setClass(opt.iconCls || '');
+		$('#messagebox .x-panel-title>.x-text').html(opt.title || '');
+		$('#messagebox .x-panel-body>.x-text').html(opt.msg || '').prev().setClass(opt.iconCls || '');
 		btn1.html(opt.positiveText || '确认');
 		btn2.html(opt.negativeText || '取消');
 		btn3.html(opt.otherText || '');
@@ -264,33 +264,33 @@ $.copy(tools, {
 		if(opt.otherTitle) btn3.attr('title', opt.otherTitle);
 		else btn3.removeAttr('title');
 		
-		if(!$.isFunction(opt.close)) btn4.addClass('hidden');
+		if(!$.isFunction(opt.close)) btn4.addClass('x-hidden');
 		else {
-			btn4.removeClass('hidden');
+			btn4.removeClass('x-hidden');
 		}
 		
-		if(!$.isFunction(opt.other)) btn3.addClass('hidden');
+		if(!$.isFunction(opt.other)) btn3.addClass('x-hidden');
 		else {
-			btn3.removeClass('hidden');
+			btn3.removeClass('x-hidden');
 			focusEl = focusEl || btn3;
 		}
 		
-		if(!$.isFunction(opt.negative)) btn2.addClass('hidden');
+		if(!$.isFunction(opt.negative)) btn2.addClass('x-hidden');
 		else {
-			btn2.removeClass('hidden');
+			btn2.removeClass('x-hidden');
 			focusEl = focusEl || btn2;
 		}
 		
-		if(!$.isFunction(opt.positive)) btn1.addClass('hidden');
+		if(!$.isFunction(opt.positive)) btn1.addClass('x-hidden');
 		else {
-			btn1.removeClass('hidden');
+			btn1.removeClass('x-hidden');
 			focusEl = focusEl || btn1;
 		}
 		
 		this.MBH = opt;
 		
 		if(opt.modal !== false) $(document.body).mask();
-		box.addClass('show');
+		box.addClass('x-show');
 		if(focusEl) focusEl.focus();
 	},
 	CFBH: {},
@@ -313,25 +313,25 @@ $.copy(tools, {
 		var box = $('#promptbox'), el;
 		if(box.length < 1) return;
 		
-		$('#promptbox .panel-title span.text').html(opt.title || '');
-		$('#promptbox .panel-body span.text').html(opt.msg || '').prev().setClass(opt.iconCls || '');
-		$('#promptbox .negative').html(opt.negativeText || '取消');
-		$('#promptbox .positive').html(opt.positiveText || '确认');
+		$('#promptbox .x-panel-title span.x-text').html(opt.title || '');
+		$('#promptbox .x-panel-body span.x-text').html(opt.msg || '').prev().setClass(opt.iconCls || '');
+		$('#promptbox .x-negative').html(opt.negativeText || '取消');
+		$('#promptbox .x-positive').html(opt.positiveText || '确认');
 		
-		$('#promptbox .panel-body .input-wrap').html(opt.multiline ? '<textarea name="txt"></textarea>' : '<input name="txt" />');
+		$('#promptbox .x-panel-body .x-input-wrap').html(opt.multiline ? '<textarea name="txt"></textarea>' : '<input name="txt" />');
 		
 		$('#promptbox').css('height', opt.multiline ? 180 : 130);
-		$('#promptbox .panel-body').css('height', opt.multiline ? 110 : 50);
+		$('#promptbox .x-panel-body').css('height', opt.multiline ? 110 : 50);
 		
-		$('#promptbox .close')[!$.isFunction(opt.close) ? 'addClass' : 'removeClass']('hidden');
-		$('#promptbox .negative')[!$.isFunction(opt.negative) ? 'addClass' : 'removeClass']('hidden');
-		$('#promptbox .positive')[!$.isFunction(opt.positive) ? 'addClass' : 'removeClass']('hidden');
+		$('#promptbox .x-close')[!$.isFunction(opt.close) ? 'addClass' : 'removeClass']('x-hidden');
+		$('#promptbox .x-negative')[!$.isFunction(opt.negative) ? 'addClass' : 'removeClass']('x-hidden');
+		$('#promptbox .x-positive')[!$.isFunction(opt.positive) ? 'addClass' : 'removeClass']('x-hidden');
 		
 		this.CFBH = opt;
 		
 		if(opt.modal !== false) $(document.body).mask();
-		box.addClass('show');
-		$('#promptbox .panel-body .input-wrap [name="txt"]').focus();
+		box.addClass('x-show');
+		$('#promptbox .x-panel-body .x-input-wrap [name="txt"]').focus();
 	},
 	/**
 	 * 前端js打印a4报告
@@ -378,7 +378,7 @@ $.copy(tools, {
 		else {
 			printArea = content.find('.printArea');
 			if(printArea && printArea.length > 0){
-				printArea.clone().find('td[name="checkRule"]').addClass("hidden").end().css({height: "643px;", width: "981px"}).printArea(options);
+				printArea.clone().find('td[name="checkRule"]').addClass("x-hidden").end().css({height: "643px;", width: "981px"}).printArea(options);
 			}
 		}
 		after.call(scope, opt);
@@ -394,9 +394,9 @@ $.copy(tools, {
 			opt.content = printArea.clone().css({margin: 0, boxShadow: 'none'});
 		}
 		else {
-			printArea = content.find('.printArea');
+			printArea = content.find('.x-printArea');
 			if(printArea && printArea.length > 0){
-				opt.content = printArea.clone().find('td[name="checkRule"]').addClass("hidden").end().css({height: "643px;", width: "981px"});
+				opt.content = printArea.clone().find('td[name="checkRule"]').addClass("x-hidden").end().css({height: "643px;", width: "981px"});
 			}
 		}
 		this.print$Dom(opt);
@@ -422,13 +422,13 @@ $.copy(tools, {
 		
 		before.call(scope, opt);
 		
-		var body = $('body, html'), hd = body.children('.hidden');
+		var body = $('body, html'), hd = body.children('.x-hidden');
 		body.css({overflow: 'auto', width: 'auto', height: 'auto'});
-		hd.siblings().addClass('hidden print-hidden-dom');
+		hd.siblings().addClass('x-hidden x-print-hidden-dom');
 		body.filter('body').append(content);
 		window.print();
 		content.remove();
-		body.css({overflow: 'hidden', width: '100%', height: '100%'}).children('.print-hidden-dom').removeClass('hidden print-hidden-dom');
+		body.css({overflow: 'hidden', width: '100%', height: '100%'}).children('.x-print-hidden-dom').removeClass('x-hidden x-print-hidden-dom');
 		
 	},
 	serializeParams: function(map){
@@ -447,45 +447,45 @@ $(function(){
 	$.defer(function(){
 		$('#combolist').click(function(evt){
 			var h = tools.CBH, el = $(evt.target), nel, me = $(this);
-			if(me.hasClass('tree')) {
+			if(me.hasClass('x-tree')) {
 				if(h.treeDelegate != null) {
 					evt.stopPropagation();
 					return;
 				}
-				if(el.hasClass('icon-ec')) {
-					nel = el.parentsUntil('#combolist', '.node:first');
-					if(!nel.hasClass('leaf')) {
-						if(nel.hasClass('expand')) {
-							nel.removeClass('expand');
-							nel.next().removeClass('expand');
-							el.setClass('icon-ec icon-ec-c' + (nel.hasClass('last') ? 'l' : ''));
+				if(el.hasClass('x-icon-ec')) {
+					nel = el.parentsUntil('#combolist', '.x-node:first');
+					if(!nel.hasClass('x-leaf')) {
+						if(nel.hasClass('x-expand')) {
+							nel.removeClass('x-expand');
+							nel.next().removeClass('x-expand');
+							el.setClass('x-icon-ec x-icon-ec-c' + (nel.hasClass('last') ? 'l' : ''));
 						}
 						else {
-							nel.addClass('expand');
-							nel.next().addClass('expand');
-							el.setClass('icon-ec icon-ec-e' + (nel.hasClass('last') ? 'l' : ''));
+							nel.addClass('x-expand');
+							nel.next().addClass('x-expand');
+							el.setClass('x-icon-ec x-icon-ec-e' + (nel.hasClass('last') ? 'l' : ''));
 						}
 					}
 					evt.stopPropagation();
 					return;
 				}
 				
-				if(!el.hasClass('node')) while(el[0] && el[0] != this) {
-					if(el.hasClass('node')) break;
+				if(!el.hasClass('x-node')) while(el[0] && el[0] != this) {
+					if(el.hasClass('x-node')) break;
 					el = el.parent();
 				}
-				if(el.hasClass('node')) {
-					$(this).find('.node.selected:first').removeClass('selected');
-					el.addClass('selected');
+				if(el.hasClass('x-node')) {
+					$(this).find('.x-node.x-selected:first').removeClass('x-selected');
+					el.addClass('x-selected');
 				}
 			}
 			if(el[0] != this && h.elclick && h.elclick.call(h.scope || h, el, h, evt) === false) evt.stopPropagation();
 			else {
-				if(me.hasClass('option') && el[0] != this) {
-					if(!el.hasClass('item')) el = el.parents('.item:first');
-					el.addClass('selected').siblings().removeClass('selected');
+				if(me.hasClass('x-option') && el[0] != this) {
+					if(!el.hasClass('x-item')) el = el.parents('.x-item:first');
+					el.addClass('x-selected').siblings().removeClass('x-selected');
 				}
-				me.removeClass('show');
+				me.removeClass('x-show');
 				h.onHide && h.onHide.call(h.scope || h, h);
 				tools.CBH = {};
 			}
@@ -496,19 +496,19 @@ $(function(){
 		
 		$(document.body).click(function(evt){
 			var el = $(evt.target), handler = el.attr('handler'), pel = el.parent();
-			if(el.hasClass('disabled') || el.attr('disabled')) {
-				if(!el.parent().hasClass('combo') || el.parent().hasClass('disabled')) return;
+			if(el.hasClass('x-disabled') || el.disabled()) {
+				if(!el.parent().hasClass('combo') || el.parent().hasClass('x-disabled')) return;
 			}
 			
 			if(el.attr('handler') == 'print_report_a4') {
 				tools.printA4Report({content: el.parent()});
 			}
 			
-			if(el.parent().hasClass('plate-side-ec')) {
+			if(el.parent().hasClass('x-plate-side-ec')) {
 				el = el.parent();
 			}
-			if(el.hasClass('plate-side-ec')){
-				var s = el.parent(), b = s.next(), e = el.children().hasClass('icon-prev'), w, cmin = 0;
+			if(el.hasClass('x-plate-side-ec')){
+				var s = el.parent(), b = s.next(), e = el.children().hasClass('x-icon-prev'), w, cmin = 0;
 				if(e) {
 					w = s.width();
 					s.attr('_width', w);
@@ -520,14 +520,14 @@ $(function(){
 				else cmin = 0;
 				s.animate({left: e ? cmin - w : 2}, 'fast');
 				b.animate({left: e ? 20 : w + 22}, 'fast');
-				el.children().replaceClass(e ? 'icon-prev' : 'icon-next', e ? 'icon-next' : 'icon-prev');
+				el.children().replaceClass(e ? 'x-icon-prev' : 'x-icon-next', e ? 'x-icon-next' : 'x-icon-prev');
 			}
 			
-			if(el.parent().hasClass('plate-west-ec')) {
+			if(el.parent().hasClass('x-plate-west-ec')) {
 				el = el.parent();
 			}
-			else if(el.hasClass('plate-west-ec')){
-				var s = el.parent(), b = s.next(), e = el.children().hasClass('icon-next'), w, cmin = 0;
+			else if(el.hasClass('x-plate-west-ec')){
+				var s = el.parent(), b = s.next(), e = el.children().hasClass('x-icon-next'), w, cmin = 0;
 				if(e) {
 					w = s.width();
 					s.attr('_width', w);
@@ -539,19 +539,19 @@ $(function(){
 				else cmin = 0;
 				s.animate({right: e ? cmin - w : 2}, 'fast');
 				b.animate({right: e ? 20 : w + 22}, 'fast');
-				el.children().replaceClass(e ? 'icon-next' : 'icon-prev', e ? 'icon-prev' : 'icon-next');
+				el.children().replaceClass(e ? 'x-icon-next' : 'x-icon-prev', e ? 'x-icon-prev' : 'x-icon-next');
 			}
 		}).mousedown(function(evt){
 			var el = $(evt.target);
-			if(el.hasClass('radio-group-item')) {
+			if(el.hasClass('x-radio-group-item')) {
 				el = el.children('input');
-				if(el.disabled() || el.hasClass('disabled')) return;
+				if(el.disabled() || el.hasClass('x-disabled')) return;
 				if(/^radio$/i.test(el.type())) el.check(true);
 				else el.check(!el.checked());
 			}
 		}).mouseup(function(evt){
 			var cbl = $('#combolist');
-			if(!cbl.hasClass('show')) return;
+			if(!cbl.hasClass('x-show')) return;
 			evt = evt.target;
 			var cb = true;
 			while(evt) {
@@ -563,7 +563,7 @@ $(function(){
 			}
 			if(cb) {
 				cb = tools.CBH;
-				cbl.removeClass('show');
+				cbl.removeClass('x-show');
 				cb && cb.onHide && cb.onHide.call(cb.scope || cb, cb);
 				tools.CBH = {};
 			}
@@ -572,11 +572,11 @@ $(function(){
 		$('#messagebox').window({
 			grouped: false,
 			elclick: function(el, evt){
-				if(el.hasClass('button')) {
+				if(el.hasClass('x-button')) {
 					var fn, fs = tools.MBH.scope || tools.MBH;
-					if(el.hasClass('negative')) fn = tools.MBH.negative;
-					else if(el.hasClass('positive')) fn = tools.MBH.positive;
-					else if(el.hasClass('other')) fn = tools.MBH.other;
+					if(el.hasClass('x-negative')) fn = tools.MBH.negative;
+					else if(el.hasClass('x-positive')) fn = tools.MBH.positive;
+					else if(el.hasClass('x-other')) fn = tools.MBH.other;
 					
 					this.close(evt);
 					if(fn) fn.call(fs, evt);
@@ -613,10 +613,10 @@ $(function(){
 		$('#promptbox').window({
 			grouped: false,
 			elclick: function(e, evt){
-				if(e.hasClass('button')) {
+				if(e.hasClass('x-button')) {
 					var fn, fs = tools.CFBH.scope || tools.CFBH;
-					if(e.hasClass('negative')) fn = tools.CFBH.negative;
-					else if(e.hasClass('positive')) fn = tools.CFBH.positive;
+					if(e.hasClass('x-negative')) fn = tools.CFBH.negative;
+					else if(e.hasClass('x-positive')) fn = tools.CFBH.positive;
 					
 					if(fn) fn.call(fs, $('#promptbox [name="txt"]').val(), evt);
 					this.close(evt);
@@ -632,7 +632,7 @@ $(function(){
 			keyup: function(evt){
 				if(evt.which == 13) {
 					if(!tools.CFBH.multiline || evt.ctrlKey) {
-						if($.isFunction(tools.CFBH.positive)) this.el.find('.button.positive').click();
+						if($.isFunction(tools.CFBH.positive)) this.el.find('.x-button.x-positive').click();
 						else this.close(evt);
 					}
 				}

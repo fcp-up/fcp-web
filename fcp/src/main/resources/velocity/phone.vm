@@ -4,25 +4,26 @@
 	#parse("common/head.vm")
 </head>
 <body>
-	<div class="container grid panel" id="phoneList">
-		<div class="toolbar">
-			<div class="button" handler="loadData"><span class="icon-16 icon-ref"></span>刷新</div>
-			<div class="button" handler="add"><span class="icon-16 icon-add"></span>添加</div>
-			<div class="button disabled" handler="del_batch"><span class="icon-16 icon-del"></span>删除</div>
-			<div class="button" handler="save"><span class="icon-16 icon-save"></span>保存</div>
+	<div class="x-container x-grid x-panel" id="phoneList">
+		<div class="x-toolbar">
+			<div class="x-button" handler="loadData"><span class="x-icon-16 x-icon-ref"></span>刷新</div>
+			<div class="x-button" handler="add"><span class="x-icon-16 x-icon-add"></span>添加</div>
+			<div class="x-button x-disabled" handler="del_batch"><span class="x-icon-16 x-icon-del"></span>删除</div>
+			<div class="x-button" handler="save"><span class="x-icon-16 x-icon-save"></span>保存</div>
 		</div>
-		<div class="panel-body">
-			<table cellspaging="0" cellpadding="0" class="column-widen">
-				<tr class="column-header">
-					<td class="check-column"><input class="checkbox" type="checkbox" for="all" /></td>
-					<td class="text-center" style="width: 60px;">操作</td>
-					<td class="text-center" style="width: 35px;">序号</td>
-					<td class="text-center widen" style="width: 120px;">电话号码</td>
+		<div class="x-panel-body">
+			<table cellspaging="0" cellpadding="0" class="x-column-widen">
+				<tr class="x-column-header">
+					<td class="x-check-column"><input class="x-checkbox" type="checkbox" for="all" /></td>
+					<td class="x-text-center" style="width: 60px;">操作</td>
+					<td class="x-text-center" style="width: 35px;">序号</td>
+					<td class="x-text-center x-widen" style="width: 120px;">电话号码</td>
 				</tr>
 			</table>
 		</div>
 	</div>
 	#include("common/js.vm")
+	#include("common/msgAndComboList.vm")
 	<script type="text/javascript" src="javascript/phone.js"></script>
 </body>
 </html>

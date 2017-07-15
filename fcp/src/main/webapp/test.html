@@ -16,42 +16,42 @@
 	<script type="text/javascript" src="javascript/common/tools.js"></script>
 	<script type="text/javascript" src="javascript/common/const.js"></script>
 	<style>
-	body>.window, .window{display: line-block; float: left; position: relative; margin: 20px; left: auto; top: auto; right: auto; bottom: auto;}
+	body>.x-window, .x-window{display: line-block; float: left; position: relative; margin: 20px; left: auto; top: auto; right: auto; bottom: auto;}
 	</style>
 </head>
 <body>
-<div class="window show" id="alarmFormWin">
+<div class="x-window x-show" id="alarmFormWin">
 	<style>
 	#alarmFormWin{width: 300px; height: 200px;}
 	#alarmFormWin input{width: 100px;}
-	#alarmFormWin .label{width: 70px; text-align: right; margin-right: 5px;}
+	#alarmFormWin .x-label{width: 70px; text-align: right; margin-right: 5px;}
 	</style>
-	<div class="close"></div>
-	<div class="panel-title">告警测试</div>
-	<form class="panel-body form">
-		<div><label class="label">设备编号</label><input name="deviceNo" /></div>
-		<div><label class="label">是否报警</label><select name="isAlarm"><option value="1">是</option><option value="0">否</option></select></div>
-		<div><label class="label">当前压力值</label><input name="pressure" /></div>
-		<div><label class="label">电话号码</label><input name="telephone" /></div>
+	<div class="x-close"></div>
+	<div class="x-panel-title">告警测试</div>
+	<form class="x-panel-body x-form">
+		<div><label class="x-label">设备编号</label><input name="deviceNo" /></div>
+		<div><label class="x-label">是否报警</label><select name="isAlarm"><option value="1">是</option><option value="0">否</option></select></div>
+		<div><label class="x-label">当前压力值</label><input name="pressure" /></div>
+		<div><label class="x-label">电话号码</label><input name="toTelephone" /></div>
 	</form>
-	<div class="panel-footer">
-		<div class="button" handler="save"><span class="icon-16 icon-save"></span>提交</div>
+	<div class="x-panel-footer">
+		<div class="x-button" handler="save"><span class="x-icon-16 x-icon-save"></span>提交</div>
 	</div>
 </div>
-<div class="window show" id="termStateFormWin">
+<div class="x-window x-show" id="termStateFormWin">
 	<style>
 	#termStateFormWin{width: 300px; height: 200px;}
 	#termStateFormWin input{width: 100px;}
-	#termStateFormWin .label{width: 70px; text-align: right; margin-right: 5px;}
+	#termStateFormWin .x-label{width: 70px; text-align: right; margin-right: 5px;}
 	</style>
-	<div class="close"></div>
-	<div class="panel-title">终端上下线测试</div>
-	<form class="panel-body form">
-		<div><label class="label">终端编号</label><input name="terminalNo" /></div>
-		<div><label class="label">上下线</label><select name="state"><option value="1">上线</option><option value="0">下线</option></select></div>
+	<div class="x-close"></div>
+	<div class="x-panel-title">终端上下线测试</div>
+	<form class="x-panel-body x-form">
+		<div><label class="x-label">终端编号</label><input name="terminalNo" /></div>
+		<div><label class="x-label">上下线</label><select name="state"><option value="1">上线</option><option value="0">下线</option></select></div>
 	</form>
-	<div class="panel-footer">
-		<div class="button" handler="save"><span class="icon-16 icon-save"></span>提交</div>
+	<div class="x-panel-footer">
+		<div class="x-button" handler="save"><span class="x-icon-16 x-icon-save"></span>提交</div>
 	</div>
 </div>
 <script>

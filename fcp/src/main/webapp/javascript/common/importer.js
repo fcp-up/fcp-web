@@ -1,14 +1,14 @@
-$('#importerWin .file-field-wrap>input').change(function(e){
+$('#importerWin .x-file-field-wrap>input').change(function(e){
 	e = $(this);
-	e.prevAll('.filename').html(e.val().replace(/.*?([^\/\\]+)$/g, '$1'));
+	e.prevAll('.x-filename').html(e.val().replace(/.*?([^\/\\]+)$/g, '$1'));
 });
 var importer = $('#importerWin').window({
 	initComponent: function(){
-		var body = this.el.children('.panel-body').children();
+		var body = this.el.children('.x-panel-body').children();
 		this.hint = body.eq(0);
 		this.form = body.eq(1);
-		this.fileNameSpan = this.form.find('.filename');
-		this.fileLabel = this.form.find('.label');
+		this.fileNameSpan = this.form.find('.x-filename');
+		this.fileLabel = this.form.find('.x-label');
 		this.fileField = this.form.find('[type="file"]');
 	},
 	reset: function(){

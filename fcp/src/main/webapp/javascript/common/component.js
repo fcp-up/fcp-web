@@ -91,6 +91,7 @@ $.Cpt.prototype = {
 		for(var p in this) delete this[p];
 	},
 	elclick: function(el, evt){
+		this.el.attr('tabindex', 0).focus();
 		var hel;
 		if(el.attr('handler')) {
 			hel = el;
@@ -106,14 +107,13 @@ $.Cpt.prototype = {
 				}
 			}
 		}
-		this.el.attr('tabindex', 0);
 	},
 	beforeDestroy: $.emptyFn,
 	isDisableEl: function(el){
-		if(el.hasClass('disabled') || el.attr('disabled')) return true;
+		if(el.hasClass('x-disabled') || el.disabled()) return true;
 		el = el.parent();
-		if(el.hasClass('disabled')) {
-			if(el.hasClass('combo') || el.hasClass('button')) return true;
+		if(el.hasClass('x-disabled')) {
+			if(el.hasClass('x-combo') || el.hasClass('x-button')) return true;
 		}
 		return false;
 	}
@@ -141,8 +141,8 @@ $.Window = $.extendClass(function(){
 	grouped: false,
 	startZIndex: 1000,
 	type:'window',
-	moveHandlerSelector: '.panel-title',
-	showClass: 'show',
+	moveHandlerSelector: '.x-panel-title',
+	showClass: 'x-show',
 	modal: true,
 	zIndex: function(zIndex){
 		if(zIndex != null) {
@@ -161,11 +161,11 @@ $.Window = $.extendClass(function(){
 		}(this));
 		this.el.children(this.moveHandlerSelector).on('dblclick', this.onTitleDblclick = function(cpt){
 			return function(evt){
-				if(cpt.el.hasClass('maxima')) {
-					cpt.restory(evt, cpt.el.children('.restory'));
+				if(cpt.el.hasClass('x-maxima')) {
+					cpt.restory(evt, cpt.el.children('.x-restory'));
 				}
 				else {
-					cpt.maxima(evt, cpt.el.children('.maxima'));
+					cpt.maxima(evt, cpt.el.children('.x-maxima'));
 				}
 			};
 		}(this));
@@ -190,19 +190,19 @@ $.Window = $.extendClass(function(){
 	click:function(evt){
 		var el = $(evt.target);
 		if(this.isDisableEl(el)) return;
-		if(el.is('.window>.close')) {
+		if(el.is('.x-window>.x-close')) {
 			this.close(evt, el);
 			return;
 		}
-		else if(el.is('.window>.maxima')) {
+		else if(el.is('.x-window>.x-maxima')) {
 			this.maxima(evt, el);
 			return;
 		}
-		else if(el.is('.window>.minima')) {
+		else if(el.is('.x-window>.x-minima')) {
 			this.minima(evt, el);
 			return;
 		}
-		else if(el.is('.window>.restory')) {
+		else if(el.is('.x-window>.x-restory')) {
 			this.restory(evt, el);
 			return;
 		}
@@ -237,8 +237,8 @@ $.Window = $.extendClass(function(){
 			this.__marginTop = this.el.css('marginTop');
 			this.el.css({
 				top: 0, right: 0, bottom: 0, left: 0, width: 'auto', height: 'auto', marginLeft: 0, marginTop: 0
-			}).addClass('maxima');
-			el.replaceClass('maxima', 'restory');
+			}).addClass('x-maxima');
+			el.replaceClass('x-maxima', 'x-restory');
 			this.onMaxima();
 		}
 		return this;
@@ -255,8 +255,8 @@ $.Window = $.extendClass(function(){
 		if(this.beforeRestory(evt, el) !== false) {
 			this.el.css({
 				top: this.__top, right: 'auto', bottom: 'auto', left: this.__left, width: this.__width, height: this.__height, marginLeft: this.__marginLeft, marginTop: this.__marginTop
-			}).removeClass('maxima');
-			el.replaceClass('restory', 'maxima');
+			}).removeClass('x-maxima');
+			el.replaceClass('x-restory', 'x-maxima');
 			this.onRestory();
 		}
 		return this;
@@ -299,19 +299,19 @@ $.Tab = $.extendClass(function(){
 	$.cycle(function(){
 		var w = this.tabWrapEl.width(), aw = this.el.width();
 		if(w > aw) {
-			this.tabScrollLeftEl.removeClass('hidden');
-			this.tabScrollRightEl.removeClass('hidden');
+			this.tabScrollLeftEl.removeClass('x-hidden');
+			this.tabScrollRightEl.removeClass('x-hidden');
 		}
 		if(w > 0) return false;
 	}, this, 0.1);
 }, $.Cpt, {
 	type: 'tab',
-	tabElSelector: '.tab',
-	tabElActiveClass: 'active',
-	tabCloseElSelector: '.tab>.close',
-	tabWrapSelector: '.tab-wrap',
-	tabScrollLeftClass: 'tabbar-scroll-left',
-	tabScrollRightClass: 'tabbar-scroll-right',
+	tabElSelector: '.x-tab',
+	tabElActiveClass: 'x-active',
+	tabCloseElSelector: '.x-tab>.x-close',
+	tabWrapSelector: '.x-tab-wrap',
+	tabScrollLeftClass: 'x-tabbar-scroll-left',
+	tabScrollRightClass: 'x-tabbar-scroll-right',
 	_activedtabel: null,
 	_tabEls: null,
 	getTabWrapEl: function(){
@@ -336,14 +336,14 @@ $.Tab = $.extendClass(function(){
 	judgeScrollEl: function(){
 		var w = this.tabWrapEl.width(), aw = this.el.width();
 		if(w > aw) {
-			this.tabScrollLeftEl.removeClass('hidden');
-			this.tabScrollRightEl.removeClass('hidden');
+			this.tabScrollLeftEl.removeClass('x-hidden');
+			this.tabScrollRightEl.removeClass('x-hidden');
 			if(this.tabWrapEl.position().left == 0) this.tabWrapEl.css('left', 18);
 			
 		}
 		else {
-			this.tabScrollLeftEl.addClass('hidden').addClass('disabled');
-			this.tabScrollRightEl.addClass('hidden').removeClass('disabled');
+			this.tabScrollLeftEl.addClass('x-hidden').addClass('x-disabled');
+			this.tabScrollRightEl.addClass('x-hidden').removeClass('x-disabled');
 			this.tabWrapEl.css('left', 0);
 		}
 	},
@@ -351,7 +351,7 @@ $.Tab = $.extendClass(function(){
 	activedIndex: function(){
 		var index = -1;
 		this.tabEls().each(function(i, x){
-			if($(x).hasClass('active')) {
+			if($(x).hasClass('x-active')) {
 				index = i;
 				return false;
 			}
@@ -370,8 +370,8 @@ $.Tab = $.extendClass(function(){
 				{left: l + 'px'}, 'fast'
 			);
 			aw = l >= 18;
-			tab[aw ? 'addClass' : 'removeClass']('disabled');
-			tab.siblings('.' + this.tabScrollRightClass)['removeClass']('disabled');
+			tab[aw ? 'addClass' : 'removeClass']('x-disabled');
+			tab.siblings('.' + this.tabScrollRightClass)['removeClass']('x-disabled');
 			return;
 		}
 		if(tab.hasClass(this.tabScrollRightClass)) {
@@ -383,8 +383,8 @@ $.Tab = $.extendClass(function(){
 				{left: l + 'px'}, 'fast'
 			);
 			aw = l <= w;
-			tab[aw ? 'addClass' : 'removeClass']('disabled');
-			tab.siblings('.' + this.tabScrollLeftClass)['removeClass']('disabled');
+			tab[aw ? 'addClass' : 'removeClass']('x-disabled');
+			tab.siblings('.' + this.tabScrollLeftClass)['removeClass']('x-disabled');
 			return;
 		}
 		if(tab.is(this.tabCloseElSelector)) {
@@ -489,13 +489,13 @@ $.TreePanel = $.extendClass(function(){
 	fkey: 'pid',
 	dplkey: 'name',
 	selectedNode: null,
-	isEcEl: function(el){return el.is('.node .icon-ec');},
+	isEcEl: function(el){return el.is('.x-node .x-icon-ec');},
 	isLeafNode: function(nel){return nel.hasClass(this.leafNodeElClass);},
 	isExpandNode: function(nel){return nel.hasClass(this.expandNodeElClass);},
 	isLastNode: function(nel){return nel.hasClass(this.lastNodeElClass);},
-	leafNodeElClass: 'leaf',
-	expandNodeElClass: 'expand',
-	lastNodeElClass: 'last',
+	leafNodeElClass: 'x-leaf',
+	expandNodeElClass: 'x-expand',
+	lastNodeElClass: 'x-last',
 	click:function(evt){
 		var el = $(evt.target), b = true, nel = this.getNodeEl(el);
 		if(this.isDisableEl(el)) return;
@@ -582,7 +582,7 @@ $.TreePanel = $.extendClass(function(){
 			this.getContentEl().html(tools.genTree(this.genTreeOption(nodes)));
 		}
 		if(this.selectedNode) {
-			var node = this.el.find(['.node[', this.pkey, '="', this.selectedNode[this.pkey], '"]'].join('')).addClass('selected');
+			var node = this.el.find(['.x-node[', this.pkey, '="', this.selectedNode[this.pkey], '"]'].join('')).addClass('x-selected');
 			this.selectNode(node);
 			node = node.parent().parent().prev();
 			while(node.length > 0) {
@@ -599,25 +599,25 @@ $.TreePanel = $.extendClass(function(){
 		dplkey = dplkey || 'name';
 		var ct, cs = [], cn, me = this, last = me.isLastNode(parentEl);
 		if(this.isLeafNode(parentEl)) {
-			parentEl.removeClass(this.leafNodeElClass).addClass(this.expandNodeElClass).parent().append(ct = $('<div class="nodelist expand"></div>'));
+			parentEl.removeClass(this.leafNodeElClass).addClass(this.expandNodeElClass).parent().append(ct = $('<div class="x-nodelist x-expand"></div>'));
 		}
 		else {
 			parentEl.addClass(this.expandNodeElClass);
 			ct = parentEl.next().addClass(this.expandNodeElClass);
-			if(ct.length < 1) parentEl.parent().append(ct = $('<div class="nodelist expand"></div>'));
+			if(ct.length < 1) parentEl.parent().append(ct = $('<div class="x-nodelist x-expand"></div>'));
 		}
 		fixed = fixed || function(r){return $.copy({}, r);};
 		fixedEl = fixedEl || $.emptyFn;
 		data = data || [];
 		if(data.length < 1) {
-			parentEl.addClass('leaf');
+			parentEl.addClass('x-leaf');
 		}
 		parent.children = parent.children || [];
 		var ln = data.length, cl = parent.children.length;
 		if(cl > 0) parent.children[cl - 1].last = false;
 		
 		$.each(data, function(i, r){
-			ct.children().last().children('.node').removeClass('last');
+			ct.children().last().children('.x-node').removeClass('x-last');
 			r = fixed.call(me, r, parentEl);
 			
 			r.leaf = true;
@@ -632,14 +632,14 @@ $.TreePanel = $.extendClass(function(){
 			
 			cn = parentEl.clone();
 			cn.children('.txt').html(r[dplkey]);
-			$(last ? '<span class="icon-blank"></span>' : '<span class="icon-elbow"></span>').insertBefore(cn.children('.icon-ec'));
-			ct.append($('<div class="nodeitem"></div>').append(cn = $('<div class="node leaf"></div>').append(cn.children())));
+			$(last ? '<span class="x-icon-blank"></span>' : '<span class="x-icon-elbow"></span>').insertBefore(cn.children('.x-icon-ec'));
+			ct.append($('<div class="x-nodeitem"></div>').append(cn = $('<div class="x-node x-leaf"></div>').append(cn.children())));
 			$.each(atr || [], function(j, a){
 				if(r[a] != null) cn.attr(a, r[a]);
 			});
 			fixedEl(cn, r, i);
 		});
-		ct.children().last().children('.node').addClass('last');
+		ct.children().last().children('.x-node').addClass('x-last');
 		return this;
 	},
 	beforeUpNode: $.emptyFn,
@@ -647,7 +647,7 @@ $.TreePanel = $.extendClass(function(){
 	upNode: function(nodeEl){
 		var node = this.treeMap[nodeEl.attr(this.pkey)];
 		if(this.beforeUpNode(nodeEl, node) == false) return;
-		var prevEl = nodeEl.parent().prev().children('.node:first'), 
+		var prevEl = nodeEl.parent().prev().children('.x-node:first'), 
 			prev = this.treeMap[prevEl.attr(this.pkey)];
 		
 		var order = prev.__index__;
@@ -673,7 +673,7 @@ $.TreePanel = $.extendClass(function(){
 	downNode: function(nodeEl){
 		var node = this.treeMap[nodeEl.attr(this.pkey)];
 		if(this.beforeDownNode(nodeEl, node) == false) return;
-		var nextEl = nodeEl.parent().next().children('.node:first'), 
+		var nextEl = nodeEl.parent().next().children('.x-node:first'), 
 			next = this.treeMap[nextEl.attr(this.pkey)];
 		
 		var order = next.__index__;
@@ -716,7 +716,7 @@ $.TreePanel = $.extendClass(function(){
 			}
 			else {
 				node.parent.leaf = true;
-				nodeEl.parent().parent().prev().addClass('leaf');
+				nodeEl.parent().parent().prev().addClass('x-leaf');
 			}
 		}
 		nodeEl.remove();
@@ -728,28 +728,28 @@ $.TreePanel = $.extendClass(function(){
 			if(!this.isExpandNode(nel)) {
 				this.expandNode(nel);
 			}
-			else if(nel.hasClass('selected')) {
+			else if(nel.hasClass('x-selected')) {
 				this.collapseNode(nel);
 			}
 		}
-		var x = this.el.find('.node.selected:first');
-		x.removeClass('selected');
-		nel.addClass('selected');
+		var x = this.el.find('.x-node.x-selected:first');
+		x.removeClass('x-selected');
+		nel.addClass('x-selected');
 		this.selectedNode = this.treeMap[x.attr(this.pkey)];
 		this.onNodeSelected(nel, this.selectedNode);
 		return;
 		if(x[0] == nel[0]) {
-			nel.toggleClass('selected');
+			nel.toggleClass('x-selected');
 		}
 		else {
-			x.removeClass('selected');
-			nel.addClass('selected');
+			x.removeClass('x-selected');
+			nel.addClass('x-selected');
 		}
 		return this;
 	},
 	getNodeEl:function(el){
 		while(el[0] && el[0] != this.el[0]) {
-			if(el.hasClass('node')) return el;
+			if(el.hasClass('x-node')) return el;
 			el = el.parent();
 		}
 		return null;
@@ -769,19 +769,19 @@ $.GridPanel = $.extendClass($.Panel, {
 	type: 'gridpanel',
 	click:function(evt){
 		var el = $(evt.target), hdl;
-		if(el.is('.column-header .check-column') && (el = el.children('input')) && !el.disabled()) {
+		if(el.is('.x-column-header .x-check-column') && (el = el.children('input')) && !el.disabled()) {
 			var chd;
 			el.check(chd = !el.checked());
 			this.checkedAll(chd);
 		}
-		else if(el.is('.column-header .check-column input') && !el.disabled()){
+		else if(el.is('.x-column-header .x-check-column input') && !el.disabled()){
 			this.checkedAll(el[0].checked);
 		}
-		else if(el.is('.gridEditor input') && !el.disabled()) return;
+		else if(el.is('.x-gridEditor input') && !el.disabled()) return;
 		else if(el.is('tr *') && this.beforeSelectRow(el, evt) !== false) {
 			el = el.parentsUntil(this.el, 'tr');
-			if(el.hasClass('column-header')) return;
-			this.selectRow(el);
+			if(el.hasClass('x-column-header')) return;
+			this.selectRow(el, evt);
 		}
 		$.GridPanel.superclass.click.apply(this, arguments);
 		return this;
@@ -792,19 +792,19 @@ $.GridWindow = $.extendClass($.Window, {
 	type: 'gridwindow',
 	click:function(evt){
 		var el = $(evt.target), hdl;
-		if(el.is('.column-header .check-column') && (el = el.children('input')) && !el.disabled()) {
+		if(el.is('.x-column-header .x-check-column') && (el = el.children('input')) && !el.disabled()) {
 			var chd;
 			el.check(chd = !el.checked());
 			this.checkedAll(chd);
 		}
-		else if(el.is('.column-header .check-column input') && !el.disabled()){
+		else if(el.is('.x-column-header .x-check-column input') && !el.disabled()){
 			this.checkedAll(el[0].checked);
 		}
-		else if(el.is('.gridEditor input') && !el.disabled()) return;
+		else if(el.is('.x-gridEditor input') && !el.disabled()) return;
 		else if(el.is('tr *') && this.beforeSelectRow(el, evt) !== false) {
 			el = el.parentsUntil(this.el, 'tr');
-			if(el.hasClass('column-header')) return;
-			this.selectRow(el);
+			if(el.hasClass('x-column-header')) return;
+			this.selectRow(el, evt);
 		}
 		$.GridWindow.superclass.click.apply(this, arguments);
 		return this;
@@ -813,7 +813,7 @@ $.GridWindow = $.extendClass($.Window, {
 
 (function(){
 	var prototype = {
-		multiSelected: true,
+		multiSelected: false,
 		requestType: 'GET',
 		initPageSize: function(){
 			var el = this.el, h;
@@ -830,7 +830,7 @@ $.GridWindow = $.extendClass($.Window, {
 			var s = this.innerHeight() / this.getRowHeight();
 			s = (s >> 0);
 			s = ((s / 5) >> 0) * 5;
-			this.el.find('.panel-footer>[name="pageSize"]').val(s);
+			this.el.find('.x-panel-footer>[name="pageSize"]').val(s);
 			return this;
 		},
 		getRowHeight: function(){
@@ -848,7 +848,7 @@ $.GridWindow = $.extendClass($.Window, {
 			if(this.__innerHeight == null) return this.__innerHeight;
 			var el = this.getTableEl(), h;
 			h = el.parent().innerHeight();
-			el.children().children('tr.column-header').each(function(i, f){
+			el.children().children('tr.x-column-header').each(function(i, f){
 				h = h - $(f).offsetHeight();				
 			});
 			return this.__innerHeight = h;
@@ -856,48 +856,49 @@ $.GridWindow = $.extendClass($.Window, {
 		windowresize: function(){
 			var el = this.getTableEl(), h;
 			h = el.parent().innerHeight();
-			el.children().children('tr.column-header').each(function(i, f){
+			el.children().children('tr.x-column-header').each(function(i, f){
 				h = h - $(f).offsetHeight();				
 			});
 			this.__innerHeight = h;
 		},
-		selectRow: function(el){
-			if(el.hasClass('selected')) {
-				el.removeClass('selected lastSelected');
-				el = el.find('.check-column input');
-				!el.is('.disabled') && (el = el[0]) && el.disabled == false && (el.checked = false);
+		selectRow: function(el, evt){
+			this.scrollRow(this.lastFocusRow(), el, evt.shiftKey);
+			if(el.hasClass('x-selected')) {
+				el.removeClass('x-selected x-focus-row');
+				el = el.find('.x-check-column input');
+				!el.hasClass('x-disabled') && (el = el[0]) && el.disabled == false && (el.checked = false);
 			}
 			else {
 				if(!this.multiSelected) {
-					el.siblings().removeClass('selected lastSelected').find('.check-column input').check(false);
+					el.siblings().removeClass('x-selected').find('.x-check-column input').check(false);
 				}
-				el.addClass('selected lastSelected');
-				el = el.find('.check-column input');
-				!el.is('.disabled') && (el = el[0]) && el.disabled == false && (el.checked = true);
+				el.addClass('x-selected x-focus-row');
+				el = el.find('.x-check-column input');
+				!el.hasClass('x-disabled') && (el = el[0]) && el.disabled == false && (el.checked = true);
 			}
 			this.rowSelected();
 			return this;
 		},
 		checkedAll:function(chd){
-			this.el.find('.check-column input').each(function(i, e){
+			this.el.find('.x-check-column input').each(function(i, e){
 				if(e.disabled) return;
 				i = $(e);
-				if(i.is('.disabled') || i.attr('for') == 'all') return;
+				if(i.hasClass('x-disabled') || i.attr('for') == 'all') return;
 				e.checked = chd;
-				if(chd) i.parents('tr:first').addClass('selected');
-				else i.parents('tr:first').removeClass('selected');
+				if(chd) i.parents('tr:first').addClass('x-selected');
+				else i.parents('tr:first').removeClass('x-selected');
 			});
 			this.rowSelected();
 			return this;
 		},
 		initEvents:function(){
 			$.GridPanel.superclass.initEvents.apply(this, arguments);
-			this.el.find('.data-area:first').on('scroll', this.__onContentScroll);
+			this.el.find('.x-data-area:first').on('scroll', this.__onContentScroll);
 			this.initPageSize();
-			var htrEl = this.el.find('tr.column-header'), tblEl = htrEl.parentsUntil(this.el, 'table:first');
+			var htrEl = this.el.find('tr.x-column-header'), tblEl = htrEl.parentsUntil(this.el, 'table:first');
 			tblEl.css({width: this.__tableWidth = tblEl.width()});
 			this.__headerTableEl = tblEl;
-			this.el.find('tr.column-header td.widen').resizable({
+			this.el.find('tr.x-column-header td.widen').resizable({
 				handles: 'e', 
 				resize: function(cpt){
 					return function(evt, ui){
@@ -937,11 +938,11 @@ $.GridWindow = $.extendClass($.Window, {
 		 */
 		onColumnWidthDrag: function(tag){},
 		__onContentScroll:function(evt) {
-			$(this.parentNode).find('.column-header table:first').css('left', 0 - this.scrollLeft + 'px');
+			$(this.parentNode).find('.x-column-header table:first').css('left', 0 - this.scrollLeft + 'px');
 		},
 		destroy:function(){
-			this.el.find('.data-area:first').off('scroll', this.__onContentScroll);
-			this.el.find('tr.column-header td.column-width-draggable div').resizable('destroy');
+			this.el.find('.x-data-area:first').off('scroll', this.__onContentScroll);
+			this.el.find('tr.x-column-header td.x-column-width-draggable div').resizable('destroy');
 			this.constructor.superclass.destroy.apply(this, arguments);
 			return this;
 		},
@@ -970,12 +971,12 @@ $.GridWindow = $.extendClass($.Window, {
 			if(p === false) return this;
 			p = p || {};
 			
-			var psel = this.el.find('.panel-footer [name="pageSize"]'), ps;
+			var psel = this.el.find('.x-panel-footer [name="pageSize"]'), ps;
 			if(psel.length > 0) {
 				ps = ps || psel.val() - 0 || 30;
 				psel.val(ps);
 				
-				var piel = this.el.find('.panel-footer [name="pageIndex"]'), pi = piel.val() - 0 || 1;
+				var piel = this.el.find('.x-panel-footer [name="pageIndex"]'), pi = piel.val() - 0 || 1;
 				piel.val(pi);
 				p.start = ps * (pi - 1);
 				p.limit = ps;
@@ -985,7 +986,7 @@ $.GridWindow = $.extendClass($.Window, {
 			this.el.progress('数据加载中...');
 			this.renderData([]);
 			$.ajax({
-				url:url, data:this.fixParams(p), type: this.requestType, dataType:'json', context: this, 
+				url:url, type: this.requestType, data:this.fixParams(p), dataType:'json', context: this, 
 				success:function(d){
 					this.el.find('input[for="all"]').check(false);
 					d = this.fixData(d);
@@ -1017,27 +1018,27 @@ $.GridWindow = $.extendClass($.Window, {
 		},
 		fixPagingBar: function(t, pi, ps){
 			this.el.find('[name="total"]').val(t);
-			if(pi == null) pi = this.el.find('.panel-footer [name="pageIndex"]').val() - 0 || 0;
-			if(ps == null) ps = this.el.find('.panel-footer [name="pageSize"]').val() - 0 || 0;
+			if(pi == null) pi = this.el.find('.x-panel-footer [name="pageIndex"]').val() - 0 || 0;
+			if(ps == null) ps = this.el.find('.x-panel-footer [name="pageSize"]').val() - 0 || 0;
 			var pn = t / ps >> 0, op;
 			if(t % ps != 0) pn++;
-			this.el.find('.panel-footer [name="pageNum"]').html(pn);
+			this.el.find('.x-panel-footer [name="pageNum"]').html(pn);
 			
 			if(pi < 2) op = 'addClass';
 			else op = 'removeClass';
-			this.el.find('.panel-footer [handler="firstPage"]')[op]('disabled').children()[op]('disabled');
-			this.el.find('.panel-footer [handler="prevPage"]')[op]('disabled').children()[op]('disabled');
+			this.el.find('.x-panel-footer [handler="firstPage"]')[op]('x-disabled').children()[op]('x-disabled');
+			this.el.find('.x-panel-footer [handler="prevPage"]')[op]('x-disabled').children()[op]('x-disabled');
 			
 			if(pi >= pn) op = 'addClass';
 			else op = 'removeClass';
-			this.el.find('.panel-footer [handler="nextPage"]')[op]('disabled').children()[op]('disabled');
-			this.el.find('.panel-footer [handler="lastPage"]')[op]('disabled').children()[op]('disabled');
+			this.el.find('.x-panel-footer [handler="nextPage"]')[op]('x-disabled').children()[op]('x-disabled');
+			this.el.find('.x-panel-footer [handler="lastPage"]')[op]('x-disabled').children()[op]('x-disabled');
 			
 			pn = (pi - 1) * ps;
 			op = pn + ps;
 			op = Math.min(op, t);
 			
-			this.el.find('.panel-footer [name="display"]').html(['显示', pn + 1, '-', op, '，共', t, '条'].join(''));
+			this.el.find('.x-panel-footer [name="display"]').html(['显示', pn + 1, '-', op, '，共', t, '条'].join(''));
 			return pn + 1;
 		},
 		fixParams: function(p){return p;},
@@ -1060,11 +1061,11 @@ $.GridWindow = $.extendClass($.Window, {
 				r._sequence_ = pi++;
 				hs.push(me.renderRecord(r));
 			});
-			me = me.el.find('tr.column-header:last');
+			me = me.el.find('tr.x-column-header:last');
 			me.find('input[for="all"]').check(false);
 			me.nextAll().remove();
 			me.parent().append(hs);
-			this.el.find('[handler="del_batch"]').addClass('disabled');
+			this.el.find('[handler="del_batch"]').addClass('x-disabled');
 			return this;
 		},
 		/**
@@ -1081,7 +1082,7 @@ $.GridWindow = $.extendClass($.Window, {
 		},
 		appendRecord: function(r){
 			var tr = $(this.renderRecord(r));
-			tr.appendTo(this.el.find('tr.column-header:last').parent());
+			tr.appendTo(this.el.find('tr.x-column-header:last').parent());
 			return tr;
 		},
 		getTpl: function(r){
@@ -1091,30 +1092,30 @@ $.GridWindow = $.extendClass($.Window, {
 			return r;
 		},
 		firstPage:function(){
-			this.el.find('.panel-footer [name="pageIndex"]').val(1);
+			this.el.find('.x-panel-footer [name="pageIndex"]').val(1);
 			return this.loadData();
 		},
 		prevPage:function(){
-			var el = this.el.find('.panel-footer [name="pageIndex"]'), p = el.val() - 1;
+			var el = this.el.find('.x-panel-footer [name="pageIndex"]'), p = el.val() - 1;
 			if(p < 1) return;
 			el.val(p);
 			return this.loadData();
 		},
 		nextPage:function(){
-			var el = this.el.find('.panel-footer [name="pageIndex"]'), p = el.val() - 0 + 1;
-			if(p > this.el.find('.panel-footer [name="pageNum"]').html().replace(/\&nbsp;/g, '')) return;
+			var el = this.el.find('.x-panel-footer [name="pageIndex"]'), p = el.val() - 0 + 1;
+			if(p > this.el.find('.x-panel-footer [name="pageNum"]').html().replace(/\&nbsp;/g, '')) return;
 			el.val(p);
 			return this.loadData();
 		},
 		lastPage:function(){
-			this.el.find('.panel-footer [name="pageIndex"]').val(this.el.find('.panel-footer [name="pageNum"]').html().replace(/\&nbsp;/g, ''));
+			this.el.find('.x-panel-footer [name="pageIndex"]').val(this.el.find('.x-panel-footer [name="pageNum"]').html().replace(/\&nbsp;/g, ''));
 			return this.loadData();
 		},
 		gotoPage:function(){return this.loadData();},
 		ref:function(){return this.loadData();},
 		getUrl:function(){return this.url;},
 		rowSelected: function(){
-			this.el.find('[handler="del_batch"]')[this.el.find('tr.selected').length > 0 ? 'removeClass' : 'addClass']('disabled');
+			this.el.find('[handler="del_batch"]')[this.el.find('tr.x-selected').length > 0 ? 'removeClass' : 'addClass']('x-disabled');
 			return this;
 		},
 		beforeSelectRow: function(el){
@@ -1123,7 +1124,7 @@ $.GridWindow = $.extendClass($.Window, {
 		keyup:function(evt){
 			this.scrollRowing = false;
 			var el = $(evt.target);
-			if(el.is('.panel-footer input')) {
+			if(el.is('.x-panel-footer input')) {
 				if(evt.which == 13) this.loadData();
 				else {
 					el.val(el.val().replace(/[^\d]+/g, ''));
@@ -1153,7 +1154,7 @@ $.GridWindow = $.extendClass($.Window, {
 		},
 		keydown: function(evt){
 			var el = $(evt.target);
-			if(!el.is('.panel-footer input')) {
+			if(!el.is('.x-panel-footer input')) {
 				switch(evt.which){
 				case 40://↓
 					this.scrollRowing = true;
@@ -1171,13 +1172,18 @@ $.GridWindow = $.extendClass($.Window, {
 			}
 		},
 		selectFocusRow: function(){
-			var sed = this.el.find('tr.focus-row').hasClass('selected');
-			this.el.find('tr.focus-row')[sed ? 'removeClass' : 'addClass']('selected').find('.check-column input').check(!sed);
+			var sed = this.el.find('tr.x-focus-row').hasClass('x-selected');
+			this.el.find('tr.x-focus-row')[sed ? 'removeClass' : 'addClass']('x-selected').find('.x-check-column input').check(!sed);
 			this.rowSelected();
 		},
+		/**
+		 * @param lstR 最后一次获取焦点的行
+		 * @param nR 本次获取焦点的行
+		 * @param shiftKey 是否按下shift键盘
+		 */
 		scrollRow: function(lstR, nR, shiftKey, dir){
-			var lhf = lstR.hasClass('focus-row'), nhf = nR.hasClass('focus-row');
-			nR.addClass('last-focus-row');
+			var lhf = lstR.hasClass('x-focus-row'), nhf = nR.hasClass('x-focus-row');
+			nR.addClass('x-last-focus-row');
 			var scrollTop = nR.position().top - this.innerHeight();
 			if(scrollTop > 0) {
 				this.getTableEl().parent().scrollTop(scrollTop);
@@ -1186,32 +1192,32 @@ $.GridWindow = $.extendClass($.Window, {
 				this.getTableEl().parent().scrollTop(0);
 			}
 			if(lstR.length < 1) {
-				nR[nhf ? 'removeClass' : 'addClass']('focus-row');
+				nR[nhf ? 'removeClass' : 'addClass']('x-focus-row');
 			}
 			else if(!shiftKey || !this.multiSelected) {
-				nR.siblings().removeClass('focus-row last-focus row');
-				nR[nhf ? 'removeClass' : 'addClass']('focus-row');
+				nR.siblings().removeClass('x-focus-row x-last-focus row');
+				nR[nhf ? 'removeClass' : 'addClass']('x-focus-row');
 			}
 			else if(lhf == nhf) {
-				lstR[lhf ? 'removeClass' : 'addClass']('focus-row');
+				lstR[lhf ? 'removeClass' : 'addClass']('x-focus-row');
 			}
 			else {
-				nR[nhf ? 'removeClass' : 'addClass']('focus-row');
+				nR[nhf ? 'removeClass' : 'addClass']('x-focus-row');
 			}
 		},
 		lastFocusRow: function(){
-			return this.el.find('tr.last-focus-row').removeClass('last-focus-row');
+			return this.el.find('tr.x-last-focus-row').removeClass('x-last-focus-row');
 		},
 		nextRow: function(shiftKey){
 			var lstR = this.lastFocusRow(), nR;
 			nR = lstR.next();
-			if(nR.length < 1) nR = this.el.find('tr.column-header:last').next();
+			if(nR.length < 1) nR = this.el.find('tr.x-column-header:last').next();
 			this.scrollRow(lstR, nR, shiftKey, 0);
 		},
 		prevRow: function(shiftKey){
 			var lstR = this.lastFocusRow(), nR;
 			nR = lstR.prev();
-			if(nR.length < 1 || nR.hasClass('column-header')) nR = this.el.find('tr:last');
+			if(nR.length < 1 || nR.hasClass('x-column-header')) nR = this.el.find('tr:last');
 			this.scrollRow(lstR, nR, shiftKey, 1);
 		},
 		mousewheel: function(evt) {
@@ -1242,12 +1248,12 @@ $.TreeGridPanel = $.extendClass($.TreePanel, $.copy({
 
 $.DrawerPanel = $.extendClass($.Panel, {
 	type: 'drawer',
-	drawerElSelector: '.drawer',
-	drawerHandlerElSelector: '.drawer .drawer-title',
-	drawerEcElSelector: '.drawer .drawer-title>.tools-ec',
-	drawerTitleElSelector: '.drawer .drawer-title',
-	drawerBodyElSelector: '.drawer .drawer-body',
-	expandElClass: 'expand',
+	drawerElSelector: '.x-drawer',
+	drawerHandlerElSelector: '.x-drawer .x-drawer-title',
+	drawerEcElSelector: '.x-drawer .x-drawer-title>.x-tools-ec',
+	drawerTitleElSelector: '.x-drawer .x-drawer-title',
+	drawerBodyElSelector: '.x-drawer .x-drawer-body',
+	expandElClass: 'x-expand',
 	__drawerEls: null,
 	activeDrawerIndex: -1,
 	windowresize: function(evt){
@@ -1259,7 +1265,7 @@ $.DrawerPanel = $.extendClass($.Panel, {
 		if((vh = this.el.height()) > 0) {
 			this.drawerEls().each(function(i, e){
 				e = $(e);
-				if(e.hasClass('hidden')) return;
+				if(e.hasClass('x-hidden')) return;
 				vh = vh - $(e).children(tec).outerHeight();
 			});
 			this.viewHeight = vh - 1;
@@ -1275,7 +1281,7 @@ $.DrawerPanel = $.extendClass($.Panel, {
 			if((vh = this.el.height()) > 0) {
 				this.drawerEls().each(function(i, e){
 					e = $(e);
-					if(e.hasClass('hidden')) return;
+					if(e.hasClass('x-hidden')) return;
 					if(e.hasClass(ec)) ed = ed || e;
 					vh = vh - $(e).children(tec).outerHeight();
 					e.removeClass(ec);
@@ -1289,11 +1295,11 @@ $.DrawerPanel = $.extendClass($.Panel, {
 	elclick: function(el, evt){
 		var h = this.getDrawerHandlerEl(el), dw = this.getDrawerEl(el);
 		if(h && h.length > 0 && dw.length > 0) {
-			this[this.expanded(dw) ? 'collapse' : 'expand'](dw, el, evt);
+			this[this.expanded(dw) ? 'x-collapse' : 'x-expand'](dw, el, evt);
 		}
 		if(dw && el[0] != dw.children(this.drawerBodyElSelector)[0]) {
-			this.el.children('.active').removeClass('active');
-			dw && dw.addClass('active');
+			this.el.children('.x-active').removeClass('x-active');
+			dw && dw.addClass('x-active');
 		}
 		this.drawerElClick(el, evt);
 	},
@@ -1386,12 +1392,12 @@ $.DrawerPanel = $.extendClass($.Panel, {
 
 $.MultiDrawerPanel = $.extendClass($.Panel, {
 	type: 'multi-drawer',
-	drawerElSelector: '.multi-drawer',
-	drawerHandlerElSelector: '.multi-drawer .multi-drawer-title',
-	drawerEcElSelector: '.multi-drawer .multi-drawer-title>.tools-ec',
-	drawerTitleElSelector: '.multi-drawer .multi-drawer-title',
-	drawerBodyElSelector: '.multi-drawer .multi-drawer-body',
-	expandElClass: 'expand',
+	drawerElSelector: '.x-multi-drawer',
+	drawerHandlerElSelector: '.x-multi-drawer .x-multi-drawer-title',
+	drawerEcElSelector: '.x-multi-drawer .x-multi-drawer-title>.x-tools-ec',
+	drawerTitleElSelector: '.x-multi-drawer .x-multi-drawer-title',
+	drawerBodyElSelector: '.x-multi-drawer .x-multi-drawer-body',
+	expandElClass: 'x-expand',
 	__drawerEls: null,
 	drawerIndex:function(drawerEl){
 		drawerEl = drawerEl[0];
@@ -1406,11 +1412,11 @@ $.MultiDrawerPanel = $.extendClass($.Panel, {
 	elclick: function(el, evt){
 		var h = this.getDrawerHandlerEl(el), dw = this.getDrawerEl(el);
 		if(h && h.length > 0 && dw.length > 0) {
-			this[this.expanded(dw) ? 'collapse' : 'expand'](dw, el, evt);
+			this[this.expanded(dw) ? 'x-collapse' : 'x-expand'](dw, el, evt);
 		}
 		if(el[0] != dw.children(this.drawerBodyElSelector)[0]) {
-			this.el.children('.active').removeClass('active');
-			dw.addClass('active');
+			this.el.children('.x-active').removeClass('x-active');
+			dw.addClass('x-active');
 		}
 		this.drawerElClick(el, evt);
 	},
@@ -1538,7 +1544,7 @@ $.FormWindow = $.extendClass($.Window, {
 				if(el.attr('trim') != null) {
 					el.val(v = obj[k] = v.trim());
 				}
-				if(v == el.attr('hint') && el.hasClass('input-hint')) v = obj[k] = '';
+				if(v == el.attr('hint') && el.hasClass('x-input-hint')) v = obj[k] = '';
 				field = {
 					label: me.getLabel(k),
 					key: k,
@@ -1547,7 +1553,7 @@ $.FormWindow = $.extendClass($.Window, {
 				};
 				vd = me.validateField(field);
 				if(v == '' && (x = el.attr('hint'))) {
-					if(this.enableHint) el.addClass('input-hint').val(x);
+					if(this.enableHint) el.addClass('x-input-hint').val(x);
 				}
 				if(!vd.verdict) {
 					me.invalidFieldMsg(field, vd.detail, obj, form);
@@ -1720,12 +1726,12 @@ $.FormWindow = $.extendClass($.Window, {
 				f.on('focus', function(evt){
 					var f = $(this);
 					if(f.val() == f.attr('hint')) f.val('');
-					f.removeClass('input-hint');
+					f.removeClass('x-input-hint');
 					if(f.readOnlyed()) f.click();
 					me.onFieldFocus(f, evt);
 				}).on('blur', function(evt){
 					var f = $(this);
-					if(f.val() == '') f.addClass('input-hint').val(f.attr('hint'));
+					if(f.val() == '') f.addClass('x-input-hint').val(f.attr('hint'));
 					me.onFieldBlur(f, evt);
 				});
 						
@@ -1734,7 +1740,7 @@ $.FormWindow = $.extendClass($.Window, {
 				if(hint.length > 0) {
 					hint = hint.join('<br />');
 					if(me.enableHint) {
-						f.addClass('input-hint').val(hint).attr('hint', hint);
+						f.addClass('x-input-hint').val(hint).attr('hint', hint);
 					}
 					if(me.enableTitleHint) {
 						f.attr({'title': hint, 'data-html': "true"}).tooltip();
@@ -1743,7 +1749,7 @@ $.FormWindow = $.extendClass($.Window, {
 			});
 			
 			this.setDateTimePicker();
-			this.buttons = this.el.find('.button');
+			this.buttons = this.el.find('.x-button');
 			
 			return this;
 		},
@@ -1756,8 +1762,8 @@ $.FormWindow = $.extendClass($.Window, {
 			var el = $(evt.target);
 			if(evt.which == 13) {
 				var cbl = $('#combolist');
-				if(cbl.hasClass('show') && cbl.hasClass('option')) {
-					var ii = cbl.children('.item'), ci = ii.filter('.selected');
+				if(cbl.hasClass('x-show') && cbl.hasClass('x-option')) {
+					var ii = cbl.children('.x-item'), ci = ii.filter('.x-selected');
 					ci.click();
 					return this;
 				}
@@ -1772,8 +1778,8 @@ $.FormWindow = $.extendClass($.Window, {
 			var el = $(evt.target);
 			if(evt.which == 40 || evt.which == 38) {
 				var cbl = $('#combolist');
-				if(cbl.hasClass('show') && cbl.hasClass('option')) {
-					var ii = cbl.children('.item'), ci = ii.filter('.selected'), ni;
+				if(cbl.hasClass('x-show') && cbl.hasClass('x-option')) {
+					var ii = cbl.children('.x-item'), ci = ii.filter('.x-selected'), ni;
 					switch(evt.which) {
 					case 40:
 						if(ci.length < 1 || ci.next().length < 1) ni = ii.first();
@@ -1785,8 +1791,8 @@ $.FormWindow = $.extendClass($.Window, {
 						break;
 					}
 					if(ni != null && ni.length > 0) {
-						ii.removeClass('selected');
-						ni.addClass('selected');
+						ii.removeClass('x-selected');
+						ni.addClass('x-selected');
 						var scrollTop = ni.position().top + ni.offsetHeight() + cbl.scrollTop();
 						scrollTop = scrollTop - cbl.innerHeight();
 						if(scrollTop > 0) {
@@ -1833,13 +1839,13 @@ $.FormWindow = $.extendClass($.Window, {
 				switch(f.attr('_type')) {
 				case 'datetime':
 					f.datetimepicker('remove');
-					f.datetimepicker({format: 'yyyy-mm-dd hh:ii:ss', minuteStep: 1}).readOnly(true).next('span.icon-datepicker').click(function(){
+					f.datetimepicker({format: 'yyyy-mm-dd hh:ii:ss', minuteStep: 1}).readOnly(true).next('span.x-icon-datepicker').click(function(){
 						$(this).prev().focus();
 					});
 					break;
 				case 'date':
 					f.datetimepicker('remove');
-					f.datetimepicker({format: 'yyyy-mm-dd', minView: 2}).readOnly(true).next('span.icon-datepicker').click(function(){
+					f.datetimepicker({format: 'yyyy-mm-dd', minView: 2}).readOnly(true).next('span.x-icon-datepicker').click(function(){
 						$(this).prev().focus();
 					});
 					break;
@@ -1984,17 +1990,17 @@ $.FormWindow = $.extendClass($.Window, {
 			
 			if(!_set) {
 				if(!dsb) {
-					this.buttons.removeClass('disabled');
+					this.buttons.removeClass('x-disabled');
 				}
 				else {
-					this.buttons.filter('[handler!="cancel"]').addClass('disabled');
+					this.buttons.filter('[handler!="cancel"]').addClass('x-disabled');
 				}
 			}
 			return this;
 		},
 		resetDisable: function(){
 			this.disable(this._initDisabled);
-			this.buttons.removeClass('disabled');
+			this.buttons.removeClass('x-disabled');
 			return this;
 		}
 	};

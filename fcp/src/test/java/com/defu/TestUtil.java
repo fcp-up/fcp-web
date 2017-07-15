@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TooManyListenersException;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
 import com.defu.gen.Gen;
@@ -17,8 +18,8 @@ public class TestUtil {
 	static Map<String, String> fnMap = new HashMap<>();
 	@Test
 	public void test() throws Exception {
-		genAlarmXml();
-		
+		String[] x = {"1", "2"};
+		System.out.println(StringUtils.join(x, ","));
 	}
 
 	public static void smsCatTest() {

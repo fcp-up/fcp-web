@@ -2,13 +2,13 @@ $('#phoneList').gridpanel({
 	url: 'list',
 	tpl: [
 		'<tr nid="{id}">',
-			'<td class="check-column"><input class="checkbox" type="checkbox" /></td>',
-			'<td class="text-center">',
-				'<span class="anchor first" handler="mod">修改</span>',
-				'<span class="anchor" handler="del">删除</span>',
+			'<td class="x-check-column"><input class="x-checkbox" type="checkbox" /></td>',
+			'<td class="x-text-center">',
+				'<span class="x-anchor x-first" handler="mod">修改</span>',
+				'<span class="x-anchor" handler="del">删除</span>',
 			'</td>',
 			'<td>{_sequence_}</td>',
-			'<td class="gridEditor"><input disabled name="phoneNo" value="{phoneNo}"></td>',
+			'<td class="x-gridEditor"><input disabled name="phoneNo" value="{phoneNo}"></td>',
 		'</tr>'
 	].join(''),
 	add: function(el){
@@ -23,7 +23,7 @@ $('#phoneList').gridpanel({
 		var ipt, name, oid, upds = [], adds = [];
 		this.getTableEl().children().children('tr').each(function(i, tr){
 			tr = $(tr);
-			if(tr.hasClass('column-header')) return;
+			if(tr.hasClass('x-column-header')) return;
 			ipt = tr.find('input');
 			
 			oid = tr.attr('nid') || '';
@@ -69,17 +69,17 @@ $('#phoneList').gridpanel({
 		}
 	},
 	del: function(el){
-		var tr = el.parent().parent();
-		if(!tr.attr('nid')) {
-			tr.remove();
+		var tr = el.parent().parent(), nid = tr.attr('nid');
+		if(nid) {
+			this._del([nid]);
 		}
 		else {
-			this._del([el.parent().parent().attr('nid')]);
+			tr.remove();
 		}
 	},
 	del_batch: function(el){
 		var nids = [];
-		this.el.find('tr.selected').each(function(i, tr){
+		this.el.find('tr.x-selected').each(function(i, tr){
 			nids.push($(tr).attr('nid'));
 		});
 		this._del(nids);
@@ -89,17 +89,17 @@ $('#phoneList').gridpanel({
 		if(nids.length < 1) return this;
 		
 		tools.msgbox({title: '删除电话', msg: '是否确认删除电话？', scope: this, negative: function(){}, positive: function(){
-			var map = {};
-			$.each(nids, function(i, nid){map[nid] = 1});
-			
-			var es = [];
-			$.each(ledger.dutyList, function(i, r){
-				if(!map[r.nid]) {
-					es.push(r);
+			this.el.mask().progress('数据处理中...');
+			$.ajax({
+				url: '../phone', type: 'delete', context: this, data: tools.serializeParams({idList: nids}), dataType:'json',
+				success: function(){
+					this.loadData();
+				},
+				error: function(){
+					this.el.unprogress().unmask();
+					tools.msgbox({title: '删除电话', msg: '删除电话失败。', positive: $.emptyFn});
 				}
 			});
-			
-			this.loadData(ledger.dutyList = es);
 		}});
 		
 		return this;
@@ -118,5 +118,8 @@ $('#phoneList').gridpanel({
 				break;
 			}
 		}
+		else {
+			
+		}
 	}
-})//.loadData();
+}).loadData();

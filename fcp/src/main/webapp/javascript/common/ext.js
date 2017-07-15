@@ -130,21 +130,21 @@
 	};
 	$.progress = function(el, text){
 		if(!el.append) el = $(el);
-		var pe = el.children('.progress');
+		var pe = el.children('.x-progress');
 		if(pe.length > 0) pe.html(text);
-		else el.append('<div class="progress">' + text + '</div>');
+		else el.append('<div class="x-progress">' + text + '</div>');
 	};
 	$.unprogress = function(el){
 		if(!el.append) el = $(el);
-		el.children('.progress').remove();
+		el.children('.x-progress').remove();
 	};
 	$.mask = function(el){
 		if(!el.append) el = $(el);
-		if(el.children('.masker').length < 1) el.append('<div class="masker"></div>');
+		if(el.children('.x-masker').length < 1) el.append('<div class="x-masker"></div>');
 	};
 	$.unmask = function(el){
 		if(!el.append) el = $(el);
-		el.children('.masker').remove();
+		el.children('.x-masker').remove();
 	};
 	$.replaceClass = function(el, ocn, ncn){
 		var cn = el.className || '', reg = new RegExp('(^|\\s+)' + ocn + '($|\\s+)', 'g');
