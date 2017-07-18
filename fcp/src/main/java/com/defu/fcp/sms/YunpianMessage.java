@@ -39,8 +39,7 @@ public class YunpianMessage implements IPhoneMessage {
 	public Map<String, Object> sendPhonicMsg(String msg, List<String> phoneNo, Object... args) throws IOException {
 		Map<String, Object> rst = new HashMap<>();
 		for(String no: phoneNo) {
-			msg = ypm.sendPhonicMsg(msg, no, args[0].toString());
-			rst.put(no, Tools.jsonStrtoMap(msg));
+			rst.put(no, Tools.jsonStrtoMap(ypm.sendPhonicMsg(msg, no, args[0].toString())));
 		}
 		return rst;
 	}
