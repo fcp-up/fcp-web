@@ -1,0 +1,30 @@
+<div class="x-window" id="deviceFormWin">
+	<style>
+	#deviceFormWin{width: 300px; height: 240px; margin-left: -150px;}
+	#deviceFormWin input{width: 150px;}
+	#deviceFormWin .x-label{width: 70px; text-align: right; margin-right: 5px;}
+	</style>
+	<div class="x-close"></div>
+	<div class="x-panel-title">设备入库</div>
+	<form class="x-panel-body x-form">
+		<div><label class="x-label" for="no">设备编号</label><input name="no" required /></div>
+		<div><label class="x-label">设备名称</label><input name="name" /></div>
+		<div>
+			<label class="x-label">经度</label><input name="longitude" style="width: 52px;" />
+			<label class="x-label" style="width: auto;">维度</label><input name="latitude" style="width: 52px;" />
+		</div>
+		<div><label class="x-label">信号强度</label><input name="signal" /></div>
+		<div>
+			<label class="x-label" for="terminalNo">终端编号</label>
+			<span class="x-combo" handler="slctTerm"><input name="terminalName" readOnly style="width: 128px;" />
+				<input name="terminalNo" type="hidden" required /><span class="x-trigger-down"></span>
+			</span>
+		</div>
+		<div><label class="x-label">设备位置</label><input name="address" /></div>
+	</form>
+	<div class="x-panel-footer">
+		<div class="x-button" handler="cancel"><span class="x-icon-16 x-icon-nega"></span>取消</div>
+		<div class="x-button" handler="save"><span class="x-icon-16 x-icon-save"></span>提交</div>
+	</div>
+</div>
+<script type="text/javascript" src="static/javascript/win/deviceFormWin.js"></script>

@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.defu.atom.dao.IDaoAdmindiv">
+	<insert id="add" parameterType="java.util.Map">
+		insert into tb_admindiv
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test='params.containsKey("no") == true'>
+				f_no,
+			</if>
+			<if test='params.containsKey("name") == true'>
+				f_name,
+			</if>
+			<if test='params.containsKey("parentNo") == true'>
+				f_parentNo,
+			</if>
+			<if test='params.containsKey("level") == true'>
+				f_level,
+			</if>
+			<if test='params.containsKey("kind") == true'>
+				f_kind,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test='params.containsKey("no") == true'>
+				<if test='params.get("no") != null'>#{params.no},</if>
+				<if test='params.get("no") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("name") == true'>
+				<if test='params.get("name") != null'>#{params.name},</if>
+				<if test='params.get("name") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("parentNo") == true'>
+				<if test='params.get("parentNo") != null'>#{params.parentNo},</if>
+				<if test='params.get("parentNo") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("level") == true'>
+				<if test='params.get("level") != null'>#{params.level},</if>
+				<if test='params.get("level") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("kind") == true'>
+				<if test='params.get("kind") != null'>#{params.kind},</if>
+				<if test='params.get("kind") == null'>null,</if>
+			</if>
+		</trim>
+	</insert>
+	<insert id="addBatch" parameterType="java.util.Map">
+		insert into tb_admindiv (f_no, f_name, f_parentNo, f_level, f_kind) values
+		<foreach collection="params" item="item" index="index" separator=",">
+			(#{item.no}, #{item.name}, #{item.parentNo}, #{item.level}, #{item.kind})
+		</foreach>
+	</insert>
+	<delete id="delete" parameterType="java.util.Map">
+		delete from tb_admindiv
+		<where>
+			<if test='params.containsKey("no") == true'>
+				<if test='params.get("no") != null'>and f_no = #{params.no}</if>
+				<if test='params.get("no") == null'>and f_no is null</if>
+			</if>
+			<if test='params.get("noList") != null'>
+				and f_no in(<foreach collection="params.noList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minNo") != null'>and f_no >= #{params.minNo}</if>
+			<if test='params.get("maxNo") != null'>and f_no &lt; #{params.maxNo}</if>
+			<if test='params.get("subNo") != null'>and f_no like '%${params.subNo}%'</if>
+			<if test='params.get("startsWithNo") != null'>and f_no like '%${params.startsWithNo}'</if>
+			<if test='params.get("endsWithNo") != null'>and f_no like '${params.endsWithNo}%'</if>
+			<if test='params.containsKey("name") == true'>
+				<if test='params.get("name") != null'>and f_name = #{params.name}</if>
+				<if test='params.get("name") == null'>and f_name is null</if>
+			</if>
+			<if test='params.get("nameList") != null'>
+				and f_name in(<foreach collection="params.nameList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minName") != null'>and f_name >= #{params.minName}</if>
+			<if test='params.get("maxName") != null'>and f_name &lt; #{params.maxName}</if>
+			<if test='params.get("subName") != null'>and f_name like '%${params.subName}%'</if>
+			<if test='params.get("startsWithName") != null'>and f_name like '%${params.startsWithName}'</if>
+			<if test='params.get("endsWithName") != null'>and f_name like '${params.endsWithName}%'</if>
+			<if test='params.containsKey("parentNo") == true'>
+				<if test='params.get("parentNo") != null'>and f_parentNo = #{params.parentNo}</if>
+				<if test='params.get("parentNo") == null'>and f_parentNo is null</if>
+			</if>
+			<if test='params.get("parentNoList") != null'>
+				and f_parentNo in(<foreach collection="params.parentNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minParentNo") != null'>and f_parentNo >= #{params.minParentNo}</if>
+			<if test='params.get("maxParentNo") != null'>and f_parentNo &lt; #{params.maxParentNo}</if>
+			<if test='params.get("subParentNo") != null'>and f_parentNo like '%${params.subParentNo}%'</if>
+			<if test='params.get("startsWithParentNo") != null'>and f_parentNo like '%${params.startsWithParentNo}'</if>
+			<if test='params.get("endsWithParentNo") != null'>and f_parentNo like '${params.endsWithParentNo}%'</if>
+			<if test='params.containsKey("level") == true'>
+				<if test='params.get("level") != null'>and f_level = #{params.level}</if>
+				<if test='params.get("level") == null'>and f_level is null</if>
+			</if>
+			<if test='params.get("levelList") != null'>
+				and f_level in(<foreach collection="params.levelList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minLevel") != null'>and f_level >= #{params.minLevel}</if>
+			<if test='params.get("maxLevel") != null'>and f_level &lt; #{params.maxLevel}</if>
+			<if test='params.get("subLevel") != null'>and f_level like '%${params.subLevel}%'</if>
+			<if test='params.get("startsWithLevel") != null'>and f_level like '%${params.startsWithLevel}'</if>
+			<if test='params.get("endsWithLevel") != null'>and f_level like '${params.endsWithLevel}%'</if>
+			<if test='params.containsKey("kind") == true'>
+				<if test='params.get("kind") != null'>and f_kind = #{params.kind}</if>
+				<if test='params.get("kind") == null'>and f_kind is null</if>
+			</if>
+			<if test='params.get("kindList") != null'>
+				and f_kind in(<foreach collection="params.kindList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minKind") != null'>and f_kind >= #{params.minKind}</if>
+			<if test='params.get("maxKind") != null'>and f_kind &lt; #{params.maxKind}</if>
+			<if test='params.get("subKind") != null'>and f_kind like '%${params.subKind}%'</if>
+			<if test='params.get("startsWithKind") != null'>and f_kind like '%${params.startsWithKind}'</if>
+			<if test='params.get("endsWithKind") != null'>and f_kind like '${params.endsWithKind}%'</if>
+		</where>
+	</delete>
+	<update id="update">
+		update tb_admindiv
+		<set>
+			<if test="obj != null">
+				<if test='obj.containsKey("no") == true'>
+					<if test='obj.get("no") != null'>f_no = #{obj.no},</if>
+					<if test='obj.get("no") == null'>f_no = null,</if>
+				</if>
+				<if test='obj.containsKey("name") == true'>
+					<if test='obj.get("name") != null'>f_name = #{obj.name},</if>
+					<if test='obj.get("name") == null'>f_name = null,</if>
+				</if>
+				<if test='obj.containsKey("parentNo") == true'>
+					<if test='obj.get("parentNo") != null'>f_parentNo = #{obj.parentNo},</if>
+					<if test='obj.get("parentNo") == null'>f_parentNo = null,</if>
+				</if>
+				<if test='obj.containsKey("level") == true'>
+					<if test='obj.get("level") != null'>f_level = #{obj.level},</if>
+					<if test='obj.get("level") == null'>f_level = null,</if>
+				</if>
+				<if test='obj.containsKey("kind") == true'>
+					<if test='obj.get("kind") != null'>f_kind = #{obj.kind},</if>
+					<if test='obj.get("kind") == null'>f_kind = null,</if>
+				</if>
+			</if>
+		</set>
+		<where>
+			<if test="tag != null">
+				<if test='tag.containsKey("no") == true'>
+					<if test='tag.get("no") != null'>and f_no = #{tag.no}</if>
+					<if test='tag.get("no") == null'>and f_no is null</if>
+				</if>
+    			<if test='tag.get("f_noList") != null'>
+    				and f_no in(<foreach collection='tag.get("f_noList")' item="item" index="index" separator=",">#{item}</foreach>)
+    			</if>
+    			<if test='tag.get("minNo") != null'>and f_no >= #{tag.minNo}</if>
+    			<if test='tag.get("maxNo") != null'>and f_no &lt; #{tag.maxNo}</if>
+    			<if test='tag.get("subNo") != null'>and f_no like '%${tag.subNo}%'</if>
+    			<if test='tag.get("startsWithNo") != null'>and f_no like '%${tag.startsWithNo}'</if>
+    			<if test='tag.get("endsWithNo") != null'>and f_no like '${tag.endsWithNo}%'</if>
+				<if test='tag.containsKey("name") == true'>
+					<if test='tag.get("name") != null'>and f_name = #{tag.name}</if>
+					<if test='tag.get("name") == null'>and f_name is null</if>
+				</if>
+    			<if test='tag.get("f_nameList") != null'>
+    				and f_name in(<foreach collection='tag.get("f_nameList")' item="item" index="index" separator=",">#{item}</foreach>)
+    			</if>
+    			<if test='tag.get("minName") != null'>and f_name >= #{tag.minName}</if>
+    			<if test='tag.get("maxName") != null'>and f_name &lt; #{tag.maxName}</if>
+    			<if test='tag.get("subName") != null'>and f_name like '%${tag.subName}%'</if>
+    			<if test='tag.get("startsWithName") != null'>and f_name like '%${tag.startsWithName}'</if>
+    			<if test='tag.get("endsWithName") != null'>and f_name like '${tag.endsWithName}%'</if>
+				<if test='tag.containsKey("parentNo") == true'>
+					<if test='tag.get("parentNo") != null'>and f_parentNo = #{tag.parentNo}</if>
+					<if test='tag.get("parentNo") == null'>and f_parentNo is null</if>
+				</if>
+    			<if test='tag.get("f_parentNoList") != null'>
+    				and f_parentNo in(<foreach collection='tag.get("f_parentNoList")' item="item" index="index" separator=",">#{item}</foreach>)
+    			</if>
+    			<if test='tag.get("minParentNo") != null'>and f_parentNo >= #{tag.minParentNo}</if>
+    			<if test='tag.get("maxParentNo") != null'>and f_parentNo &lt; #{tag.maxParentNo}</if>
+    			<if test='tag.get("subParentNo") != null'>and f_parentNo like '%${tag.subParentNo}%'</if>
+    			<if test='tag.get("startsWithParentNo") != null'>and f_parentNo like '%${tag.startsWithParentNo}'</if>
+    			<if test='tag.get("endsWithParentNo") != null'>and f_parentNo like '${tag.endsWithParentNo}%'</if>
+				<if test='tag.containsKey("level") == true'>
+					<if test='tag.get("level") != null'>and f_level = #{tag.level}</if>
+					<if test='tag.get("level") == null'>and f_level is null</if>
+				</if>
+    			<if test='tag.get("f_levelList") != null'>
+    				and f_level in(<foreach collection='tag.get("f_levelList")' item="item" index="index" separator=",">#{item}</foreach>)
+    			</if>
+    			<if test='tag.get("minLevel") != null'>and f_level >= #{tag.minLevel}</if>
+    			<if test='tag.get("maxLevel") != null'>and f_level &lt; #{tag.maxLevel}</if>
+    			<if test='tag.get("subLevel") != null'>and f_level like '%${tag.subLevel}%'</if>
+    			<if test='tag.get("startsWithLevel") != null'>and f_level like '%${tag.startsWithLevel}'</if>
+    			<if test='tag.get("endsWithLevel") != null'>and f_level like '${tag.endsWithLevel}%'</if>
+				<if test='tag.containsKey("kind") == true'>
+					<if test='tag.get("kind") != null'>and f_kind = #{tag.kind}</if>
+					<if test='tag.get("kind") == null'>and f_kind is null</if>
+				</if>
+    			<if test='tag.get("f_kindList") != null'>
+    				and f_kind in(<foreach collection='tag.get("f_kindList")' item="item" index="index" separator=",">#{item}</foreach>)
+    			</if>
+    			<if test='tag.get("minKind") != null'>and f_kind >= #{tag.minKind}</if>
+    			<if test='tag.get("maxKind") != null'>and f_kind &lt; #{tag.maxKind}</if>
+    			<if test='tag.get("subKind") != null'>and f_kind like '%${tag.subKind}%'</if>
+    			<if test='tag.get("startsWithKind") != null'>and f_kind like '%${tag.startsWithKind}'</if>
+    			<if test='tag.get("endsWithKind") != null'>and f_kind like '${tag.endsWithKind}%'</if>
+			</if>
+		</where>
+	</update>
+	<select id="single" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			f_no as no,
+			f_name as name,
+			f_parentNo as parentNo,
+			f_level as level,
+			f_kind as kind
+		from tb_admindiv
+		<where>
+			<if test='params.containsKey("no") == true'>
+				<if test='params.get("no") != null'>and f_no = #{params.no}</if>
+				<if test='params.get("no") == null'>and f_no is null</if>
+			</if>
+			<if test='params.get("noList") != null'>
+				and f_no in(<foreach collection="params.noList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minNo") != null'>and f_no >= #{params.minNo}</if>
+			<if test='params.get("maxNo") != null'>and f_no &lt; #{params.maxNo}</if>
+			<if test='params.get("subNo") != null'>and f_no like '%${params.subNo}%'</if>
+			<if test='params.get("startsWithNo") != null'>and f_no like '%${params.startsWithNo}'</if>
+			<if test='params.get("endsWithNo") != null'>and f_no like '${params.endsWithNo}%'</if>
+			<if test='params.containsKey("name") == true'>
+				<if test='params.get("name") != null'>and f_name = #{params.name}</if>
+				<if test='params.get("name") == null'>and f_name is null</if>
+			</if>
+			<if test='params.get("nameList") != null'>
+				and f_name in(<foreach collection="params.nameList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minName") != null'>and f_name >= #{params.minName}</if>
+			<if test='params.get("maxName") != null'>and f_name &lt; #{params.maxName}</if>
+			<if test='params.get("subName") != null'>and f_name like '%${params.subName}%'</if>
+			<if test='params.get("startsWithName") != null'>and f_name like '%${params.startsWithName}'</if>
+			<if test='params.get("endsWithName") != null'>and f_name like '${params.endsWithName}%'</if>
+			<if test='params.containsKey("parentNo") == true'>
+				<if test='params.get("parentNo") != null'>and f_parentNo = #{params.parentNo}</if>
+				<if test='params.get("parentNo") == null'>and f_parentNo is null</if>
+			</if>
+			<if test='params.get("parentNoList") != null'>
+				and f_parentNo in(<foreach collection="params.parentNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minParentNo") != null'>and f_parentNo >= #{params.minParentNo}</if>
+			<if test='params.get("maxParentNo") != null'>and f_parentNo &lt; #{params.maxParentNo}</if>
+			<if test='params.get("subParentNo") != null'>and f_parentNo like '%${params.subParentNo}%'</if>
+			<if test='params.get("startsWithParentNo") != null'>and f_parentNo like '%${params.startsWithParentNo}'</if>
+			<if test='params.get("endsWithParentNo") != null'>and f_parentNo like '${params.endsWithParentNo}%'</if>
+			<if test='params.containsKey("level") == true'>
+				<if test='params.get("level") != null'>and f_level = #{params.level}</if>
+				<if test='params.get("level") == null'>and f_level is null</if>
+			</if>
+			<if test='params.get("levelList") != null'>
+				and f_level in(<foreach collection="params.levelList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minLevel") != null'>and f_level >= #{params.minLevel}</if>
+			<if test='params.get("maxLevel") != null'>and f_level &lt; #{params.maxLevel}</if>
+			<if test='params.get("subLevel") != null'>and f_level like '%${params.subLevel}%'</if>
+			<if test='params.get("startsWithLevel") != null'>and f_level like '%${params.startsWithLevel}'</if>
+			<if test='params.get("endsWithLevel") != null'>and f_level like '${params.endsWithLevel}%'</if>
+			<if test='params.containsKey("kind") == true'>
+				<if test='params.get("kind") != null'>and f_kind = #{params.kind}</if>
+				<if test='params.get("kind") == null'>and f_kind is null</if>
+			</if>
+			<if test='params.get("kindList") != null'>
+				and f_kind in(<foreach collection="params.kindList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minKind") != null'>and f_kind >= #{params.minKind}</if>
+			<if test='params.get("maxKind") != null'>and f_kind &lt; #{params.maxKind}</if>
+			<if test='params.get("subKind") != null'>and f_kind like '%${params.subKind}%'</if>
+			<if test='params.get("startsWithKind") != null'>and f_kind like '%${params.startsWithKind}'</if>
+			<if test='params.get("endsWithKind") != null'>and f_kind like '${params.endsWithKind}%'</if>
+		</where>
+		<if test="params._sort != null">
+			order by 
+			<foreach collection="params._sort" item="item" index="index" separator=",">
+				${item.name} <if test="item.sort == 1">desc</if>
+			</foreach>
+		</if>
+		limit 0, 1
+	</select>
+	<select id="count" parameterType="java.util.Map" resultType="Long">
+		select count(f_no)
+		from tb_admindiv
+		<where>
+			<if test='params.containsKey("no") == true'>
+				<if test='params.get("no") != null'>and f_no = #{params.no}</if>
+				<if test='params.get("no") == null'>and f_no is null</if>
+			</if>
+			<if test='params.get("noList") != null'>
+				and f_no in(<foreach collection="params.noList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minNo") != null'>and f_no >= #{params.minNo}</if>
+			<if test='params.get("maxNo") != null'>and f_no &lt; #{params.maxNo}</if>
+			<if test='params.get("subNo") != null'>and f_no like '%${params.subNo}%'</if>
+			<if test='params.get("startsWithNo") != null'>and f_no like '%${params.startsWithNo}'</if>
+			<if test='params.get("endsWithNo") != null'>and f_no like '${params.endsWithNo}%'</if>
+			<if test='params.containsKey("name") == true'>
+				<if test='params.get("name") != null'>and f_name = #{params.name}</if>
+				<if test='params.get("name") == null'>and f_name is null</if>
+			</if>
+			<if test='params.get("nameList") != null'>
+				and f_name in(<foreach collection="params.nameList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minName") != null'>and f_name >= #{params.minName}</if>
+			<if test='params.get("maxName") != null'>and f_name &lt; #{params.maxName}</if>
+			<if test='params.get("subName") != null'>and f_name like '%${params.subName}%'</if>
+			<if test='params.get("startsWithName") != null'>and f_name like '%${params.startsWithName}'</if>
+			<if test='params.get("endsWithName") != null'>and f_name like '${params.endsWithName}%'</if>
+			<if test='params.containsKey("parentNo") == true'>
+				<if test='params.get("parentNo") != null'>and f_parentNo = #{params.parentNo}</if>
+				<if test='params.get("parentNo") == null'>and f_parentNo is null</if>
+			</if>
+			<if test='params.get("parentNoList") != null'>
+				and f_parentNo in(<foreach collection="params.parentNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minParentNo") != null'>and f_parentNo >= #{params.minParentNo}</if>
+			<if test='params.get("maxParentNo") != null'>and f_parentNo &lt; #{params.maxParentNo}</if>
+			<if test='params.get("subParentNo") != null'>and f_parentNo like '%${params.subParentNo}%'</if>
+			<if test='params.get("startsWithParentNo") != null'>and f_parentNo like '%${params.startsWithParentNo}'</if>
+			<if test='params.get("endsWithParentNo") != null'>and f_parentNo like '${params.endsWithParentNo}%'</if>
+			<if test='params.containsKey("level") == true'>
+				<if test='params.get("level") != null'>and f_level = #{params.level}</if>
+				<if test='params.get("level") == null'>and f_level is null</if>
+			</if>
+			<if test='params.get("levelList") != null'>
+				and f_level in(<foreach collection="params.levelList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minLevel") != null'>and f_level >= #{params.minLevel}</if>
+			<if test='params.get("maxLevel") != null'>and f_level &lt; #{params.maxLevel}</if>
+			<if test='params.get("subLevel") != null'>and f_level like '%${params.subLevel}%'</if>
+			<if test='params.get("startsWithLevel") != null'>and f_level like '%${params.startsWithLevel}'</if>
+			<if test='params.get("endsWithLevel") != null'>and f_level like '${params.endsWithLevel}%'</if>
+			<if test='params.containsKey("kind") == true'>
+				<if test='params.get("kind") != null'>and f_kind = #{params.kind}</if>
+				<if test='params.get("kind") == null'>and f_kind is null</if>
+			</if>
+			<if test='params.get("kindList") != null'>
+				and f_kind in(<foreach collection="params.kindList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minKind") != null'>and f_kind >= #{params.minKind}</if>
+			<if test='params.get("maxKind") != null'>and f_kind &lt; #{params.maxKind}</if>
+			<if test='params.get("subKind") != null'>and f_kind like '%${params.subKind}%'</if>
+			<if test='params.get("startsWithKind") != null'>and f_kind like '%${params.startsWithKind}'</if>
+			<if test='params.get("endsWithKind") != null'>and f_kind like '${params.endsWithKind}%'</if>
+		</where>
+	</select>
+	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			f_no as no,
+			f_name as name,
+			f_parentNo as parentNo,
+			f_level as level,
+			f_kind as kind
+		from tb_admindiv
+		<where>
+			<if test='params.containsKey("no") == true'>
+				<if test='params.get("no") != null'>and f_no = #{params.no}</if>
+				<if test='params.get("no") == null'>and f_no is null</if>
+			</if>
+			<if test='params.get("noList") != null'>
+				and f_no in(<foreach collection="params.noList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minNo") != null'>and f_no >= #{params.minNo}</if>
+			<if test='params.get("maxNo") != null'>and f_no &lt; #{params.maxNo}</if>
+			<if test='params.get("subNo") != null'>and f_no like '%${params.subNo}%'</if>
+			<if test='params.get("startsWithNo") != null'>and f_no like '%${params.startsWithNo}'</if>
+			<if test='params.get("endsWithNo") != null'>and f_no like '${params.endsWithNo}%'</if>
+			<if test='params.containsKey("name") == true'>
+				<if test='params.get("name") != null'>and f_name = #{params.name}</if>
+				<if test='params.get("name") == null'>and f_name is null</if>
+			</if>
+			<if test='params.get("nameList") != null'>
+				and f_name in(<foreach collection="params.nameList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minName") != null'>and f_name >= #{params.minName}</if>
+			<if test='params.get("maxName") != null'>and f_name &lt; #{params.maxName}</if>
+			<if test='params.get("subName") != null'>and f_name like '%${params.subName}%'</if>
+			<if test='params.get("startsWithName") != null'>and f_name like '%${params.startsWithName}'</if>
+			<if test='params.get("endsWithName") != null'>and f_name like '${params.endsWithName}%'</if>
+			<if test='params.containsKey("parentNo") == true'>
+				<if test='params.get("parentNo") != null'>and f_parentNo = #{params.parentNo}</if>
+				<if test='params.get("parentNo") == null'>and f_parentNo is null</if>
+			</if>
+			<if test='params.get("parentNoList") != null'>
+				and f_parentNo in(<foreach collection="params.parentNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minParentNo") != null'>and f_parentNo >= #{params.minParentNo}</if>
+			<if test='params.get("maxParentNo") != null'>and f_parentNo &lt; #{params.maxParentNo}</if>
+			<if test='params.get("subParentNo") != null'>and f_parentNo like '%${params.subParentNo}%'</if>
+			<if test='params.get("startsWithParentNo") != null'>and f_parentNo like '%${params.startsWithParentNo}'</if>
+			<if test='params.get("endsWithParentNo") != null'>and f_parentNo like '${params.endsWithParentNo}%'</if>
+			<if test='params.containsKey("level") == true'>
+				<if test='params.get("level") != null'>and f_level = #{params.level}</if>
+				<if test='params.get("level") == null'>and f_level is null</if>
+			</if>
+			<if test='params.get("levelList") != null'>
+				and f_level in(<foreach collection="params.levelList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minLevel") != null'>and f_level >= #{params.minLevel}</if>
+			<if test='params.get("maxLevel") != null'>and f_level &lt; #{params.maxLevel}</if>
+			<if test='params.get("subLevel") != null'>and f_level like '%${params.subLevel}%'</if>
+			<if test='params.get("startsWithLevel") != null'>and f_level like '%${params.startsWithLevel}'</if>
+			<if test='params.get("endsWithLevel") != null'>and f_level like '${params.endsWithLevel}%'</if>
+			<if test='params.containsKey("kind") == true'>
+				<if test='params.get("kind") != null'>and f_kind = #{params.kind}</if>
+				<if test='params.get("kind") == null'>and f_kind is null</if>
+			</if>
+			<if test='params.get("kindList") != null'>
+				and f_kind in(<foreach collection="params.kindList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minKind") != null'>and f_kind >= #{params.minKind}</if>
+			<if test='params.get("maxKind") != null'>and f_kind &lt; #{params.maxKind}</if>
+			<if test='params.get("subKind") != null'>and f_kind like '%${params.subKind}%'</if>
+			<if test='params.get("startsWithKind") != null'>and f_kind like '%${params.startsWithKind}'</if>
+			<if test='params.get("endsWithKind") != null'>and f_kind like '${params.endsWithKind}%'</if>
+		</where>
+		<if test="params._sort != null">
+			order by 
+			<foreach collection="params._sort" item="item" index="index" separator=",">
+				${item.name} <if test="item.sort == 1">desc</if>
+			</foreach>
+		</if>
+		<if test="params._start != null and params._limit != null">
+			limit ${params._start}, ${params._limit}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.defu.atom.dao.IDaoTerminalonlinercd">
+	<insert id="add" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="params.id" keyColumn="f_id">
+		insert into tb_terminalonlinercd
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test='params.containsKey("terminalNo") == true'>
+				f_terminalNo,
+			</if>
+			<if test='params.containsKey("time") == true'>
+				f_time,
+			</if>
+			<if test='params.containsKey("state") == true'>
+				f_state,
+			</if>
+			<if test='params.containsKey("terminalSignal") == true'>
+				f_terminalSignal,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test='params.containsKey("terminalNo") == true'>
+				<if test='params.get("terminalNo") != null'>#{params.terminalNo},</if>
+				<if test='params.get("terminalNo") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("time") == true'>
+				<if test='params.get("time") != null'>#{params.time},</if>
+				<if test='params.get("time") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("state") == true'>
+				<if test='params.get("state") != null'>#{params.state},</if>
+				<if test='params.get("state") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("terminalSignal") == true'>
+				<if test='params.get("terminalSignal") != null'>#{params.terminalSignal},</if>
+				<if test='params.get("terminalSignal") == null'>null,</if>
+			</if>
+		</trim>
+	</insert>
+	<insert id="addBatch" parameterType="java.util.Map">
+		insert into tb_terminalonlinercd (f_terminalNo, f_time, f_state, f_terminalSignal) values
+		<foreach collection="params" item="item" index="index" separator=",">
+			(#{item.terminalNo}, #{item.time}, #{item.state}, #{item.terminalSignal})
+		</foreach>
+	</insert>
+	<delete id="delete" parameterType="java.util.Map">
+		delete from tb_terminalonlinercd
+		<where>
+			<if test='params.containsKey("id") == true'>
+				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") == null'>and f_id is null</if>
+			</if>
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
+			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
+			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
+			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.containsKey("terminalNo") == true'>
+				<if test='params.get("terminalNo") != null'>and f_terminalNo = #{params.terminalNo}</if>
+				<if test='params.get("terminalNo") == null'>and f_terminalNo is null</if>
+			</if>
+			<if test='params.get("terminalNoList") != null'>
+				and f_terminalNo in(<foreach collection="params.terminalNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= #{params.minTerminalNo}</if>
+			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; #{params.maxTerminalNo}</if>
+			<if test='params.get("subTerminalNo") != null'>and f_terminalNo like '%${params.subTerminalNo}%'</if>
+			<if test='params.get("startsWithTerminalNo") != null'>and f_terminalNo like '%${params.startsWithTerminalNo}'</if>
+			<if test='params.get("endsWithTerminalNo") != null'>and f_terminalNo like '${params.endsWithTerminalNo}%'</if>
+			<if test='params.containsKey("time") == true'>
+				<if test='params.get("time") != null'>and f_time = #{params.time}</if>
+				<if test='params.get("time") == null'>and f_time is null</if>
+			</if>
+			<if test='params.get("timeList") != null'>
+				and f_time in(<foreach collection="params.timeList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minTime") != null'>and f_time >= #{params.minTime}</if>
+			<if test='params.get("maxTime") != null'>and f_time &lt; #{params.maxTime}</if>
+			<if test='params.get("subTime") != null'>and f_time like '%${params.subTime}%'</if>
+			<if test='params.get("startsWithTime") != null'>and f_time like '%${params.startsWithTime}'</if>
+			<if test='params.get("endsWithTime") != null'>and f_time like '${params.endsWithTime}%'</if>
+			<if test='params.containsKey("state") == true'>
+				<if test='params.get("state") != null'>and f_state = #{params.state}</if>
+				<if test='params.get("state") == null'>and f_state is null</if>
+			</if>
+			<if test='params.get("stateList") != null'>
+				and f_state in(<foreach collection="params.stateList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minState") != null'>and f_state >= #{params.minState}</if>
+			<if test='params.get("maxState") != null'>and f_state &lt; #{params.maxState}</if>
+			<if test='params.get("subState") != null'>and f_state like '%${params.subState}%'</if>
+			<if test='params.get("startsWithState") != null'>and f_state like '%${params.startsWithState}'</if>
+			<if test='params.get("endsWithState") != null'>and f_state like '${params.endsWithState}%'</if>
+			<if test='params.containsKey("terminalSignal") == true'>
+				<if test='params.get("terminalSignal") != null'>and f_terminalSignal = #{params.terminalSignal}</if>
+				<if test='params.get("terminalSignal") == null'>and f_terminalSignal is null</if>
+			</if>
+			<if test='params.get("terminalSignalList") != null'>
+				and f_terminalSignal in(<foreach collection="params.terminalSignalList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minTerminalSignal") != null'>and f_terminalSignal >= #{params.minTerminalSignal}</if>
+			<if test='params.get("maxTerminalSignal") != null'>and f_terminalSignal &lt; #{params.maxTerminalSignal}</if>
+			<if test='params.get("subTerminalSignal") != null'>and f_terminalSignal like '%${params.subTerminalSignal}%'</if>
+			<if test='params.get("startsWithTerminalSignal") != null'>and f_terminalSignal like '%${params.startsWithTerminalSignal}'</if>
+			<if test='params.get("endsWithTerminalSignal") != null'>and f_terminalSignal like '${params.endsWithTerminalSignal}%'</if>
+		</where>
+	</delete>
+	<update id="update">
+		update tb_terminalonlinercd
+		<set>
+			<if test="obj != null">
+				<if test='obj.containsKey("id") == true'>
+					<if test='obj.get("id") != null'>f_id = #{obj.id},</if>
+					<if test='obj.get("id") == null'>f_id = null,</if>
+				</if>
+				<if test='obj.containsKey("terminalNo") == true'>
+					<if test='obj.get("terminalNo") != null'>f_terminalNo = #{obj.terminalNo},</if>
+					<if test='obj.get("terminalNo") == null'>f_terminalNo = null,</if>
+				</if>
+				<if test='obj.containsKey("time") == true'>
+					<if test='obj.get("time") != null'>f_time = #{obj.time},</if>
+					<if test='obj.get("time") == null'>f_time = null,</if>
+				</if>
+				<if test='obj.containsKey("state") == true'>
+					<if test='obj.get("state") != null'>f_state = #{obj.state},</if>
+					<if test='obj.get("state") == null'>f_state = null,</if>
+				</if>
+				<if test='obj.containsKey("terminalSignal") == true'>
+					<if test='obj.get("terminalSignal") != null'>f_terminalSignal = #{obj.terminalSignal},</if>
+					<if test='obj.get("terminalSignal") == null'>f_terminalSignal = null,</if>
+				</if>
+			</if>
+		</set>
+		<where>
+			<if test="tag != null">
+				<if test='tag.containsKey("id") == true'>
+					<if test='tag.get("id") != null'>and f_id = #{tag.id}</if>
+					<if test='tag.get("id") == null'>and f_id is null</if>
+				</if>
+    			<if test='tag.get("f_idList") != null'>
+    				and f_id in(<foreach collection='tag.get("f_idList")' item="item" index="index" separator=",">#{item}</foreach>)
+    			</if>
+    			<if test='tag.get("minId") != null'>and f_id >= #{tag.minId}</if>
+    			<if test='tag.get("maxId") != null'>and f_id &lt; #{tag.maxId}</if>
+    			<if test='tag.get("subId") != null'>and f_id like '%${tag.subId}%'</if>
+    			<if test='tag.get("startsWithId") != null'>and f_id like '%${tag.startsWithId}'</if>
+    			<if test='tag.get("endsWithId") != null'>and f_id like '${tag.endsWithId}%'</if>
+				<if test='tag.containsKey("terminalNo") == true'>
+					<if test='tag.get("terminalNo") != null'>and f_terminalNo = #{tag.terminalNo}</if>
+					<if test='tag.get("terminalNo") == null'>and f_terminalNo is null</if>
+				</if>
+    			<if test='tag.get("f_terminalNoList") != null'>
+    				and f_terminalNo in(<foreach collection='tag.get("f_terminalNoList")' item="item" index="index" separator=",">#{item}</foreach>)
+    			</if>
+    			<if test='tag.get("minTerminalNo") != null'>and f_terminalNo >= #{tag.minTerminalNo}</if>
+    			<if test='tag.get("maxTerminalNo") != null'>and f_terminalNo &lt; #{tag.maxTerminalNo}</if>
+    			<if test='tag.get("subTerminalNo") != null'>and f_terminalNo like '%${tag.subTerminalNo}%'</if>
+    			<if test='tag.get("startsWithTerminalNo") != null'>and f_terminalNo like '%${tag.startsWithTerminalNo}'</if>
+    			<if test='tag.get("endsWithTerminalNo") != null'>and f_terminalNo like '${tag.endsWithTerminalNo}%'</if>
+				<if test='tag.containsKey("time") == true'>
+					<if test='tag.get("time") != null'>and f_time = #{tag.time}</if>
+					<if test='tag.get("time") == null'>and f_time is null</if>
+				</if>
+    			<if test='tag.get("f_timeList") != null'>
+    				and f_time in(<foreach collection='tag.get("f_timeList")' item="item" index="index" separator=",">#{item}</foreach>)
+    			</if>
+    			<if test='tag.get("minTime") != null'>and f_time >= #{tag.minTime}</if>
+    			<if test='tag.get("maxTime") != null'>and f_time &lt; #{tag.maxTime}</if>
+    			<if test='tag.get("subTime") != null'>and f_time like '%${tag.subTime}%'</if>
+    			<if test='tag.get("startsWithTime") != null'>and f_time like '%${tag.startsWithTime}'</if>
+    			<if test='tag.get("endsWithTime") != null'>and f_time like '${tag.endsWithTime}%'</if>
+				<if test='tag.containsKey("state") == true'>
+					<if test='tag.get("state") != null'>and f_state = #{tag.state}</if>
+					<if test='tag.get("state") == null'>and f_state is null</if>
+				</if>
+    			<if test='tag.get("f_stateList") != null'>
+    				and f_state in(<foreach collection='tag.get("f_stateList")' item="item" index="index" separator=",">#{item}</foreach>)
+    			</if>
+    			<if test='tag.get("minState") != null'>and f_state >= #{tag.minState}</if>
+    			<if test='tag.get("maxState") != null'>and f_state &lt; #{tag.maxState}</if>
+    			<if test='tag.get("subState") != null'>and f_state like '%${tag.subState}%'</if>
+    			<if test='tag.get("startsWithState") != null'>and f_state like '%${tag.startsWithState}'</if>
+    			<if test='tag.get("endsWithState") != null'>and f_state like '${tag.endsWithState}%'</if>
+				<if test='tag.containsKey("terminalSignal") == true'>
+					<if test='tag.get("terminalSignal") != null'>and f_terminalSignal = #{tag.terminalSignal}</if>
+					<if test='tag.get("terminalSignal") == null'>and f_terminalSignal is null</if>
+				</if>
+    			<if test='tag.get("f_terminalSignalList") != null'>
+    				and f_terminalSignal in(<foreach collection='tag.get("f_terminalSignalList")' item="item" index="index" separator=",">#{item}</foreach>)
+    			</if>
+    			<if test='tag.get("minTerminalSignal") != null'>and f_terminalSignal >= #{tag.minTerminalSignal}</if>
+    			<if test='tag.get("maxTerminalSignal") != null'>and f_terminalSignal &lt; #{tag.maxTerminalSignal}</if>
+    			<if test='tag.get("subTerminalSignal") != null'>and f_terminalSignal like '%${tag.subTerminalSignal}%'</if>
+    			<if test='tag.get("startsWithTerminalSignal") != null'>and f_terminalSignal like '%${tag.startsWithTerminalSignal}'</if>
+    			<if test='tag.get("endsWithTerminalSignal") != null'>and f_terminalSignal like '${tag.endsWithTerminalSignal}%'</if>
+			</if>
+		</where>
+	</update>
+	<select id="single" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			f_id as id,
+			f_terminalNo as terminalNo,
+			f_time as time,
+			f_state as state,
+			f_terminalSignal as terminalSignal
+		from tb_terminalonlinercd
+		<where>
+			<if test='params.containsKey("id") == true'>
+				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") == null'>and f_id is null</if>
+			</if>
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
+			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
+			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
+			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.containsKey("terminalNo") == true'>
+				<if test='params.get("terminalNo") != null'>and f_terminalNo = #{params.terminalNo}</if>
+				<if test='params.get("terminalNo") == null'>and f_terminalNo is null</if>
+			</if>
+			<if test='params.get("terminalNoList") != null'>
+				and f_terminalNo in(<foreach collection="params.terminalNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= #{params.minTerminalNo}</if>
+			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; #{params.maxTerminalNo}</if>
+			<if test='params.get("subTerminalNo") != null'>and f_terminalNo like '%${params.subTerminalNo}%'</if>
+			<if test='params.get("startsWithTerminalNo") != null'>and f_terminalNo like '%${params.startsWithTerminalNo}'</if>
+			<if test='params.get("endsWithTerminalNo") != null'>and f_terminalNo like '${params.endsWithTerminalNo}%'</if>
+			<if test='params.containsKey("time") == true'>
+				<if test='params.get("time") != null'>and f_time = #{params.time}</if>
+				<if test='params.get("time") == null'>and f_time is null</if>
+			</if>
+			<if test='params.get("timeList") != null'>
+				and f_time in(<foreach collection="params.timeList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minTime") != null'>and f_time >= #{params.minTime}</if>
+			<if test='params.get("maxTime") != null'>and f_time &lt; #{params.maxTime}</if>
+			<if test='params.get("subTime") != null'>and f_time like '%${params.subTime}%'</if>
+			<if test='params.get("startsWithTime") != null'>and f_time like '%${params.startsWithTime}'</if>
+			<if test='params.get("endsWithTime") != null'>and f_time like '${params.endsWithTime}%'</if>
+			<if test='params.containsKey("state") == true'>
+				<if test='params.get("state") != null'>and f_state = #{params.state}</if>
+				<if test='params.get("state") == null'>and f_state is null</if>
+			</if>
+			<if test='params.get("stateList") != null'>
+				and f_state in(<foreach collection="params.stateList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minState") != null'>and f_state >= #{params.minState}</if>
+			<if test='params.get("maxState") != null'>and f_state &lt; #{params.maxState}</if>
+			<if test='params.get("subState") != null'>and f_state like '%${params.subState}%'</if>
+			<if test='params.get("startsWithState") != null'>and f_state like '%${params.startsWithState}'</if>
+			<if test='params.get("endsWithState") != null'>and f_state like '${params.endsWithState}%'</if>
+			<if test='params.containsKey("terminalSignal") == true'>
+				<if test='params.get("terminalSignal") != null'>and f_terminalSignal = #{params.terminalSignal}</if>
+				<if test='params.get("terminalSignal") == null'>and f_terminalSignal is null</if>
+			</if>
+			<if test='params.get("terminalSignalList") != null'>
+				and f_terminalSignal in(<foreach collection="params.terminalSignalList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minTerminalSignal") != null'>and f_terminalSignal >= #{params.minTerminalSignal}</if>
+			<if test='params.get("maxTerminalSignal") != null'>and f_terminalSignal &lt; #{params.maxTerminalSignal}</if>
+			<if test='params.get("subTerminalSignal") != null'>and f_terminalSignal like '%${params.subTerminalSignal}%'</if>
+			<if test='params.get("startsWithTerminalSignal") != null'>and f_terminalSignal like '%${params.startsWithTerminalSignal}'</if>
+			<if test='params.get("endsWithTerminalSignal") != null'>and f_terminalSignal like '${params.endsWithTerminalSignal}%'</if>
+		</where>
+		<if test="params._sort != null">
+			order by 
+			<foreach collection="params._sort" item="item" index="index" separator=",">
+				${item.name} <if test="item.sort == 1">desc</if>
+			</foreach>
+		</if>
+		limit 0, 1
+	</select>
+	<select id="count" parameterType="java.util.Map" resultType="Long">
+		select count(f_id)
+		from tb_terminalonlinercd
+		<where>
+			<if test='params.containsKey("id") == true'>
+				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") == null'>and f_id is null</if>
+			</if>
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
+			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
+			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
+			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.containsKey("terminalNo") == true'>
+				<if test='params.get("terminalNo") != null'>and f_terminalNo = #{params.terminalNo}</if>
+				<if test='params.get("terminalNo") == null'>and f_terminalNo is null</if>
+			</if>
+			<if test='params.get("terminalNoList") != null'>
+				and f_terminalNo in(<foreach collection="params.terminalNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= #{params.minTerminalNo}</if>
+			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; #{params.maxTerminalNo}</if>
+			<if test='params.get("subTerminalNo") != null'>and f_terminalNo like '%${params.subTerminalNo}%'</if>
+			<if test='params.get("startsWithTerminalNo") != null'>and f_terminalNo like '%${params.startsWithTerminalNo}'</if>
+			<if test='params.get("endsWithTerminalNo") != null'>and f_terminalNo like '${params.endsWithTerminalNo}%'</if>
+			<if test='params.containsKey("time") == true'>
+				<if test='params.get("time") != null'>and f_time = #{params.time}</if>
+				<if test='params.get("time") == null'>and f_time is null</if>
+			</if>
+			<if test='params.get("timeList") != null'>
+				and f_time in(<foreach collection="params.timeList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minTime") != null'>and f_time >= #{params.minTime}</if>
+			<if test='params.get("maxTime") != null'>and f_time &lt; #{params.maxTime}</if>
+			<if test='params.get("subTime") != null'>and f_time like '%${params.subTime}%'</if>
+			<if test='params.get("startsWithTime") != null'>and f_time like '%${params.startsWithTime}'</if>
+			<if test='params.get("endsWithTime") != null'>and f_time like '${params.endsWithTime}%'</if>
+			<if test='params.containsKey("state") == true'>
+				<if test='params.get("state") != null'>and f_state = #{params.state}</if>
+				<if test='params.get("state") == null'>and f_state is null</if>
+			</if>
+			<if test='params.get("stateList") != null'>
+				and f_state in(<foreach collection="params.stateList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minState") != null'>and f_state >= #{params.minState}</if>
+			<if test='params.get("maxState") != null'>and f_state &lt; #{params.maxState}</if>
+			<if test='params.get("subState") != null'>and f_state like '%${params.subState}%'</if>
+			<if test='params.get("startsWithState") != null'>and f_state like '%${params.startsWithState}'</if>
+			<if test='params.get("endsWithState") != null'>and f_state like '${params.endsWithState}%'</if>
+			<if test='params.containsKey("terminalSignal") == true'>
+				<if test='params.get("terminalSignal") != null'>and f_terminalSignal = #{params.terminalSignal}</if>
+				<if test='params.get("terminalSignal") == null'>and f_terminalSignal is null</if>
+			</if>
+			<if test='params.get("terminalSignalList") != null'>
+				and f_terminalSignal in(<foreach collection="params.terminalSignalList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minTerminalSignal") != null'>and f_terminalSignal >= #{params.minTerminalSignal}</if>
+			<if test='params.get("maxTerminalSignal") != null'>and f_terminalSignal &lt; #{params.maxTerminalSignal}</if>
+			<if test='params.get("subTerminalSignal") != null'>and f_terminalSignal like '%${params.subTerminalSignal}%'</if>
+			<if test='params.get("startsWithTerminalSignal") != null'>and f_terminalSignal like '%${params.startsWithTerminalSignal}'</if>
+			<if test='params.get("endsWithTerminalSignal") != null'>and f_terminalSignal like '${params.endsWithTerminalSignal}%'</if>
+		</where>
+	</select>
+	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			f_id as id,
+			f_terminalNo as terminalNo,
+			f_time as time,
+			f_state as state,
+			f_terminalSignal as terminalSignal
+		from tb_terminalonlinercd
+		<where>
+			<if test='params.containsKey("id") == true'>
+				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") == null'>and f_id is null</if>
+			</if>
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
+			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
+			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
+			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.containsKey("terminalNo") == true'>
+				<if test='params.get("terminalNo") != null'>and f_terminalNo = #{params.terminalNo}</if>
+				<if test='params.get("terminalNo") == null'>and f_terminalNo is null</if>
+			</if>
+			<if test='params.get("terminalNoList") != null'>
+				and f_terminalNo in(<foreach collection="params.terminalNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= #{params.minTerminalNo}</if>
+			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; #{params.maxTerminalNo}</if>
+			<if test='params.get("subTerminalNo") != null'>and f_terminalNo like '%${params.subTerminalNo}%'</if>
+			<if test='params.get("startsWithTerminalNo") != null'>and f_terminalNo like '%${params.startsWithTerminalNo}'</if>
+			<if test='params.get("endsWithTerminalNo") != null'>and f_terminalNo like '${params.endsWithTerminalNo}%'</if>
+			<if test='params.containsKey("time") == true'>
+				<if test='params.get("time") != null'>and f_time = #{params.time}</if>
+				<if test='params.get("time") == null'>and f_time is null</if>
+			</if>
+			<if test='params.get("timeList") != null'>
+				and f_time in(<foreach collection="params.timeList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minTime") != null'>and f_time >= #{params.minTime}</if>
+			<if test='params.get("maxTime") != null'>and f_time &lt; #{params.maxTime}</if>
+			<if test='params.get("subTime") != null'>and f_time like '%${params.subTime}%'</if>
+			<if test='params.get("startsWithTime") != null'>and f_time like '%${params.startsWithTime}'</if>
+			<if test='params.get("endsWithTime") != null'>and f_time like '${params.endsWithTime}%'</if>
+			<if test='params.containsKey("state") == true'>
+				<if test='params.get("state") != null'>and f_state = #{params.state}</if>
+				<if test='params.get("state") == null'>and f_state is null</if>
+			</if>
+			<if test='params.get("stateList") != null'>
+				and f_state in(<foreach collection="params.stateList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minState") != null'>and f_state >= #{params.minState}</if>
+			<if test='params.get("maxState") != null'>and f_state &lt; #{params.maxState}</if>
+			<if test='params.get("subState") != null'>and f_state like '%${params.subState}%'</if>
+			<if test='params.get("startsWithState") != null'>and f_state like '%${params.startsWithState}'</if>
+			<if test='params.get("endsWithState") != null'>and f_state like '${params.endsWithState}%'</if>
+			<if test='params.containsKey("terminalSignal") == true'>
+				<if test='params.get("terminalSignal") != null'>and f_terminalSignal = #{params.terminalSignal}</if>
+				<if test='params.get("terminalSignal") == null'>and f_terminalSignal is null</if>
+			</if>
+			<if test='params.get("terminalSignalList") != null'>
+				and f_terminalSignal in(<foreach collection="params.terminalSignalList" item="item" index="index" separator=",">#{item}</foreach>)
+			</if>
+			<if test='params.get("minTerminalSignal") != null'>and f_terminalSignal >= #{params.minTerminalSignal}</if>
+			<if test='params.get("maxTerminalSignal") != null'>and f_terminalSignal &lt; #{params.maxTerminalSignal}</if>
+			<if test='params.get("subTerminalSignal") != null'>and f_terminalSignal like '%${params.subTerminalSignal}%'</if>
+			<if test='params.get("startsWithTerminalSignal") != null'>and f_terminalSignal like '%${params.startsWithTerminalSignal}'</if>
+			<if test='params.get("endsWithTerminalSignal") != null'>and f_terminalSignal like '${params.endsWithTerminalSignal}%'</if>
+		</where>
+		<if test="params._sort != null">
+			order by 
+			<foreach collection="params._sort" item="item" index="index" separator=",">
+				${item.name} <if test="item.sort == 1">desc</if>
+			</foreach>
+		</if>
+		<if test="params._start != null and params._limit != null">
+			limit ${params._start}, ${params._limit}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,24 @@
+<div class="x-window" id="alarmFormWin">
+	<style>
+	#alarmFormWin{width: 300px; height: 240px; margin-left: -150px;}
+	#alarmFormWin input{width: 150px;}
+	#alarmFormWin .x-label{width: 70px; text-align: right; margin-right: 5px;}
+	</style>
+	<div class="x-close"></div>
+	<div class="x-panel-title">告警测试</div>
+	<form class="x-panel-body x-form">
+		<div><label class="x-label">设备编号</label><input name="deviceNo" readOnly /></div>
+		<div><label class="x-label">终端编号</label><input name="terminalNo" readOnly /></div>
+		<div>
+			<label class="x-label">是否报警</label><select name="isAlarm"><option value="1">是</option><option value="0">否</option></select>
+			<label class="x-label" style="width: auto;">信号强度</label><input name="deviceSignal" style="width: 48px;" />
+		</div>
+		<div><label class="x-label">当前压力值</label><input name="pressure" /></div>
+		<div><label class="x-label">电话号码</label><input name="toPhone" /></div>
+	</form>
+	<div class="x-panel-footer">
+		<div class="x-button" handler="cancel"><span class="x-icon-16 x-icon-nega"></span>取消</div>
+		<div class="x-button" handler="save"><span class="x-icon-16 x-icon-save"></span>提交</div>
+	</div>
+</div>
+<script type="text/javascript" src="static/javascript/win/alarmFormWin.js"></script>

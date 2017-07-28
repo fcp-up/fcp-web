@@ -88,7 +88,7 @@
 	
 	<!-- mybatis mapper package -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.defu.fcp.**.dao" />
+		<property name="basePackage" value="com.defu.**.dao" />
 	</bean>
 	
 	<!-- 常量配置 -->

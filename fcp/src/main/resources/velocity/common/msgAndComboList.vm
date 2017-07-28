@@ -3,8 +3,8 @@
 		<div class="x-panel-title"><span class="x-text"></span></div>
 		<div class="x-panel-body"><div><span class="x-icon-msg"></span><span class="x-text"></span></div><div class="x-input-wrap"></div></div>
 		<div class="x-panel-footer">
-			<x-button class="x-button x-first x-positive">确定</x-button>
-			<x-button class="x-button x-negative">取消</x-button>
+			<button class="x-button x-first x-positive">确定</x-button>
+			<button class="x-button x-negative">取消</x-button>
 		</div>
 	</div>
 	<div id="simplemsg">
@@ -16,8 +16,8 @@
 		<div class="x-panel-title"><span class="x-text"></span></div>
 		<div class="x-panel-body"><span class="x-icon-msg"></span><div class="x-text"></div></div>
 		<div class="x-panel-footer">
-			<x-button class="x-button x-first x-positive">确定</x-button>
-			<x-button class="x-button x-negative">取消</x-button>
+			<button class="x-button x-first x-positive">确定</x-button>
+			<button class="x-button x-negative">取消</x-button>
 		</div>
 	</div>
 	<div id="combolist"></div>

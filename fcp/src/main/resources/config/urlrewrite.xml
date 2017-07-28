@@ -3,7 +3,7 @@
 
 <urlrewriter>
 	<rule>
-		<from>[\s\S]+?/(css|javascript|template|usrTmpDir)/([\s\S]+)</from>
-		<to>/$1/$2</to>
+		<from>/(?!fcp).+/static/([\s\S]+)</from>
+		<to>/static/$1</to>
 	</rule>
 </urlrewriter>

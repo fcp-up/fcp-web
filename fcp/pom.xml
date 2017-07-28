@@ -22,7 +22,7 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<build>
-		<finalName>lamp</finalName>
+		<finalName>fcp</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -41,6 +41,8 @@
 		<relativePath />
 	</parent>
 	<dependencies>
+	<!-- https://mvnrepository.com/artifact/org.apache.maven.archetypes/maven-archetype-quickstart -->
+	
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

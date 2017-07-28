@@ -1,0 +1,26 @@
+<div class="x-window" id="terminalFormWin">
+	<style>
+	#terminalFormWin{width: 300px; height: 280px; margin-left: -150px;}
+	#terminalFormWin input{width: 150px;}
+	#terminalFormWin .x-label{width: 70px; text-align: right; margin-right: 5px;}
+	</style>
+	<div class="x-close"></div>
+	<div class="x-panel-title">终端入库</div>
+	<form class="x-panel-body x-form">
+		<div><label class="x-label">终端编号</label><input name="no" /></div>
+		<div><label class="x-label">终端名称</label><input name="name" /></div>
+		<div>
+			<label class="x-label">经度</label><input name="longitude" style="width: 52px;" />
+			<label class="x-label" style="width: auto;">维度</label><input name="latitude" style="width: 52px;" />
+		</div>
+		<div><label class="x-label">信号强度</label><input name="signal" /></div>
+		<div><label class="x-label">行政区域</label><input name="terminalNo" /></div>
+		<div><label class="x-label">报警电话</label><input name="alarmPhone" /></div>
+		<div><label class="x-label">终端位置</label><input name="address" /></div>
+	</form>
+	<div class="x-panel-footer">
+		<div class="x-button" handler="cancel"><span class="x-icon-16 x-icon-nega"></span>取消</div>
+		<div class="x-button" handler="save"><span class="x-icon-16 x-icon-save"></span>提交</div>
+	</div>
+</div>
+<script type="text/javascript" src="static/javascript/win/terminalFormWin.js"></script>

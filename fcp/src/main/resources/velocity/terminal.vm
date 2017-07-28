@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	#parse("common/head.vm")
+</head>
+<body>
+	<div class="x-container x-grid x-panel" id="terminalList">
+		<div class="x-toolbar">
+			<div class="x-button" handler="loadData"><span class="x-icon-16 x-icon-ref"></span>刷新</div>
+			<div class="x-button" handler="add"><span class="x-icon-16 x-icon-add"></span>添加</div>
+			<div class="x-button x-disabled" handler="del_batch"><span class="x-icon-16 x-icon-del"></span>删除</div>
+            <div class="x-separator"></div>
+			<div class="x-button" handler="setPhone"><span class="x-icon-16 x-icon-save"></span>设置报警电话</div>
+			<div class="x-button" handler="tstOnline"><span class="x-icon-16 x-icon-exec"></span>上线测试</div>
+		</div>
+		<div class="x-panel-body">
+			<table cellspaging="0" cellpadding="0" class="x-column-widen">
+				<tr class="x-column-header">
+					<td class="x-check-column"><input class="x-checkbox" type="checkbox" for="all" /></td>
+					<td class="x-text-center" style="width: 35px;">序号</td>
+					<td class="x-text-center x-widen" style="width: 120px;">终端编号</td>
+					<td class="x-text-center x-widen" style="width: 150px;">终端名称</td>
+					<td class="x-text-center x-widen" style="width: 200px;">报警电话</td>
+					<td class="x-text-center x-widen" style="width: 60px;">状态</td>
+					<td class="x-text-center x-widen" style="width: 70px;">经度</td>
+					<td class="x-text-center x-widen" style="width: 70px;">维度</td>
+					<td class="x-text-center x-widen" style="width: 120px;">终端位置</td>
+					<td class="x-text-center x-widen" style="width: 130px;">最近上线时间</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	#include("common/js.vm")
+	<script type="text/javascript" src="static/javascript/terminal.js"></script>
+	#include("common/msgAndComboList.vm")
+	#include("win/terminalFormWin.vm")
+	#include("win/termStateFormWin.vm")
+	#include("win/termPhoneFormWin.vm")
+</body>
+</html>

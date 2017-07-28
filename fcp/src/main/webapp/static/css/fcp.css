@@ -1,0 +1,5 @@
+@CHARSET "UTF-8";
+
+.navbar{min-height: 42px; height: 42px;}
+.navbar-nav>li>a{padding-top: 0; padding-bottom: 0; line-height: 42px;}
+.navbar-brand{padding: 0; line-height: 42px; height: 42px; background: url(image/logo.png) no-repeat center; width: 179px;}
