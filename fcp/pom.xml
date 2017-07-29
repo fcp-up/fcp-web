@@ -334,8 +334,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<mybatisVersion>3.2.8</mybatisVersion>
-		<mybatisSpringVersion>1.2.2</mybatisSpringVersion>
+		<mybatisVersion>3.4.4</mybatisVersion>
+		<mybatisSpringVersion>1.3.1</mybatisSpringVersion>
 		<urlrewritefilterVersion>4.0.3</urlrewritefilterVersion>
 		<c3p0Version>0.9.1.2</c3p0Version>
 		<kaptchaVersion>0.0.9</kaptchaVersion>
