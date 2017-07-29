@@ -25,6 +25,7 @@ fcp.deviceFormWin = $('#deviceFormWin').formwin({
 					hs = [];
 				
 				$.each(rs || [], function(i, r){
+					r.name = r.name || '终端--' + r.no;
 					hs.push(tpl.replace(/{(\w+)}/g, function(a, b){return r[b] == null ? '' : r[b];}));
 				});
 				cbl.html(hs.join(''));

@@ -76,7 +76,7 @@ public interface AbstractDao {
 	 * @param params 待添加对象，不做动态sql，必须指定所有属性，为空的也需要指定null，不做非空检查
 	 * @return 库端影响记录数
 	 */
-	int addBatch(@Param("params")List<Map<String, Object>> params);
+	int addBatch(List<Map<String, Object>> params);
 
 	/**
 	 * 添加对象

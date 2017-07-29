@@ -210,6 +210,11 @@ public final class Database {
 		 */
 		public static final Field alarmPhone = new Field("tb_terminal", "f_alarmPhone", "alarmPhone", 12, "String", false, false, null);
 
+		/**
+		 * 终端名称
+		 */
+		public static final Field name = new Field("tb_terminal", "f_name", "name", 12, "String", false, false, null);
+
 	
 		public static final String _table = "tb_terminal";
 		public static final Field _key = new Field("tb_terminal", "f_no", "no", 12, "String", false, false, "");

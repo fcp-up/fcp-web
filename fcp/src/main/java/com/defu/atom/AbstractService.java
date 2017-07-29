@@ -1,5 +1,6 @@
 package com.defu.atom;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.defu.atom.AbstractDao;
 
 public abstract class AbstractService implements IAbstractService {
+	protected static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	@Override
 	public long count(Map<String, Object> params) {

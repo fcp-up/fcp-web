@@ -1,9 +1,11 @@
 package com.defu.atom.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.regex.Pattern;
 
 import com.defu.atom.db.Database.Device;
 
@@ -32,26 +34,33 @@ public class SvcDevice extends AbstractService implements ISvcDevice {
 	public AbstractDao getDao() {
 		return dao;
 	}
-
 	public boolean beforeAdd(List<Map<String, Object>> params) {
-		if(params == null || params.size() < 1) return false;
-		for(Map<String, Object> e: params) {
-			if(!e.containsKey(Device.no.prop)) e.put(Device.no.prop, null);
-			if(!e.containsKey(Device.name.prop)) e.put(Device.name.prop, null);
-			if(!e.containsKey(Device.lastSignal.prop)) e.put(Device.lastSignal.prop, null);
-			if(!e.containsKey(Device.lastAlarmTime.prop)) e.put(Device.lastAlarmTime.prop, null);
-			if(!e.containsKey(Device.longitude.prop)) e.put(Device.longitude.prop, null);
-			if(!e.containsKey(Device.latitude.prop)) e.put(Device.latitude.prop, null);
-			if(!e.containsKey(Device.alarmPhone.prop)) e.put(Device.alarmPhone.prop, null);
-			if(!e.containsKey(Device.address.prop)) e.put(Device.address.prop, null);
-			if(!e.containsKey(Device.terminalNo.prop)) e.put(Device.terminalNo.prop, null);
-			if(!e.containsKey(Device.visible.prop)) e.put(Device.visible.prop, null);
+		boolean rst = super.beforeAdd(params);
+		if(rst) {
+    		for(Map<String, Object> e: params) {
+				checkTimeField(e);
+    		}
 		}
-		return true;
+		return rst;
 	}
 
+	public boolean beforeAdd(Map<String, Object> params) {
+		boolean rst = super.beforeAdd(params);
+		if(rst) {
+			checkTimeField(params);
+		}
+		return rst;
+	}
 	
-	
+	private void checkTimeField(Map<String, Object> params) {
+		Object v;
+		v = params.get(Device.lastAlarmTime.prop);
+		if(v != null) {
+			if(Pattern.matches("^\\d+$", v.toString())) {
+				params.put(Device.lastAlarmTime.prop, dateFormat.format(new Date(Long.parseLong(v.toString()))));
+			}
+		}
+		
+	}
 
-	
 }

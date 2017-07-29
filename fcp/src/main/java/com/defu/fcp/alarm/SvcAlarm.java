@@ -19,16 +19,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.defu.atom.db.Database.Alarm;
-import com.defu.atom.db.Database.Device;
+import com.defu.atom.db.Database.*;
 import com.defu.fcp.ThreadPool;
 import com.defu.fcp.device.ISvcDevice;
+import com.defu.fcp.terminal.ISvcTerminal;
 import com.defu.sms.IPhoneMessage;
 
 @Service
 public class SvcAlarm extends com.defu.atom.service.impl.SvcAlarm implements Runnable, ISvcAlarm {
 	@Autowired @Qualifier("catsms") IPhoneMessage catsms;
 	@Autowired @Qualifier("yunpiansms") IPhoneMessage yunpiansms;
+	@Autowired ISvcTerminal termsvc;
 	@Autowired ISvcDevice devsvc;
 
 	// 编码格式。发送编码格式统一用UTF-8
@@ -41,48 +42,72 @@ public class SvcAlarm extends com.defu.atom.service.impl.SvcAlarm implements Run
 	
 	@Override
 	public boolean beforeAdd(List<Map<String, Object>> params) {
-		if(params == null || params.size() < 1) return false;
-
-		Map<String, Object> mp = new HashMap<>();
-		String tel;
-		
-		for(Map<String, Object> e: params) {
-			if(e.get(Alarm.time.prop) != null) e.put(Alarm.time.prop, new Date(Long.parseLong(e.get(Alarm.time.prop).toString())));
-			if(!e.containsKey(Alarm.id.prop)) e.put(Alarm.id.prop, null);
-			if(!e.containsKey(Alarm.deviceNo.prop)) e.put(Alarm.deviceNo.prop, null);
-			if(!e.containsKey(Alarm.terminalNo.prop)) e.put(Alarm.terminalNo.prop, null);
-			if(!e.containsKey(Alarm.isAlarm.prop)) e.put(Alarm.isAlarm.prop, null);
-			if(!e.containsKey(Alarm.pressure.prop)) e.put(Alarm.pressure.prop, null);
-			if(!e.containsKey(Alarm.time.prop)) e.put(Alarm.time.prop, new Date());
-			if(!e.containsKey(Alarm.state.prop)) e.put(Alarm.state.prop, null);
-			if(!e.containsKey(Alarm.sendTime.prop)) e.put(Alarm.sendTime.prop, null);
-			if(!e.containsKey(Alarm.toPhone.prop)) e.put(Alarm.toPhone.prop, null);
-			if(!e.containsKey(Alarm.deviceSignal.prop)) e.put(Alarm.deviceSignal.prop, null);
+		boolean rst = super.beforeAdd(params);
+		if(rst) {
+			Map<String, Object> mp = new HashMap<>();
+			String tel;
 			
-			tel = (String)e.get(Alarm.toPhone.prop);
-
-			if(tel == null || tel.trim().length() < 1) {
+			for(Map<String, Object> e: params) {
+				//终端处理
+				mp.clear();
+				mp.put(Terminal.no.prop, e.get(Alarm.terminalNo.prop));
+				if(termsvc.list(mp).size() < 1) {
+					//终端不存在库中
+					termsvc.add(mp);
+				}
+				
+				//设备处理
 				mp.clear();
 				mp.put(Device.no.prop, e.get(Alarm.deviceNo.prop));
-				mp = devsvc.single(mp);
-				
-				if(mp == null) continue;
-				e.put(Alarm.toPhone.prop, mp.get(Device.alarmPhone.prop));
-			}
+				mp.put(Device.terminalNo.prop, e.get(Alarm.terminalNo.prop));
+				if(devsvc.list(mp).size() < 1) {
+					//终端不存在库中
+					mp.put(Device.lastAlarmTime.prop, dateFormat.format(new Date()));
+					mp.put(Device.lastSignal.prop, e.get(Alarm.deviceSignal.prop));
+					devsvc.add(mp);
+				}
+				else {
+					//更新设备状态
+					Map<String, Object> obj = new HashMap<>(), upd = new HashMap<>();
 
-			if (log.isDebugEnabled())
-				log.debug("请求告警：" + e);
-			if(msg.size() > queueSize) {
-				//队列满了，移除第一条指令
+					obj.put(Device.lastAlarmTime.prop, dateFormat.format(new Date()));
+					obj.put(Device.lastSignal.prop, e.get(Alarm.deviceSignal.prop));
+					upd.put("obj", obj);
+					
+					upd.put("tag", mp);
+					
+					devsvc.update(upd);
+				}
+				
+				//报警时间
+				if(!e.containsKey(Alarm.time.prop)) e.put(Alarm.time.prop, dateFormat.format(new Date()));
+				
+				//报警电话
+				tel = (String)e.get(Alarm.toPhone.prop);
+				if(tel == null || tel.trim().length() < 1) {
+					//未指定报警电话，采用终端报警电话
+					mp.clear();
+					mp.put(Terminal.no.prop, e.get(Alarm.terminalNo.prop));
+					mp = termsvc.single(mp);
+					
+					if(mp == null) continue;
+					e.put(Alarm.toPhone.prop, mp.get(Terminal.alarmPhone.prop));
+				}
+
 				if (log.isDebugEnabled())
-					log.debug("请求告警：" + e + "\t队列已满，移除队列中第一条告警");
-				msg.poll();
+					log.debug("请求告警：" + e);
+				if(msg.size() > queueSize) {
+					//队列满了，移除第一条指令
+					if (log.isDebugEnabled())
+						log.debug("请求告警：" + e + "\t队列已满，移除队列中第一条告警");
+					msg.poll();
+				}
+				
+				msg.offer(e);
+				
 			}
-			
-			msg.offer(e);
-			
 		}
-		
+
 		return true;
 	}
 	
@@ -93,18 +118,29 @@ public class SvcAlarm extends com.defu.atom.service.impl.SvcAlarm implements Run
 	private void alarm(final Map<String, Object> mp) {
 		if(!needAlarm(mp)) return;
 		final List<String> phonenos = new ArrayList<>();
-		String tel = (String)mp.get(Alarm.toPhone.prop);
+		final Map<String, Boolean> rst = new HashMap<>();
 		
+		String tel = (String)mp.get(Alarm.toPhone.prop);
 		if(tel != null && tel.trim().length() > 0) {
 			phonenos.addAll(Arrays.asList(mp.get(Alarm.toPhone.prop).toString().split(",")));
 		}
 		
 		if(phonenos.size() < 1) return;
 		
+		rst.put("txt", false);
+		rst.put("phonic", false);
+		
 		//通过云片发送语音短信
 		ThreadPool.execute(new Runnable(){
 			public void run(){
 				alarmPhonicByYunpian(mp, phonenos);
+				synchronized (rst) {
+					rst.put("phonic", true);
+					if(rst.get("txt")) {
+						sendedAlarm(mp, phonenos);
+					}
+					
+				}
 			}
 		});
 
@@ -112,8 +148,31 @@ public class SvcAlarm extends com.defu.atom.service.impl.SvcAlarm implements Run
 		ThreadPool.execute(new Runnable(){
 			public void run(){
 				alarmTextByCat(mp, phonenos);
+				synchronized (rst) {
+					rst.put("txt", true);
+					if(rst.get("phonic")) {
+						sendedAlarm(mp, phonenos);
+					}
+					
+				}
 			}
 		});
+	}
+	
+	protected void sendedAlarm(Map<String, Object> alarm, List<String> phonenos) {
+		Object id = alarm.get(Alarm.id.prop);
+		if(id != null) {
+			Map<String, Object> obj = new HashMap<>(), tag = new HashMap<>(), upd = new HashMap<>();
+			
+			obj.put(Alarm.sendTime.prop, dateFormat.format(new Date()));
+			obj.put(Alarm.toPhone.prop, alarm.get(Alarm.toPhone.prop));
+			upd.put("obj", obj);
+			
+			tag.put(Alarm.id.prop, id);
+			upd.put("tag", tag);
+			
+			getDao().update(upd);
+		}
 	}
 	
 	protected void alarmTextByCat(Map<String, Object> mp, List<String> phoneNo) {

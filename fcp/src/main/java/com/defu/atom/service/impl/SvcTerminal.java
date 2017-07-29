@@ -1,9 +1,11 @@
 package com.defu.atom.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.regex.Pattern;
 
 import com.defu.atom.db.Database.Terminal;
 
@@ -23,7 +25,8 @@ import com.defu.atom.service.ISvcTerminal;
  * adminDivNo	f_adminDivNo	行政区划编号,
  * address	f_address	终端位置,
  * visible	f_visible	是否显示。1：显示；0：不显示,
- * alarmPhone	f_alarmPhone	报警电话
+ * alarmPhone	f_alarmPhone	报警电话,
+ * name	f_name	终端名称
  * }</pre>
  */
 public class SvcTerminal extends AbstractService implements ISvcTerminal {
@@ -32,26 +35,33 @@ public class SvcTerminal extends AbstractService implements ISvcTerminal {
 	public AbstractDao getDao() {
 		return dao;
 	}
-
 	public boolean beforeAdd(List<Map<String, Object>> params) {
-		if(params == null || params.size() < 1) return false;
-		for(Map<String, Object> e: params) {
-			if(!e.containsKey(Terminal.no.prop)) e.put(Terminal.no.prop, null);
-			if(!e.containsKey(Terminal.lastOnlineState.prop)) e.put(Terminal.lastOnlineState.prop, null);
-			if(!e.containsKey(Terminal.lastSignal.prop)) e.put(Terminal.lastSignal.prop, null);
-			if(!e.containsKey(Terminal.lastOnlineTime.prop)) e.put(Terminal.lastOnlineTime.prop, null);
-			if(!e.containsKey(Terminal.longitude.prop)) e.put(Terminal.longitude.prop, null);
-			if(!e.containsKey(Terminal.latitude.prop)) e.put(Terminal.latitude.prop, null);
-			if(!e.containsKey(Terminal.adminDivNo.prop)) e.put(Terminal.adminDivNo.prop, null);
-			if(!e.containsKey(Terminal.address.prop)) e.put(Terminal.address.prop, null);
-			if(!e.containsKey(Terminal.visible.prop)) e.put(Terminal.visible.prop, null);
-			if(!e.containsKey(Terminal.alarmPhone.prop)) e.put(Terminal.alarmPhone.prop, null);
+		boolean rst = super.beforeAdd(params);
+		if(rst) {
+    		for(Map<String, Object> e: params) {
+				checkTimeField(e);
+    		}
 		}
-		return true;
+		return rst;
 	}
 
+	public boolean beforeAdd(Map<String, Object> params) {
+		boolean rst = super.beforeAdd(params);
+		if(rst) {
+			checkTimeField(params);
+		}
+		return rst;
+	}
 	
-	
+	private void checkTimeField(Map<String, Object> params) {
+		Object v;
+		v = params.get(Terminal.lastOnlineTime.prop);
+		if(v != null) {
+			if(Pattern.matches("^\\d+$", v.toString())) {
+				params.put(Terminal.lastOnlineTime.prop, dateFormat.format(new Date(Long.parseLong(v.toString()))));
+			}
+		}
+		
+	}
 
-	
 }

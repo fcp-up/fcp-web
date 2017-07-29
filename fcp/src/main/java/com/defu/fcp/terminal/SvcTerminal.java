@@ -22,10 +22,13 @@ public class SvcTerminal extends com.defu.atom.service.impl.SvcTerminal implemen
 	public Map<String, Object> postOnline(List<Map<String, Object>> list) {
 		Map<String, Object> params = new HashMap<>(), rst = new HashMap<>();
 		String no;
+		String time;
 		
 		for(Map<String, Object> t: list) {
 			no = (String)t.get(Terminalonlinercd.terminalNo.prop);
 			if(no == null) continue;
+			
+			time = dateFormat.format(t.get(Terminalonlinercd.time.prop) != null ? new Date(Long.parseLong(t.get(Terminalonlinercd.state.prop).toString())) : new Date());
 			
 			try{
 				params.clear();
@@ -33,16 +36,25 @@ public class SvcTerminal extends com.defu.atom.service.impl.SvcTerminal implemen
 				if(dao.list(params).size() < 1) {
 					//终端不存在库中
 					params.put(Terminal.lastOnlineState.prop, t.get(Terminalonlinercd.state.prop));
-					params.put(Terminal.no.prop, t.get(Terminalonlinercd.terminalNo.prop));
+					params.put(Terminal.lastSignal.prop, t.get(Terminalonlinercd.terminalSignal.prop));
+					params.put(Terminal.lastOnlineTime.prop, time);
 					getDao().add(params);
 				}
-				
-				if(t.get(Terminalonlinercd.time.prop) != null) {
-					t.put(Terminalonlinercd.time.prop, new Date(Long.parseLong(t.get(Terminalonlinercd.time.prop).toString())));
-				}
 				else {
-					t.put(Terminalonlinercd.time.prop, new Date());
+					//更新最近一次上线时间和上下线状态
+					Map<String, Object> upd = new HashMap<>(), obj = new HashMap<>();
+					
+					obj.put(Terminal.lastOnlineState.prop, t.get(Terminalonlinercd.state.prop));
+					obj.put(Terminal.lastSignal.prop, t.get(Terminalonlinercd.terminalSignal.prop));
+					obj.put(Terminal.lastOnlineTime.prop, time);
+					
+					upd.put("tag", params);
+					upd.put("obj", obj);
+					dao.update(upd);
 				}
+				
+				//添加终端上下线记录
+				t.put(Terminalonlinercd.time.prop, time);
 				rcdsvc.add(t);
 				
 				rst.put(no, 0);

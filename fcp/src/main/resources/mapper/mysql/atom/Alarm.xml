@@ -72,135 +72,172 @@
 			</if>
 		</trim>
 	</insert>
-	<insert id="addBatch" parameterType="java.util.Map">
+	<insert id="addBatch" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_alarm (f_deviceNo, f_terminalNo, f_isAlarm, f_pressure, f_time, f_state, f_sendTime, f_toPhone, f_deviceSignal) values
-		<foreach collection="params" item="item" index="index" separator=",">
-			(#{item.deviceNo}, #{item.terminalNo}, #{item.isAlarm}, #{item.pressure}, #{item.time}, #{item.state}, #{item.sendTime}, #{item.toPhone}, #{item.deviceSignal})
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+			<if test='item.containsKey("deviceNo") == false or item.get("deviceNo") == null'>
+				null, 
+			</if>
+			<if test='item.get("deviceNo") != null'>
+				'${item.get("deviceNo")}', 			
+			</if>
+			<if test='item.containsKey("terminalNo") == false or item.get("terminalNo") == null'>
+				null, 
+			</if>
+			<if test='item.get("terminalNo") != null'>
+				'${item.get("terminalNo")}', 			
+			</if>
+			<if test='item.containsKey("isAlarm") == false or item.get("isAlarm") == null'>
+				null, 
+			</if>
+			<if test='item.get("isAlarm") != null'>
+				${item.get("isAlarm")}, 			
+			</if>
+			<if test='item.containsKey("pressure") == false or item.get("pressure") == null'>
+				null, 
+			</if>
+			<if test='item.get("pressure") != null'>
+				'${item.get("pressure")}', 			
+			</if>
+			<if test='item.containsKey("time") == false or item.get("time") == null'>
+				null, 
+			</if>
+			<if test='item.get("time") != null'>
+				'${item.get("time")}', 			
+			</if>
+			<if test='item.containsKey("state") == false or item.get("state") == null'>
+				null, 
+			</if>
+			<if test='item.get("state") != null'>
+				${item.get("state")}, 			
+			</if>
+			<if test='item.containsKey("sendTime") == false or item.get("sendTime") == null'>
+				null, 
+			</if>
+			<if test='item.get("sendTime") != null'>
+				'${item.get("sendTime")}', 			
+			</if>
+			<if test='item.containsKey("toPhone") == false or item.get("toPhone") == null'>
+				null, 
+			</if>
+			<if test='item.get("toPhone") != null'>
+				'${item.get("toPhone")}', 			
+			</if>
+			<if test='item.containsKey("deviceSignal") == false or item.get("deviceSignal") == null'>
+				null
+			</if>
+			<if test='item.get("deviceSignal") != null'>
+				${item.get("deviceSignal")}			
+			</if>
+			)
 		</foreach>
 	</insert>
 	<delete id="delete" parameterType="java.util.Map">
 		delete from tb_alarm
 		<where>
 			<if test='params.containsKey("id") == true'>
-				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") != null'>and f_id = ${params.get("id")}</if>
 				<if test='params.get("id") == null'>and f_id is null</if>
 			</if>
-			<if test='params.get("idList") != null'>
-				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_idList") != null'>
+				and f_id in(<foreach collection='params.get("f_idList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
-			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
-			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
-			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
-			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.get("minId") != null'>and f_id >= ${params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; ${params.maxId}</if>
 			<if test='params.containsKey("deviceNo") == true'>
-				<if test='params.get("deviceNo") != null'>and f_deviceNo = #{params.deviceNo}</if>
+				<if test='params.get("deviceNo") != null'>and f_deviceNo = '${params.get("deviceNo")}'</if>
 				<if test='params.get("deviceNo") == null'>and f_deviceNo is null</if>
 			</if>
-			<if test='params.get("deviceNoList") != null'>
-				and f_deviceNo in(<foreach collection="params.deviceNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_deviceNoList") != null'>
+				and f_deviceNo in(<foreach collection='params.get("f_deviceNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minDeviceNo") != null'>and f_deviceNo >= #{params.minDeviceNo}</if>
-			<if test='params.get("maxDeviceNo") != null'>and f_deviceNo &lt; #{params.maxDeviceNo}</if>
+			<if test='params.get("minDeviceNo") != null'>and f_deviceNo >= '${params.minDeviceNo}'</if>
+			<if test='params.get("maxDeviceNo") != null'>and f_deviceNo &lt; '${params.maxDeviceNo}'</if>
 			<if test='params.get("subDeviceNo") != null'>and f_deviceNo like '%${params.subDeviceNo}%'</if>
 			<if test='params.get("startsWithDeviceNo") != null'>and f_deviceNo like '%${params.startsWithDeviceNo}'</if>
 			<if test='params.get("endsWithDeviceNo") != null'>and f_deviceNo like '${params.endsWithDeviceNo}%'</if>
 			<if test='params.containsKey("terminalNo") == true'>
-				<if test='params.get("terminalNo") != null'>and f_terminalNo = #{params.terminalNo}</if>
+				<if test='params.get("terminalNo") != null'>and f_terminalNo = '${params.get("terminalNo")}'</if>
 				<if test='params.get("terminalNo") == null'>and f_terminalNo is null</if>
 			</if>
-			<if test='params.get("terminalNoList") != null'>
-				and f_terminalNo in(<foreach collection="params.terminalNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_terminalNoList") != null'>
+				and f_terminalNo in(<foreach collection='params.get("f_terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= #{params.minTerminalNo}</if>
-			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; #{params.maxTerminalNo}</if>
+			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= '${params.minTerminalNo}'</if>
+			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; '${params.maxTerminalNo}'</if>
 			<if test='params.get("subTerminalNo") != null'>and f_terminalNo like '%${params.subTerminalNo}%'</if>
 			<if test='params.get("startsWithTerminalNo") != null'>and f_terminalNo like '%${params.startsWithTerminalNo}'</if>
 			<if test='params.get("endsWithTerminalNo") != null'>and f_terminalNo like '${params.endsWithTerminalNo}%'</if>
 			<if test='params.containsKey("isAlarm") == true'>
-				<if test='params.get("isAlarm") != null'>and f_isAlarm = #{params.isAlarm}</if>
+				<if test='params.get("isAlarm") != null'>and f_isAlarm = ${params.get("isAlarm")}</if>
 				<if test='params.get("isAlarm") == null'>and f_isAlarm is null</if>
 			</if>
-			<if test='params.get("isAlarmList") != null'>
-				and f_isAlarm in(<foreach collection="params.isAlarmList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_isAlarmList") != null'>
+				and f_isAlarm in(<foreach collection='params.get("f_isAlarmList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minIsAlarm") != null'>and f_isAlarm >= #{params.minIsAlarm}</if>
-			<if test='params.get("maxIsAlarm") != null'>and f_isAlarm &lt; #{params.maxIsAlarm}</if>
-			<if test='params.get("subIsAlarm") != null'>and f_isAlarm like '%${params.subIsAlarm}%'</if>
-			<if test='params.get("startsWithIsAlarm") != null'>and f_isAlarm like '%${params.startsWithIsAlarm}'</if>
-			<if test='params.get("endsWithIsAlarm") != null'>and f_isAlarm like '${params.endsWithIsAlarm}%'</if>
+			<if test='params.get("minIsAlarm") != null'>and f_isAlarm >= ${params.minIsAlarm}</if>
+			<if test='params.get("maxIsAlarm") != null'>and f_isAlarm &lt; ${params.maxIsAlarm}</if>
 			<if test='params.containsKey("pressure") == true'>
-				<if test='params.get("pressure") != null'>and f_pressure = #{params.pressure}</if>
+				<if test='params.get("pressure") != null'>and f_pressure = '${params.get("pressure")}'</if>
 				<if test='params.get("pressure") == null'>and f_pressure is null</if>
 			</if>
-			<if test='params.get("pressureList") != null'>
-				and f_pressure in(<foreach collection="params.pressureList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_pressureList") != null'>
+				and f_pressure in(<foreach collection='params.get("f_pressureList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minPressure") != null'>and f_pressure >= #{params.minPressure}</if>
-			<if test='params.get("maxPressure") != null'>and f_pressure &lt; #{params.maxPressure}</if>
+			<if test='params.get("minPressure") != null'>and f_pressure >= '${params.minPressure}'</if>
+			<if test='params.get("maxPressure") != null'>and f_pressure &lt; '${params.maxPressure}'</if>
 			<if test='params.get("subPressure") != null'>and f_pressure like '%${params.subPressure}%'</if>
 			<if test='params.get("startsWithPressure") != null'>and f_pressure like '%${params.startsWithPressure}'</if>
 			<if test='params.get("endsWithPressure") != null'>and f_pressure like '${params.endsWithPressure}%'</if>
 			<if test='params.containsKey("time") == true'>
-				<if test='params.get("time") != null'>and f_time = #{params.time}</if>
+				<if test='params.get("time") != null'>and f_time = '${params.get("time")}'</if>
 				<if test='params.get("time") == null'>and f_time is null</if>
 			</if>
-			<if test='params.get("timeList") != null'>
-				and f_time in(<foreach collection="params.timeList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_timeList") != null'>
+				and f_time in(<foreach collection='params.get("f_timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minTime") != null'>and f_time >= #{params.minTime}</if>
-			<if test='params.get("maxTime") != null'>and f_time &lt; #{params.maxTime}</if>
-			<if test='params.get("subTime") != null'>and f_time like '%${params.subTime}%'</if>
-			<if test='params.get("startsWithTime") != null'>and f_time like '%${params.startsWithTime}'</if>
-			<if test='params.get("endsWithTime") != null'>and f_time like '${params.endsWithTime}%'</if>
+			<if test='params.get("minTime") != null'>and f_time >= '${params.minTime}'</if>
+			<if test='params.get("maxTime") != null'>and f_time &lt; '${params.maxTime}'</if>
 			<if test='params.containsKey("state") == true'>
-				<if test='params.get("state") != null'>and f_state = #{params.state}</if>
+				<if test='params.get("state") != null'>and f_state = ${params.get("state")}</if>
 				<if test='params.get("state") == null'>and f_state is null</if>
 			</if>
-			<if test='params.get("stateList") != null'>
-				and f_state in(<foreach collection="params.stateList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_stateList") != null'>
+				and f_state in(<foreach collection='params.get("f_stateList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minState") != null'>and f_state >= #{params.minState}</if>
-			<if test='params.get("maxState") != null'>and f_state &lt; #{params.maxState}</if>
-			<if test='params.get("subState") != null'>and f_state like '%${params.subState}%'</if>
-			<if test='params.get("startsWithState") != null'>and f_state like '%${params.startsWithState}'</if>
-			<if test='params.get("endsWithState") != null'>and f_state like '${params.endsWithState}%'</if>
+			<if test='params.get("minState") != null'>and f_state >= ${params.minState}</if>
+			<if test='params.get("maxState") != null'>and f_state &lt; ${params.maxState}</if>
 			<if test='params.containsKey("sendTime") == true'>
-				<if test='params.get("sendTime") != null'>and f_sendTime = #{params.sendTime}</if>
+				<if test='params.get("sendTime") != null'>and f_sendTime = '${params.get("sendTime")}'</if>
 				<if test='params.get("sendTime") == null'>and f_sendTime is null</if>
 			</if>
-			<if test='params.get("sendTimeList") != null'>
-				and f_sendTime in(<foreach collection="params.sendTimeList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_sendTimeList") != null'>
+				and f_sendTime in(<foreach collection='params.get("f_sendTimeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minSendTime") != null'>and f_sendTime >= #{params.minSendTime}</if>
-			<if test='params.get("maxSendTime") != null'>and f_sendTime &lt; #{params.maxSendTime}</if>
-			<if test='params.get("subSendTime") != null'>and f_sendTime like '%${params.subSendTime}%'</if>
-			<if test='params.get("startsWithSendTime") != null'>and f_sendTime like '%${params.startsWithSendTime}'</if>
-			<if test='params.get("endsWithSendTime") != null'>and f_sendTime like '${params.endsWithSendTime}%'</if>
+			<if test='params.get("minSendTime") != null'>and f_sendTime >= '${params.minSendTime}'</if>
+			<if test='params.get("maxSendTime") != null'>and f_sendTime &lt; '${params.maxSendTime}'</if>
 			<if test='params.containsKey("toPhone") == true'>
-				<if test='params.get("toPhone") != null'>and f_toPhone = #{params.toPhone}</if>
+				<if test='params.get("toPhone") != null'>and f_toPhone = '${params.get("toPhone")}'</if>
 				<if test='params.get("toPhone") == null'>and f_toPhone is null</if>
 			</if>
-			<if test='params.get("toPhoneList") != null'>
-				and f_toPhone in(<foreach collection="params.toPhoneList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_toPhoneList") != null'>
+				and f_toPhone in(<foreach collection='params.get("f_toPhoneList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minToPhone") != null'>and f_toPhone >= #{params.minToPhone}</if>
-			<if test='params.get("maxToPhone") != null'>and f_toPhone &lt; #{params.maxToPhone}</if>
+			<if test='params.get("minToPhone") != null'>and f_toPhone >= '${params.minToPhone}'</if>
+			<if test='params.get("maxToPhone") != null'>and f_toPhone &lt; '${params.maxToPhone}'</if>
 			<if test='params.get("subToPhone") != null'>and f_toPhone like '%${params.subToPhone}%'</if>
 			<if test='params.get("startsWithToPhone") != null'>and f_toPhone like '%${params.startsWithToPhone}'</if>
 			<if test='params.get("endsWithToPhone") != null'>and f_toPhone like '${params.endsWithToPhone}%'</if>
 			<if test='params.containsKey("deviceSignal") == true'>
-				<if test='params.get("deviceSignal") != null'>and f_deviceSignal = #{params.deviceSignal}</if>
+				<if test='params.get("deviceSignal") != null'>and f_deviceSignal = ${params.get("deviceSignal")}</if>
 				<if test='params.get("deviceSignal") == null'>and f_deviceSignal is null</if>
 			</if>
-			<if test='params.get("deviceSignalList") != null'>
-				and f_deviceSignal in(<foreach collection="params.deviceSignalList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_deviceSignalList") != null'>
+				and f_deviceSignal in(<foreach collection='params.get("f_deviceSignalList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minDeviceSignal") != null'>and f_deviceSignal >= #{params.minDeviceSignal}</if>
-			<if test='params.get("maxDeviceSignal") != null'>and f_deviceSignal &lt; #{params.maxDeviceSignal}</if>
-			<if test='params.get("subDeviceSignal") != null'>and f_deviceSignal like '%${params.subDeviceSignal}%'</if>
-			<if test='params.get("startsWithDeviceSignal") != null'>and f_deviceSignal like '%${params.startsWithDeviceSignal}'</if>
-			<if test='params.get("endsWithDeviceSignal") != null'>and f_deviceSignal like '${params.endsWithDeviceSignal}%'</if>
+			<if test='params.get("minDeviceSignal") != null'>and f_deviceSignal >= ${params.minDeviceSignal}</if>
+			<if test='params.get("maxDeviceSignal") != null'>and f_deviceSignal &lt; ${params.maxDeviceSignal}</if>
 		</where>
 	</delete>
 	<update id="update">
@@ -252,262 +289,226 @@
 		<where>
 			<if test="tag != null">
 				<if test='tag.containsKey("id") == true'>
-					<if test='tag.get("id") != null'>and f_id = #{tag.id}</if>
+					<if test='tag.get("id") != null'>and f_id = ${tag.get("id")}</if>
 					<if test='tag.get("id") == null'>and f_id is null</if>
 				</if>
-    			<if test='tag.get("f_idList") != null'>
-    				and f_id in(<foreach collection='tag.get("f_idList")' item="item" index="index" separator=",">#{item}</foreach>)
-    			</if>
-    			<if test='tag.get("minId") != null'>and f_id >= #{tag.minId}</if>
-    			<if test='tag.get("maxId") != null'>and f_id &lt; #{tag.maxId}</if>
-    			<if test='tag.get("subId") != null'>and f_id like '%${tag.subId}%'</if>
-    			<if test='tag.get("startsWithId") != null'>and f_id like '%${tag.startsWithId}'</if>
-    			<if test='tag.get("endsWithId") != null'>and f_id like '${tag.endsWithId}%'</if>
+				<if test='tag.get("f_idList") != null'>
+					and f_id in(<foreach collection='tag.get("f_idList")' item="item" index="index" separator=",">${item}</foreach>)
+				</if>
+				<if test='tag.get("minId") != null'>and f_id >= ${tag.minId}</if>
+				<if test='tag.get("maxId") != null'>and f_id &lt; ${tag.maxId}</if>
 				<if test='tag.containsKey("deviceNo") == true'>
-					<if test='tag.get("deviceNo") != null'>and f_deviceNo = #{tag.deviceNo}</if>
+					<if test='tag.get("deviceNo") != null'>and f_deviceNo = '${tag.get("deviceNo")}'</if>
 					<if test='tag.get("deviceNo") == null'>and f_deviceNo is null</if>
 				</if>
-    			<if test='tag.get("f_deviceNoList") != null'>
-    				and f_deviceNo in(<foreach collection='tag.get("f_deviceNoList")' item="item" index="index" separator=",">#{item}</foreach>)
-    			</if>
-    			<if test='tag.get("minDeviceNo") != null'>and f_deviceNo >= #{tag.minDeviceNo}</if>
-    			<if test='tag.get("maxDeviceNo") != null'>and f_deviceNo &lt; #{tag.maxDeviceNo}</if>
-    			<if test='tag.get("subDeviceNo") != null'>and f_deviceNo like '%${tag.subDeviceNo}%'</if>
-    			<if test='tag.get("startsWithDeviceNo") != null'>and f_deviceNo like '%${tag.startsWithDeviceNo}'</if>
-    			<if test='tag.get("endsWithDeviceNo") != null'>and f_deviceNo like '${tag.endsWithDeviceNo}%'</if>
+				<if test='tag.get("f_deviceNoList") != null'>
+					and f_deviceNo in(<foreach collection='tag.get("f_deviceNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
+				</if>
+				<if test='tag.get("minDeviceNo") != null'>and f_deviceNo >= '${tag.minDeviceNo}'</if>
+				<if test='tag.get("maxDeviceNo") != null'>and f_deviceNo &lt; '${tag.maxDeviceNo}'</if>
+				<if test='tag.get("subDeviceNo") != null'>and f_deviceNo like '%${tag.subDeviceNo}%'</if>
+				<if test='tag.get("startsWithDeviceNo") != null'>and f_deviceNo like '%${tag.startsWithDeviceNo}'</if>
+				<if test='tag.get("endsWithDeviceNo") != null'>and f_deviceNo like '${tag.endsWithDeviceNo}%'</if>
 				<if test='tag.containsKey("terminalNo") == true'>
-					<if test='tag.get("terminalNo") != null'>and f_terminalNo = #{tag.terminalNo}</if>
+					<if test='tag.get("terminalNo") != null'>and f_terminalNo = '${tag.get("terminalNo")}'</if>
 					<if test='tag.get("terminalNo") == null'>and f_terminalNo is null</if>
 				</if>
-    			<if test='tag.get("f_terminalNoList") != null'>
-    				and f_terminalNo in(<foreach collection='tag.get("f_terminalNoList")' item="item" index="index" separator=",">#{item}</foreach>)
-    			</if>
-    			<if test='tag.get("minTerminalNo") != null'>and f_terminalNo >= #{tag.minTerminalNo}</if>
-    			<if test='tag.get("maxTerminalNo") != null'>and f_terminalNo &lt; #{tag.maxTerminalNo}</if>
-    			<if test='tag.get("subTerminalNo") != null'>and f_terminalNo like '%${tag.subTerminalNo}%'</if>
-    			<if test='tag.get("startsWithTerminalNo") != null'>and f_terminalNo like '%${tag.startsWithTerminalNo}'</if>
-    			<if test='tag.get("endsWithTerminalNo") != null'>and f_terminalNo like '${tag.endsWithTerminalNo}%'</if>
+				<if test='tag.get("f_terminalNoList") != null'>
+					and f_terminalNo in(<foreach collection='tag.get("f_terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
+				</if>
+				<if test='tag.get("minTerminalNo") != null'>and f_terminalNo >= '${tag.minTerminalNo}'</if>
+				<if test='tag.get("maxTerminalNo") != null'>and f_terminalNo &lt; '${tag.maxTerminalNo}'</if>
+				<if test='tag.get("subTerminalNo") != null'>and f_terminalNo like '%${tag.subTerminalNo}%'</if>
+				<if test='tag.get("startsWithTerminalNo") != null'>and f_terminalNo like '%${tag.startsWithTerminalNo}'</if>
+				<if test='tag.get("endsWithTerminalNo") != null'>and f_terminalNo like '${tag.endsWithTerminalNo}%'</if>
 				<if test='tag.containsKey("isAlarm") == true'>
-					<if test='tag.get("isAlarm") != null'>and f_isAlarm = #{tag.isAlarm}</if>
+					<if test='tag.get("isAlarm") != null'>and f_isAlarm = ${tag.get("isAlarm")}</if>
 					<if test='tag.get("isAlarm") == null'>and f_isAlarm is null</if>
 				</if>
-    			<if test='tag.get("f_isAlarmList") != null'>
-    				and f_isAlarm in(<foreach collection='tag.get("f_isAlarmList")' item="item" index="index" separator=",">#{item}</foreach>)
-    			</if>
-    			<if test='tag.get("minIsAlarm") != null'>and f_isAlarm >= #{tag.minIsAlarm}</if>
-    			<if test='tag.get("maxIsAlarm") != null'>and f_isAlarm &lt; #{tag.maxIsAlarm}</if>
-    			<if test='tag.get("subIsAlarm") != null'>and f_isAlarm like '%${tag.subIsAlarm}%'</if>
-    			<if test='tag.get("startsWithIsAlarm") != null'>and f_isAlarm like '%${tag.startsWithIsAlarm}'</if>
-    			<if test='tag.get("endsWithIsAlarm") != null'>and f_isAlarm like '${tag.endsWithIsAlarm}%'</if>
+				<if test='tag.get("f_isAlarmList") != null'>
+					and f_isAlarm in(<foreach collection='tag.get("f_isAlarmList")' item="item" index="index" separator=",">${item}</foreach>)
+				</if>
+				<if test='tag.get("minIsAlarm") != null'>and f_isAlarm >= ${tag.minIsAlarm}</if>
+				<if test='tag.get("maxIsAlarm") != null'>and f_isAlarm &lt; ${tag.maxIsAlarm}</if>
 				<if test='tag.containsKey("pressure") == true'>
-					<if test='tag.get("pressure") != null'>and f_pressure = #{tag.pressure}</if>
+					<if test='tag.get("pressure") != null'>and f_pressure = '${tag.get("pressure")}'</if>
 					<if test='tag.get("pressure") == null'>and f_pressure is null</if>
 				</if>
-    			<if test='tag.get("f_pressureList") != null'>
-    				and f_pressure in(<foreach collection='tag.get("f_pressureList")' item="item" index="index" separator=",">#{item}</foreach>)
-    			</if>
-    			<if test='tag.get("minPressure") != null'>and f_pressure >= #{tag.minPressure}</if>
-    			<if test='tag.get("maxPressure") != null'>and f_pressure &lt; #{tag.maxPressure}</if>
-    			<if test='tag.get("subPressure") != null'>and f_pressure like '%${tag.subPressure}%'</if>
-    			<if test='tag.get("startsWithPressure") != null'>and f_pressure like '%${tag.startsWithPressure}'</if>
-    			<if test='tag.get("endsWithPressure") != null'>and f_pressure like '${tag.endsWithPressure}%'</if>
+				<if test='tag.get("f_pressureList") != null'>
+					and f_pressure in(<foreach collection='tag.get("f_pressureList")' item="item" index="index" separator=",">'${item}'</foreach>)
+				</if>
+				<if test='tag.get("minPressure") != null'>and f_pressure >= '${tag.minPressure}'</if>
+				<if test='tag.get("maxPressure") != null'>and f_pressure &lt; '${tag.maxPressure}'</if>
+				<if test='tag.get("subPressure") != null'>and f_pressure like '%${tag.subPressure}%'</if>
+				<if test='tag.get("startsWithPressure") != null'>and f_pressure like '%${tag.startsWithPressure}'</if>
+				<if test='tag.get("endsWithPressure") != null'>and f_pressure like '${tag.endsWithPressure}%'</if>
 				<if test='tag.containsKey("time") == true'>
-					<if test='tag.get("time") != null'>and f_time = #{tag.time}</if>
+					<if test='tag.get("time") != null'>and f_time = '${tag.get("time")}'</if>
 					<if test='tag.get("time") == null'>and f_time is null</if>
 				</if>
-    			<if test='tag.get("f_timeList") != null'>
-    				and f_time in(<foreach collection='tag.get("f_timeList")' item="item" index="index" separator=",">#{item}</foreach>)
-    			</if>
-    			<if test='tag.get("minTime") != null'>and f_time >= #{tag.minTime}</if>
-    			<if test='tag.get("maxTime") != null'>and f_time &lt; #{tag.maxTime}</if>
-    			<if test='tag.get("subTime") != null'>and f_time like '%${tag.subTime}%'</if>
-    			<if test='tag.get("startsWithTime") != null'>and f_time like '%${tag.startsWithTime}'</if>
-    			<if test='tag.get("endsWithTime") != null'>and f_time like '${tag.endsWithTime}%'</if>
+				<if test='tag.get("f_timeList") != null'>
+					and f_time in(<foreach collection='tag.get("f_timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
+				</if>
+				<if test='tag.get("minTime") != null'>and f_time >= '${tag.minTime}'</if>
+				<if test='tag.get("maxTime") != null'>and f_time &lt; '${tag.maxTime}'</if>
 				<if test='tag.containsKey("state") == true'>
-					<if test='tag.get("state") != null'>and f_state = #{tag.state}</if>
+					<if test='tag.get("state") != null'>and f_state = ${tag.get("state")}</if>
 					<if test='tag.get("state") == null'>and f_state is null</if>
 				</if>
-    			<if test='tag.get("f_stateList") != null'>
-    				and f_state in(<foreach collection='tag.get("f_stateList")' item="item" index="index" separator=",">#{item}</foreach>)
-    			</if>
-    			<if test='tag.get("minState") != null'>and f_state >= #{tag.minState}</if>
-    			<if test='tag.get("maxState") != null'>and f_state &lt; #{tag.maxState}</if>
-    			<if test='tag.get("subState") != null'>and f_state like '%${tag.subState}%'</if>
-    			<if test='tag.get("startsWithState") != null'>and f_state like '%${tag.startsWithState}'</if>
-    			<if test='tag.get("endsWithState") != null'>and f_state like '${tag.endsWithState}%'</if>
+				<if test='tag.get("f_stateList") != null'>
+					and f_state in(<foreach collection='tag.get("f_stateList")' item="item" index="index" separator=",">${item}</foreach>)
+				</if>
+				<if test='tag.get("minState") != null'>and f_state >= ${tag.minState}</if>
+				<if test='tag.get("maxState") != null'>and f_state &lt; ${tag.maxState}</if>
 				<if test='tag.containsKey("sendTime") == true'>
-					<if test='tag.get("sendTime") != null'>and f_sendTime = #{tag.sendTime}</if>
+					<if test='tag.get("sendTime") != null'>and f_sendTime = '${tag.get("sendTime")}'</if>
 					<if test='tag.get("sendTime") == null'>and f_sendTime is null</if>
 				</if>
-    			<if test='tag.get("f_sendTimeList") != null'>
-    				and f_sendTime in(<foreach collection='tag.get("f_sendTimeList")' item="item" index="index" separator=",">#{item}</foreach>)
-    			</if>
-    			<if test='tag.get("minSendTime") != null'>and f_sendTime >= #{tag.minSendTime}</if>
-    			<if test='tag.get("maxSendTime") != null'>and f_sendTime &lt; #{tag.maxSendTime}</if>
-    			<if test='tag.get("subSendTime") != null'>and f_sendTime like '%${tag.subSendTime}%'</if>
-    			<if test='tag.get("startsWithSendTime") != null'>and f_sendTime like '%${tag.startsWithSendTime}'</if>
-    			<if test='tag.get("endsWithSendTime") != null'>and f_sendTime like '${tag.endsWithSendTime}%'</if>
+				<if test='tag.get("f_sendTimeList") != null'>
+					and f_sendTime in(<foreach collection='tag.get("f_sendTimeList")' item="item" index="index" separator=",">'${item}'</foreach>)
+				</if>
+				<if test='tag.get("minSendTime") != null'>and f_sendTime >= '${tag.minSendTime}'</if>
+				<if test='tag.get("maxSendTime") != null'>and f_sendTime &lt; '${tag.maxSendTime}'</if>
 				<if test='tag.containsKey("toPhone") == true'>
-					<if test='tag.get("toPhone") != null'>and f_toPhone = #{tag.toPhone}</if>
+					<if test='tag.get("toPhone") != null'>and f_toPhone = '${tag.get("toPhone")}'</if>
 					<if test='tag.get("toPhone") == null'>and f_toPhone is null</if>
 				</if>
-    			<if test='tag.get("f_toPhoneList") != null'>
-    				and f_toPhone in(<foreach collection='tag.get("f_toPhoneList")' item="item" index="index" separator=",">#{item}</foreach>)
-    			</if>
-    			<if test='tag.get("minToPhone") != null'>and f_toPhone >= #{tag.minToPhone}</if>
-    			<if test='tag.get("maxToPhone") != null'>and f_toPhone &lt; #{tag.maxToPhone}</if>
-    			<if test='tag.get("subToPhone") != null'>and f_toPhone like '%${tag.subToPhone}%'</if>
-    			<if test='tag.get("startsWithToPhone") != null'>and f_toPhone like '%${tag.startsWithToPhone}'</if>
-    			<if test='tag.get("endsWithToPhone") != null'>and f_toPhone like '${tag.endsWithToPhone}%'</if>
+				<if test='tag.get("f_toPhoneList") != null'>
+					and f_toPhone in(<foreach collection='tag.get("f_toPhoneList")' item="item" index="index" separator=",">'${item}'</foreach>)
+				</if>
+				<if test='tag.get("minToPhone") != null'>and f_toPhone >= '${tag.minToPhone}'</if>
+				<if test='tag.get("maxToPhone") != null'>and f_toPhone &lt; '${tag.maxToPhone}'</if>
+				<if test='tag.get("subToPhone") != null'>and f_toPhone like '%${tag.subToPhone}%'</if>
+				<if test='tag.get("startsWithToPhone") != null'>and f_toPhone like '%${tag.startsWithToPhone}'</if>
+				<if test='tag.get("endsWithToPhone") != null'>and f_toPhone like '${tag.endsWithToPhone}%'</if>
 				<if test='tag.containsKey("deviceSignal") == true'>
-					<if test='tag.get("deviceSignal") != null'>and f_deviceSignal = #{tag.deviceSignal}</if>
+					<if test='tag.get("deviceSignal") != null'>and f_deviceSignal = ${tag.get("deviceSignal")}</if>
 					<if test='tag.get("deviceSignal") == null'>and f_deviceSignal is null</if>
 				</if>
-    			<if test='tag.get("f_deviceSignalList") != null'>
-    				and f_deviceSignal in(<foreach collection='tag.get("f_deviceSignalList")' item="item" index="index" separator=",">#{item}</foreach>)
-    			</if>
-    			<if test='tag.get("minDeviceSignal") != null'>and f_deviceSignal >= #{tag.minDeviceSignal}</if>
-    			<if test='tag.get("maxDeviceSignal") != null'>and f_deviceSignal &lt; #{tag.maxDeviceSignal}</if>
-    			<if test='tag.get("subDeviceSignal") != null'>and f_deviceSignal like '%${tag.subDeviceSignal}%'</if>
-    			<if test='tag.get("startsWithDeviceSignal") != null'>and f_deviceSignal like '%${tag.startsWithDeviceSignal}'</if>
-    			<if test='tag.get("endsWithDeviceSignal") != null'>and f_deviceSignal like '${tag.endsWithDeviceSignal}%'</if>
+				<if test='tag.get("f_deviceSignalList") != null'>
+					and f_deviceSignal in(<foreach collection='tag.get("f_deviceSignalList")' item="item" index="index" separator=",">${item}</foreach>)
+				</if>
+				<if test='tag.get("minDeviceSignal") != null'>and f_deviceSignal >= ${tag.minDeviceSignal}</if>
+				<if test='tag.get("maxDeviceSignal") != null'>and f_deviceSignal &lt; ${tag.maxDeviceSignal}</if>
 			</if>
 		</where>
 	</update>
 	<select id="single" parameterType="java.util.Map" resultType="java.util.Map">
 		select 
-			f_id as id,
-			f_deviceNo as deviceNo,
-			f_terminalNo as terminalNo,
-			f_isAlarm as isAlarm,
-			f_pressure as pressure,
-			f_time as time,
-			f_state as state,
-			f_sendTime as sendTime,
-			f_toPhone as toPhone,
-			f_deviceSignal as deviceSignal
+			f_id as 'id',
+			f_deviceNo as 'deviceNo',
+			f_terminalNo as 'terminalNo',
+			f_isAlarm as 'isAlarm',
+			f_pressure as 'pressure',
+			f_time as 'time',
+			f_state as 'state',
+			f_sendTime as 'sendTime',
+			f_toPhone as 'toPhone',
+			f_deviceSignal as 'deviceSignal'
 		from tb_alarm
 		<where>
 			<if test='params.containsKey("id") == true'>
-				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") != null'>and f_id = ${params.get("id")}</if>
 				<if test='params.get("id") == null'>and f_id is null</if>
 			</if>
-			<if test='params.get("idList") != null'>
-				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_idList") != null'>
+				and f_id in(<foreach collection='params.get("f_idList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
-			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
-			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
-			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
-			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.get("minId") != null'>and f_id >= ${params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; ${params.maxId}</if>
 			<if test='params.containsKey("deviceNo") == true'>
-				<if test='params.get("deviceNo") != null'>and f_deviceNo = #{params.deviceNo}</if>
+				<if test='params.get("deviceNo") != null'>and f_deviceNo = '${params.get("deviceNo")}'</if>
 				<if test='params.get("deviceNo") == null'>and f_deviceNo is null</if>
 			</if>
-			<if test='params.get("deviceNoList") != null'>
-				and f_deviceNo in(<foreach collection="params.deviceNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_deviceNoList") != null'>
+				and f_deviceNo in(<foreach collection='params.get("f_deviceNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minDeviceNo") != null'>and f_deviceNo >= #{params.minDeviceNo}</if>
-			<if test='params.get("maxDeviceNo") != null'>and f_deviceNo &lt; #{params.maxDeviceNo}</if>
+			<if test='params.get("minDeviceNo") != null'>and f_deviceNo >= '${params.minDeviceNo}'</if>
+			<if test='params.get("maxDeviceNo") != null'>and f_deviceNo &lt; '${params.maxDeviceNo}'</if>
 			<if test='params.get("subDeviceNo") != null'>and f_deviceNo like '%${params.subDeviceNo}%'</if>
 			<if test='params.get("startsWithDeviceNo") != null'>and f_deviceNo like '%${params.startsWithDeviceNo}'</if>
 			<if test='params.get("endsWithDeviceNo") != null'>and f_deviceNo like '${params.endsWithDeviceNo}%'</if>
 			<if test='params.containsKey("terminalNo") == true'>
-				<if test='params.get("terminalNo") != null'>and f_terminalNo = #{params.terminalNo}</if>
+				<if test='params.get("terminalNo") != null'>and f_terminalNo = '${params.get("terminalNo")}'</if>
 				<if test='params.get("terminalNo") == null'>and f_terminalNo is null</if>
 			</if>
-			<if test='params.get("terminalNoList") != null'>
-				and f_terminalNo in(<foreach collection="params.terminalNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_terminalNoList") != null'>
+				and f_terminalNo in(<foreach collection='params.get("f_terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= #{params.minTerminalNo}</if>
-			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; #{params.maxTerminalNo}</if>
+			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= '${params.minTerminalNo}'</if>
+			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; '${params.maxTerminalNo}'</if>
 			<if test='params.get("subTerminalNo") != null'>and f_terminalNo like '%${params.subTerminalNo}%'</if>
 			<if test='params.get("startsWithTerminalNo") != null'>and f_terminalNo like '%${params.startsWithTerminalNo}'</if>
 			<if test='params.get("endsWithTerminalNo") != null'>and f_terminalNo like '${params.endsWithTerminalNo}%'</if>
 			<if test='params.containsKey("isAlarm") == true'>
-				<if test='params.get("isAlarm") != null'>and f_isAlarm = #{params.isAlarm}</if>
+				<if test='params.get("isAlarm") != null'>and f_isAlarm = ${params.get("isAlarm")}</if>
 				<if test='params.get("isAlarm") == null'>and f_isAlarm is null</if>
 			</if>
-			<if test='params.get("isAlarmList") != null'>
-				and f_isAlarm in(<foreach collection="params.isAlarmList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_isAlarmList") != null'>
+				and f_isAlarm in(<foreach collection='params.get("f_isAlarmList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minIsAlarm") != null'>and f_isAlarm >= #{params.minIsAlarm}</if>
-			<if test='params.get("maxIsAlarm") != null'>and f_isAlarm &lt; #{params.maxIsAlarm}</if>
-			<if test='params.get("subIsAlarm") != null'>and f_isAlarm like '%${params.subIsAlarm}%'</if>
-			<if test='params.get("startsWithIsAlarm") != null'>and f_isAlarm like '%${params.startsWithIsAlarm}'</if>
-			<if test='params.get("endsWithIsAlarm") != null'>and f_isAlarm like '${params.endsWithIsAlarm}%'</if>
+			<if test='params.get("minIsAlarm") != null'>and f_isAlarm >= ${params.minIsAlarm}</if>
+			<if test='params.get("maxIsAlarm") != null'>and f_isAlarm &lt; ${params.maxIsAlarm}</if>
 			<if test='params.containsKey("pressure") == true'>
-				<if test='params.get("pressure") != null'>and f_pressure = #{params.pressure}</if>
+				<if test='params.get("pressure") != null'>and f_pressure = '${params.get("pressure")}'</if>
 				<if test='params.get("pressure") == null'>and f_pressure is null</if>
 			</if>
-			<if test='params.get("pressureList") != null'>
-				and f_pressure in(<foreach collection="params.pressureList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_pressureList") != null'>
+				and f_pressure in(<foreach collection='params.get("f_pressureList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minPressure") != null'>and f_pressure >= #{params.minPressure}</if>
-			<if test='params.get("maxPressure") != null'>and f_pressure &lt; #{params.maxPressure}</if>
+			<if test='params.get("minPressure") != null'>and f_pressure >= '${params.minPressure}'</if>
+			<if test='params.get("maxPressure") != null'>and f_pressure &lt; '${params.maxPressure}'</if>
 			<if test='params.get("subPressure") != null'>and f_pressure like '%${params.subPressure}%'</if>
 			<if test='params.get("startsWithPressure") != null'>and f_pressure like '%${params.startsWithPressure}'</if>
 			<if test='params.get("endsWithPressure") != null'>and f_pressure like '${params.endsWithPressure}%'</if>
 			<if test='params.containsKey("time") == true'>
-				<if test='params.get("time") != null'>and f_time = #{params.time}</if>
+				<if test='params.get("time") != null'>and f_time = '${params.get("time")}'</if>
 				<if test='params.get("time") == null'>and f_time is null</if>
 			</if>
-			<if test='params.get("timeList") != null'>
-				and f_time in(<foreach collection="params.timeList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_timeList") != null'>
+				and f_time in(<foreach collection='params.get("f_timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minTime") != null'>and f_time >= #{params.minTime}</if>
-			<if test='params.get("maxTime") != null'>and f_time &lt; #{params.maxTime}</if>
-			<if test='params.get("subTime") != null'>and f_time like '%${params.subTime}%'</if>
-			<if test='params.get("startsWithTime") != null'>and f_time like '%${params.startsWithTime}'</if>
-			<if test='params.get("endsWithTime") != null'>and f_time like '${params.endsWithTime}%'</if>
+			<if test='params.get("minTime") != null'>and f_time >= '${params.minTime}'</if>
+			<if test='params.get("maxTime") != null'>and f_time &lt; '${params.maxTime}'</if>
 			<if test='params.containsKey("state") == true'>
-				<if test='params.get("state") != null'>and f_state = #{params.state}</if>
+				<if test='params.get("state") != null'>and f_state = ${params.get("state")}</if>
 				<if test='params.get("state") == null'>and f_state is null</if>
 			</if>
-			<if test='params.get("stateList") != null'>
-				and f_state in(<foreach collection="params.stateList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_stateList") != null'>
+				and f_state in(<foreach collection='params.get("f_stateList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minState") != null'>and f_state >= #{params.minState}</if>
-			<if test='params.get("maxState") != null'>and f_state &lt; #{params.maxState}</if>
-			<if test='params.get("subState") != null'>and f_state like '%${params.subState}%'</if>
-			<if test='params.get("startsWithState") != null'>and f_state like '%${params.startsWithState}'</if>
-			<if test='params.get("endsWithState") != null'>and f_state like '${params.endsWithState}%'</if>
+			<if test='params.get("minState") != null'>and f_state >= ${params.minState}</if>
+			<if test='params.get("maxState") != null'>and f_state &lt; ${params.maxState}</if>
 			<if test='params.containsKey("sendTime") == true'>
-				<if test='params.get("sendTime") != null'>and f_sendTime = #{params.sendTime}</if>
+				<if test='params.get("sendTime") != null'>and f_sendTime = '${params.get("sendTime")}'</if>
 				<if test='params.get("sendTime") == null'>and f_sendTime is null</if>
 			</if>
-			<if test='params.get("sendTimeList") != null'>
-				and f_sendTime in(<foreach collection="params.sendTimeList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_sendTimeList") != null'>
+				and f_sendTime in(<foreach collection='params.get("f_sendTimeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minSendTime") != null'>and f_sendTime >= #{params.minSendTime}</if>
-			<if test='params.get("maxSendTime") != null'>and f_sendTime &lt; #{params.maxSendTime}</if>
-			<if test='params.get("subSendTime") != null'>and f_sendTime like '%${params.subSendTime}%'</if>
-			<if test='params.get("startsWithSendTime") != null'>and f_sendTime like '%${params.startsWithSendTime}'</if>
-			<if test='params.get("endsWithSendTime") != null'>and f_sendTime like '${params.endsWithSendTime}%'</if>
+			<if test='params.get("minSendTime") != null'>and f_sendTime >= '${params.minSendTime}'</if>
+			<if test='params.get("maxSendTime") != null'>and f_sendTime &lt; '${params.maxSendTime}'</if>
 			<if test='params.containsKey("toPhone") == true'>
-				<if test='params.get("toPhone") != null'>and f_toPhone = #{params.toPhone}</if>
+				<if test='params.get("toPhone") != null'>and f_toPhone = '${params.get("toPhone")}'</if>
 				<if test='params.get("toPhone") == null'>and f_toPhone is null</if>
 			</if>
-			<if test='params.get("toPhoneList") != null'>
-				and f_toPhone in(<foreach collection="params.toPhoneList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_toPhoneList") != null'>
+				and f_toPhone in(<foreach collection='params.get("f_toPhoneList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minToPhone") != null'>and f_toPhone >= #{params.minToPhone}</if>
-			<if test='params.get("maxToPhone") != null'>and f_toPhone &lt; #{params.maxToPhone}</if>
+			<if test='params.get("minToPhone") != null'>and f_toPhone >= '${params.minToPhone}'</if>
+			<if test='params.get("maxToPhone") != null'>and f_toPhone &lt; '${params.maxToPhone}'</if>
 			<if test='params.get("subToPhone") != null'>and f_toPhone like '%${params.subToPhone}%'</if>
 			<if test='params.get("startsWithToPhone") != null'>and f_toPhone like '%${params.startsWithToPhone}'</if>
 			<if test='params.get("endsWithToPhone") != null'>and f_toPhone like '${params.endsWithToPhone}%'</if>
 			<if test='params.containsKey("deviceSignal") == true'>
-				<if test='params.get("deviceSignal") != null'>and f_deviceSignal = #{params.deviceSignal}</if>
+				<if test='params.get("deviceSignal") != null'>and f_deviceSignal = ${params.get("deviceSignal")}</if>
 				<if test='params.get("deviceSignal") == null'>and f_deviceSignal is null</if>
 			</if>
-			<if test='params.get("deviceSignalList") != null'>
-				and f_deviceSignal in(<foreach collection="params.deviceSignalList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_deviceSignalList") != null'>
+				and f_deviceSignal in(<foreach collection='params.get("f_deviceSignalList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minDeviceSignal") != null'>and f_deviceSignal >= #{params.minDeviceSignal}</if>
-			<if test='params.get("maxDeviceSignal") != null'>and f_deviceSignal &lt; #{params.maxDeviceSignal}</if>
-			<if test='params.get("subDeviceSignal") != null'>and f_deviceSignal like '%${params.subDeviceSignal}%'</if>
-			<if test='params.get("startsWithDeviceSignal") != null'>and f_deviceSignal like '%${params.startsWithDeviceSignal}'</if>
-			<if test='params.get("endsWithDeviceSignal") != null'>and f_deviceSignal like '${params.endsWithDeviceSignal}%'</if>
+			<if test='params.get("minDeviceSignal") != null'>and f_deviceSignal >= ${params.minDeviceSignal}</if>
+			<if test='params.get("maxDeviceSignal") != null'>and f_deviceSignal &lt; ${params.maxDeviceSignal}</if>
 		</where>
 		<if test="params._sort != null">
 			order by 
@@ -522,261 +523,225 @@
 		from tb_alarm
 		<where>
 			<if test='params.containsKey("id") == true'>
-				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") != null'>and f_id = ${params.get("id")}</if>
 				<if test='params.get("id") == null'>and f_id is null</if>
 			</if>
-			<if test='params.get("idList") != null'>
-				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_idList") != null'>
+				and f_id in(<foreach collection='params.get("f_idList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
-			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
-			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
-			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
-			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.get("minId") != null'>and f_id >= ${params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; ${params.maxId}</if>
 			<if test='params.containsKey("deviceNo") == true'>
-				<if test='params.get("deviceNo") != null'>and f_deviceNo = #{params.deviceNo}</if>
+				<if test='params.get("deviceNo") != null'>and f_deviceNo = '${params.get("deviceNo")}'</if>
 				<if test='params.get("deviceNo") == null'>and f_deviceNo is null</if>
 			</if>
-			<if test='params.get("deviceNoList") != null'>
-				and f_deviceNo in(<foreach collection="params.deviceNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_deviceNoList") != null'>
+				and f_deviceNo in(<foreach collection='params.get("f_deviceNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minDeviceNo") != null'>and f_deviceNo >= #{params.minDeviceNo}</if>
-			<if test='params.get("maxDeviceNo") != null'>and f_deviceNo &lt; #{params.maxDeviceNo}</if>
+			<if test='params.get("minDeviceNo") != null'>and f_deviceNo >= '${params.minDeviceNo}'</if>
+			<if test='params.get("maxDeviceNo") != null'>and f_deviceNo &lt; '${params.maxDeviceNo}'</if>
 			<if test='params.get("subDeviceNo") != null'>and f_deviceNo like '%${params.subDeviceNo}%'</if>
 			<if test='params.get("startsWithDeviceNo") != null'>and f_deviceNo like '%${params.startsWithDeviceNo}'</if>
 			<if test='params.get("endsWithDeviceNo") != null'>and f_deviceNo like '${params.endsWithDeviceNo}%'</if>
 			<if test='params.containsKey("terminalNo") == true'>
-				<if test='params.get("terminalNo") != null'>and f_terminalNo = #{params.terminalNo}</if>
+				<if test='params.get("terminalNo") != null'>and f_terminalNo = '${params.get("terminalNo")}'</if>
 				<if test='params.get("terminalNo") == null'>and f_terminalNo is null</if>
 			</if>
-			<if test='params.get("terminalNoList") != null'>
-				and f_terminalNo in(<foreach collection="params.terminalNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_terminalNoList") != null'>
+				and f_terminalNo in(<foreach collection='params.get("f_terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= #{params.minTerminalNo}</if>
-			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; #{params.maxTerminalNo}</if>
+			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= '${params.minTerminalNo}'</if>
+			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; '${params.maxTerminalNo}'</if>
 			<if test='params.get("subTerminalNo") != null'>and f_terminalNo like '%${params.subTerminalNo}%'</if>
 			<if test='params.get("startsWithTerminalNo") != null'>and f_terminalNo like '%${params.startsWithTerminalNo}'</if>
 			<if test='params.get("endsWithTerminalNo") != null'>and f_terminalNo like '${params.endsWithTerminalNo}%'</if>
 			<if test='params.containsKey("isAlarm") == true'>
-				<if test='params.get("isAlarm") != null'>and f_isAlarm = #{params.isAlarm}</if>
+				<if test='params.get("isAlarm") != null'>and f_isAlarm = ${params.get("isAlarm")}</if>
 				<if test='params.get("isAlarm") == null'>and f_isAlarm is null</if>
 			</if>
-			<if test='params.get("isAlarmList") != null'>
-				and f_isAlarm in(<foreach collection="params.isAlarmList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_isAlarmList") != null'>
+				and f_isAlarm in(<foreach collection='params.get("f_isAlarmList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minIsAlarm") != null'>and f_isAlarm >= #{params.minIsAlarm}</if>
-			<if test='params.get("maxIsAlarm") != null'>and f_isAlarm &lt; #{params.maxIsAlarm}</if>
-			<if test='params.get("subIsAlarm") != null'>and f_isAlarm like '%${params.subIsAlarm}%'</if>
-			<if test='params.get("startsWithIsAlarm") != null'>and f_isAlarm like '%${params.startsWithIsAlarm}'</if>
-			<if test='params.get("endsWithIsAlarm") != null'>and f_isAlarm like '${params.endsWithIsAlarm}%'</if>
+			<if test='params.get("minIsAlarm") != null'>and f_isAlarm >= ${params.minIsAlarm}</if>
+			<if test='params.get("maxIsAlarm") != null'>and f_isAlarm &lt; ${params.maxIsAlarm}</if>
 			<if test='params.containsKey("pressure") == true'>
-				<if test='params.get("pressure") != null'>and f_pressure = #{params.pressure}</if>
+				<if test='params.get("pressure") != null'>and f_pressure = '${params.get("pressure")}'</if>
 				<if test='params.get("pressure") == null'>and f_pressure is null</if>
 			</if>
-			<if test='params.get("pressureList") != null'>
-				and f_pressure in(<foreach collection="params.pressureList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_pressureList") != null'>
+				and f_pressure in(<foreach collection='params.get("f_pressureList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minPressure") != null'>and f_pressure >= #{params.minPressure}</if>
-			<if test='params.get("maxPressure") != null'>and f_pressure &lt; #{params.maxPressure}</if>
+			<if test='params.get("minPressure") != null'>and f_pressure >= '${params.minPressure}'</if>
+			<if test='params.get("maxPressure") != null'>and f_pressure &lt; '${params.maxPressure}'</if>
 			<if test='params.get("subPressure") != null'>and f_pressure like '%${params.subPressure}%'</if>
 			<if test='params.get("startsWithPressure") != null'>and f_pressure like '%${params.startsWithPressure}'</if>
 			<if test='params.get("endsWithPressure") != null'>and f_pressure like '${params.endsWithPressure}%'</if>
 			<if test='params.containsKey("time") == true'>
-				<if test='params.get("time") != null'>and f_time = #{params.time}</if>
+				<if test='params.get("time") != null'>and f_time = '${params.get("time")}'</if>
 				<if test='params.get("time") == null'>and f_time is null</if>
 			</if>
-			<if test='params.get("timeList") != null'>
-				and f_time in(<foreach collection="params.timeList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_timeList") != null'>
+				and f_time in(<foreach collection='params.get("f_timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minTime") != null'>and f_time >= #{params.minTime}</if>
-			<if test='params.get("maxTime") != null'>and f_time &lt; #{params.maxTime}</if>
-			<if test='params.get("subTime") != null'>and f_time like '%${params.subTime}%'</if>
-			<if test='params.get("startsWithTime") != null'>and f_time like '%${params.startsWithTime}'</if>
-			<if test='params.get("endsWithTime") != null'>and f_time like '${params.endsWithTime}%'</if>
+			<if test='params.get("minTime") != null'>and f_time >= '${params.minTime}'</if>
+			<if test='params.get("maxTime") != null'>and f_time &lt; '${params.maxTime}'</if>
 			<if test='params.containsKey("state") == true'>
-				<if test='params.get("state") != null'>and f_state = #{params.state}</if>
+				<if test='params.get("state") != null'>and f_state = ${params.get("state")}</if>
 				<if test='params.get("state") == null'>and f_state is null</if>
 			</if>
-			<if test='params.get("stateList") != null'>
-				and f_state in(<foreach collection="params.stateList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_stateList") != null'>
+				and f_state in(<foreach collection='params.get("f_stateList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minState") != null'>and f_state >= #{params.minState}</if>
-			<if test='params.get("maxState") != null'>and f_state &lt; #{params.maxState}</if>
-			<if test='params.get("subState") != null'>and f_state like '%${params.subState}%'</if>
-			<if test='params.get("startsWithState") != null'>and f_state like '%${params.startsWithState}'</if>
-			<if test='params.get("endsWithState") != null'>and f_state like '${params.endsWithState}%'</if>
+			<if test='params.get("minState") != null'>and f_state >= ${params.minState}</if>
+			<if test='params.get("maxState") != null'>and f_state &lt; ${params.maxState}</if>
 			<if test='params.containsKey("sendTime") == true'>
-				<if test='params.get("sendTime") != null'>and f_sendTime = #{params.sendTime}</if>
+				<if test='params.get("sendTime") != null'>and f_sendTime = '${params.get("sendTime")}'</if>
 				<if test='params.get("sendTime") == null'>and f_sendTime is null</if>
 			</if>
-			<if test='params.get("sendTimeList") != null'>
-				and f_sendTime in(<foreach collection="params.sendTimeList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_sendTimeList") != null'>
+				and f_sendTime in(<foreach collection='params.get("f_sendTimeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minSendTime") != null'>and f_sendTime >= #{params.minSendTime}</if>
-			<if test='params.get("maxSendTime") != null'>and f_sendTime &lt; #{params.maxSendTime}</if>
-			<if test='params.get("subSendTime") != null'>and f_sendTime like '%${params.subSendTime}%'</if>
-			<if test='params.get("startsWithSendTime") != null'>and f_sendTime like '%${params.startsWithSendTime}'</if>
-			<if test='params.get("endsWithSendTime") != null'>and f_sendTime like '${params.endsWithSendTime}%'</if>
+			<if test='params.get("minSendTime") != null'>and f_sendTime >= '${params.minSendTime}'</if>
+			<if test='params.get("maxSendTime") != null'>and f_sendTime &lt; '${params.maxSendTime}'</if>
 			<if test='params.containsKey("toPhone") == true'>
-				<if test='params.get("toPhone") != null'>and f_toPhone = #{params.toPhone}</if>
+				<if test='params.get("toPhone") != null'>and f_toPhone = '${params.get("toPhone")}'</if>
 				<if test='params.get("toPhone") == null'>and f_toPhone is null</if>
 			</if>
-			<if test='params.get("toPhoneList") != null'>
-				and f_toPhone in(<foreach collection="params.toPhoneList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_toPhoneList") != null'>
+				and f_toPhone in(<foreach collection='params.get("f_toPhoneList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minToPhone") != null'>and f_toPhone >= #{params.minToPhone}</if>
-			<if test='params.get("maxToPhone") != null'>and f_toPhone &lt; #{params.maxToPhone}</if>
+			<if test='params.get("minToPhone") != null'>and f_toPhone >= '${params.minToPhone}'</if>
+			<if test='params.get("maxToPhone") != null'>and f_toPhone &lt; '${params.maxToPhone}'</if>
 			<if test='params.get("subToPhone") != null'>and f_toPhone like '%${params.subToPhone}%'</if>
 			<if test='params.get("startsWithToPhone") != null'>and f_toPhone like '%${params.startsWithToPhone}'</if>
 			<if test='params.get("endsWithToPhone") != null'>and f_toPhone like '${params.endsWithToPhone}%'</if>
 			<if test='params.containsKey("deviceSignal") == true'>
-				<if test='params.get("deviceSignal") != null'>and f_deviceSignal = #{params.deviceSignal}</if>
+				<if test='params.get("deviceSignal") != null'>and f_deviceSignal = ${params.get("deviceSignal")}</if>
 				<if test='params.get("deviceSignal") == null'>and f_deviceSignal is null</if>
 			</if>
-			<if test='params.get("deviceSignalList") != null'>
-				and f_deviceSignal in(<foreach collection="params.deviceSignalList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_deviceSignalList") != null'>
+				and f_deviceSignal in(<foreach collection='params.get("f_deviceSignalList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minDeviceSignal") != null'>and f_deviceSignal >= #{params.minDeviceSignal}</if>
-			<if test='params.get("maxDeviceSignal") != null'>and f_deviceSignal &lt; #{params.maxDeviceSignal}</if>
-			<if test='params.get("subDeviceSignal") != null'>and f_deviceSignal like '%${params.subDeviceSignal}%'</if>
-			<if test='params.get("startsWithDeviceSignal") != null'>and f_deviceSignal like '%${params.startsWithDeviceSignal}'</if>
-			<if test='params.get("endsWithDeviceSignal") != null'>and f_deviceSignal like '${params.endsWithDeviceSignal}%'</if>
+			<if test='params.get("minDeviceSignal") != null'>and f_deviceSignal >= ${params.minDeviceSignal}</if>
+			<if test='params.get("maxDeviceSignal") != null'>and f_deviceSignal &lt; ${params.maxDeviceSignal}</if>
 		</where>
 	</select>
 	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
 		select 
-			f_id as id,
-			f_deviceNo as deviceNo,
-			f_terminalNo as terminalNo,
-			f_isAlarm as isAlarm,
-			f_pressure as pressure,
-			f_time as time,
-			f_state as state,
-			f_sendTime as sendTime,
-			f_toPhone as toPhone,
-			f_deviceSignal as deviceSignal
+			f_id as 'id',
+			f_deviceNo as 'deviceNo',
+			f_terminalNo as 'terminalNo',
+			f_isAlarm as 'isAlarm',
+			f_pressure as 'pressure',
+			f_time as 'time',
+			f_state as 'state',
+			f_sendTime as 'sendTime',
+			f_toPhone as 'toPhone',
+			f_deviceSignal as 'deviceSignal'
 		from tb_alarm
 		<where>
 			<if test='params.containsKey("id") == true'>
-				<if test='params.get("id") != null'>and f_id = #{params.id}</if>
+				<if test='params.get("id") != null'>and f_id = ${params.get("id")}</if>
 				<if test='params.get("id") == null'>and f_id is null</if>
 			</if>
-			<if test='params.get("idList") != null'>
-				and f_id in(<foreach collection="params.idList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_idList") != null'>
+				and f_id in(<foreach collection='params.get("f_idList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minId") != null'>and f_id >= #{params.minId}</if>
-			<if test='params.get("maxId") != null'>and f_id &lt; #{params.maxId}</if>
-			<if test='params.get("subId") != null'>and f_id like '%${params.subId}%'</if>
-			<if test='params.get("startsWithId") != null'>and f_id like '%${params.startsWithId}'</if>
-			<if test='params.get("endsWithId") != null'>and f_id like '${params.endsWithId}%'</if>
+			<if test='params.get("minId") != null'>and f_id >= ${params.minId}</if>
+			<if test='params.get("maxId") != null'>and f_id &lt; ${params.maxId}</if>
 			<if test='params.containsKey("deviceNo") == true'>
-				<if test='params.get("deviceNo") != null'>and f_deviceNo = #{params.deviceNo}</if>
+				<if test='params.get("deviceNo") != null'>and f_deviceNo = '${params.get("deviceNo")}'</if>
 				<if test='params.get("deviceNo") == null'>and f_deviceNo is null</if>
 			</if>
-			<if test='params.get("deviceNoList") != null'>
-				and f_deviceNo in(<foreach collection="params.deviceNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_deviceNoList") != null'>
+				and f_deviceNo in(<foreach collection='params.get("f_deviceNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minDeviceNo") != null'>and f_deviceNo >= #{params.minDeviceNo}</if>
-			<if test='params.get("maxDeviceNo") != null'>and f_deviceNo &lt; #{params.maxDeviceNo}</if>
+			<if test='params.get("minDeviceNo") != null'>and f_deviceNo >= '${params.minDeviceNo}'</if>
+			<if test='params.get("maxDeviceNo") != null'>and f_deviceNo &lt; '${params.maxDeviceNo}'</if>
 			<if test='params.get("subDeviceNo") != null'>and f_deviceNo like '%${params.subDeviceNo}%'</if>
 			<if test='params.get("startsWithDeviceNo") != null'>and f_deviceNo like '%${params.startsWithDeviceNo}'</if>
 			<if test='params.get("endsWithDeviceNo") != null'>and f_deviceNo like '${params.endsWithDeviceNo}%'</if>
 			<if test='params.containsKey("terminalNo") == true'>
-				<if test='params.get("terminalNo") != null'>and f_terminalNo = #{params.terminalNo}</if>
+				<if test='params.get("terminalNo") != null'>and f_terminalNo = '${params.get("terminalNo")}'</if>
 				<if test='params.get("terminalNo") == null'>and f_terminalNo is null</if>
 			</if>
-			<if test='params.get("terminalNoList") != null'>
-				and f_terminalNo in(<foreach collection="params.terminalNoList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_terminalNoList") != null'>
+				and f_terminalNo in(<foreach collection='params.get("f_terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= #{params.minTerminalNo}</if>
-			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; #{params.maxTerminalNo}</if>
+			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= '${params.minTerminalNo}'</if>
+			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; '${params.maxTerminalNo}'</if>
 			<if test='params.get("subTerminalNo") != null'>and f_terminalNo like '%${params.subTerminalNo}%'</if>
 			<if test='params.get("startsWithTerminalNo") != null'>and f_terminalNo like '%${params.startsWithTerminalNo}'</if>
 			<if test='params.get("endsWithTerminalNo") != null'>and f_terminalNo like '${params.endsWithTerminalNo}%'</if>
 			<if test='params.containsKey("isAlarm") == true'>
-				<if test='params.get("isAlarm") != null'>and f_isAlarm = #{params.isAlarm}</if>
+				<if test='params.get("isAlarm") != null'>and f_isAlarm = ${params.get("isAlarm")}</if>
 				<if test='params.get("isAlarm") == null'>and f_isAlarm is null</if>
 			</if>
-			<if test='params.get("isAlarmList") != null'>
-				and f_isAlarm in(<foreach collection="params.isAlarmList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_isAlarmList") != null'>
+				and f_isAlarm in(<foreach collection='params.get("f_isAlarmList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minIsAlarm") != null'>and f_isAlarm >= #{params.minIsAlarm}</if>
-			<if test='params.get("maxIsAlarm") != null'>and f_isAlarm &lt; #{params.maxIsAlarm}</if>
-			<if test='params.get("subIsAlarm") != null'>and f_isAlarm like '%${params.subIsAlarm}%'</if>
-			<if test='params.get("startsWithIsAlarm") != null'>and f_isAlarm like '%${params.startsWithIsAlarm}'</if>
-			<if test='params.get("endsWithIsAlarm") != null'>and f_isAlarm like '${params.endsWithIsAlarm}%'</if>
+			<if test='params.get("minIsAlarm") != null'>and f_isAlarm >= ${params.minIsAlarm}</if>
+			<if test='params.get("maxIsAlarm") != null'>and f_isAlarm &lt; ${params.maxIsAlarm}</if>
 			<if test='params.containsKey("pressure") == true'>
-				<if test='params.get("pressure") != null'>and f_pressure = #{params.pressure}</if>
+				<if test='params.get("pressure") != null'>and f_pressure = '${params.get("pressure")}'</if>
 				<if test='params.get("pressure") == null'>and f_pressure is null</if>
 			</if>
-			<if test='params.get("pressureList") != null'>
-				and f_pressure in(<foreach collection="params.pressureList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_pressureList") != null'>
+				and f_pressure in(<foreach collection='params.get("f_pressureList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minPressure") != null'>and f_pressure >= #{params.minPressure}</if>
-			<if test='params.get("maxPressure") != null'>and f_pressure &lt; #{params.maxPressure}</if>
+			<if test='params.get("minPressure") != null'>and f_pressure >= '${params.minPressure}'</if>
+			<if test='params.get("maxPressure") != null'>and f_pressure &lt; '${params.maxPressure}'</if>
 			<if test='params.get("subPressure") != null'>and f_pressure like '%${params.subPressure}%'</if>
 			<if test='params.get("startsWithPressure") != null'>and f_pressure like '%${params.startsWithPressure}'</if>
 			<if test='params.get("endsWithPressure") != null'>and f_pressure like '${params.endsWithPressure}%'</if>
 			<if test='params.containsKey("time") == true'>
-				<if test='params.get("time") != null'>and f_time = #{params.time}</if>
+				<if test='params.get("time") != null'>and f_time = '${params.get("time")}'</if>
 				<if test='params.get("time") == null'>and f_time is null</if>
 			</if>
-			<if test='params.get("timeList") != null'>
-				and f_time in(<foreach collection="params.timeList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_timeList") != null'>
+				and f_time in(<foreach collection='params.get("f_timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minTime") != null'>and f_time >= #{params.minTime}</if>
-			<if test='params.get("maxTime") != null'>and f_time &lt; #{params.maxTime}</if>
-			<if test='params.get("subTime") != null'>and f_time like '%${params.subTime}%'</if>
-			<if test='params.get("startsWithTime") != null'>and f_time like '%${params.startsWithTime}'</if>
-			<if test='params.get("endsWithTime") != null'>and f_time like '${params.endsWithTime}%'</if>
+			<if test='params.get("minTime") != null'>and f_time >= '${params.minTime}'</if>
+			<if test='params.get("maxTime") != null'>and f_time &lt; '${params.maxTime}'</if>
 			<if test='params.containsKey("state") == true'>
-				<if test='params.get("state") != null'>and f_state = #{params.state}</if>
+				<if test='params.get("state") != null'>and f_state = ${params.get("state")}</if>
 				<if test='params.get("state") == null'>and f_state is null</if>
 			</if>
-			<if test='params.get("stateList") != null'>
-				and f_state in(<foreach collection="params.stateList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_stateList") != null'>
+				and f_state in(<foreach collection='params.get("f_stateList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minState") != null'>and f_state >= #{params.minState}</if>
-			<if test='params.get("maxState") != null'>and f_state &lt; #{params.maxState}</if>
-			<if test='params.get("subState") != null'>and f_state like '%${params.subState}%'</if>
-			<if test='params.get("startsWithState") != null'>and f_state like '%${params.startsWithState}'</if>
-			<if test='params.get("endsWithState") != null'>and f_state like '${params.endsWithState}%'</if>
+			<if test='params.get("minState") != null'>and f_state >= ${params.minState}</if>
+			<if test='params.get("maxState") != null'>and f_state &lt; ${params.maxState}</if>
 			<if test='params.containsKey("sendTime") == true'>
-				<if test='params.get("sendTime") != null'>and f_sendTime = #{params.sendTime}</if>
+				<if test='params.get("sendTime") != null'>and f_sendTime = '${params.get("sendTime")}'</if>
 				<if test='params.get("sendTime") == null'>and f_sendTime is null</if>
 			</if>
-			<if test='params.get("sendTimeList") != null'>
-				and f_sendTime in(<foreach collection="params.sendTimeList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_sendTimeList") != null'>
+				and f_sendTime in(<foreach collection='params.get("f_sendTimeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minSendTime") != null'>and f_sendTime >= #{params.minSendTime}</if>
-			<if test='params.get("maxSendTime") != null'>and f_sendTime &lt; #{params.maxSendTime}</if>
-			<if test='params.get("subSendTime") != null'>and f_sendTime like '%${params.subSendTime}%'</if>
-			<if test='params.get("startsWithSendTime") != null'>and f_sendTime like '%${params.startsWithSendTime}'</if>
-			<if test='params.get("endsWithSendTime") != null'>and f_sendTime like '${params.endsWithSendTime}%'</if>
+			<if test='params.get("minSendTime") != null'>and f_sendTime >= '${params.minSendTime}'</if>
+			<if test='params.get("maxSendTime") != null'>and f_sendTime &lt; '${params.maxSendTime}'</if>
 			<if test='params.containsKey("toPhone") == true'>
-				<if test='params.get("toPhone") != null'>and f_toPhone = #{params.toPhone}</if>
+				<if test='params.get("toPhone") != null'>and f_toPhone = '${params.get("toPhone")}'</if>
 				<if test='params.get("toPhone") == null'>and f_toPhone is null</if>
 			</if>
-			<if test='params.get("toPhoneList") != null'>
-				and f_toPhone in(<foreach collection="params.toPhoneList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_toPhoneList") != null'>
+				and f_toPhone in(<foreach collection='params.get("f_toPhoneList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
-			<if test='params.get("minToPhone") != null'>and f_toPhone >= #{params.minToPhone}</if>
-			<if test='params.get("maxToPhone") != null'>and f_toPhone &lt; #{params.maxToPhone}</if>
+			<if test='params.get("minToPhone") != null'>and f_toPhone >= '${params.minToPhone}'</if>
+			<if test='params.get("maxToPhone") != null'>and f_toPhone &lt; '${params.maxToPhone}'</if>
 			<if test='params.get("subToPhone") != null'>and f_toPhone like '%${params.subToPhone}%'</if>
 			<if test='params.get("startsWithToPhone") != null'>and f_toPhone like '%${params.startsWithToPhone}'</if>
 			<if test='params.get("endsWithToPhone") != null'>and f_toPhone like '${params.endsWithToPhone}%'</if>
 			<if test='params.containsKey("deviceSignal") == true'>
-				<if test='params.get("deviceSignal") != null'>and f_deviceSignal = #{params.deviceSignal}</if>
+				<if test='params.get("deviceSignal") != null'>and f_deviceSignal = ${params.get("deviceSignal")}</if>
 				<if test='params.get("deviceSignal") == null'>and f_deviceSignal is null</if>
 			</if>
-			<if test='params.get("deviceSignalList") != null'>
-				and f_deviceSignal in(<foreach collection="params.deviceSignalList" item="item" index="index" separator=",">#{item}</foreach>)
+			<if test='params.get("f_deviceSignalList") != null'>
+				and f_deviceSignal in(<foreach collection='params.get("f_deviceSignalList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
-			<if test='params.get("minDeviceSignal") != null'>and f_deviceSignal >= #{params.minDeviceSignal}</if>
-			<if test='params.get("maxDeviceSignal") != null'>and f_deviceSignal &lt; #{params.maxDeviceSignal}</if>
-			<if test='params.get("subDeviceSignal") != null'>and f_deviceSignal like '%${params.subDeviceSignal}%'</if>
-			<if test='params.get("startsWithDeviceSignal") != null'>and f_deviceSignal like '%${params.startsWithDeviceSignal}'</if>
-			<if test='params.get("endsWithDeviceSignal") != null'>and f_deviceSignal like '${params.endsWithDeviceSignal}%'</if>
+			<if test='params.get("minDeviceSignal") != null'>and f_deviceSignal >= ${params.minDeviceSignal}</if>
+			<if test='params.get("maxDeviceSignal") != null'>and f_deviceSignal &lt; ${params.maxDeviceSignal}</if>
 		</where>
 		<if test="params._sort != null">
 			order by 

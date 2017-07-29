@@ -13,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,7 +27,7 @@ public class ActAlarm extends com.defu.atom.action.ActAlarm {
 	protected final Log log = LogFactory.getLog(getClass());
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "deviceAlarm")
+	@RequestMapping(value = "deviceAlarm", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> deviceAlarm(@RequestParam(value = "params", required = false) String params, HttpSession session, HttpServletRequest req, HttpServletResponse rsp) {
 		if (log.isDebugEnabled())
 			log.debug("请求告警：" + params);

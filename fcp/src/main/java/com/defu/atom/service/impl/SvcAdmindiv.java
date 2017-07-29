@@ -1,11 +1,6 @@
 package com.defu.atom.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.defu.atom.db.Database.Admindiv;
 
 import com.defu.atom.AbstractDao;
 import com.defu.atom.AbstractService;
@@ -40,20 +35,4 @@ public class SvcAdmindiv extends AbstractService implements ISvcAdmindiv {
 		return dao;
 	}
 
-	public boolean beforeAdd(List<Map<String, Object>> params) {
-		if(params == null || params.size() < 1) return false;
-		for(Map<String, Object> e: params) {
-			if(!e.containsKey(Admindiv.no.prop)) e.put(Admindiv.no.prop, null);
-			if(!e.containsKey(Admindiv.name.prop)) e.put(Admindiv.name.prop, null);
-			if(!e.containsKey(Admindiv.parentNo.prop)) e.put(Admindiv.parentNo.prop, null);
-			if(!e.containsKey(Admindiv.level.prop)) e.put(Admindiv.level.prop, null);
-			if(!e.containsKey(Admindiv.kind.prop)) e.put(Admindiv.kind.prop, null);
-		}
-		return true;
-	}
-
-	
-	
-
-	
 }

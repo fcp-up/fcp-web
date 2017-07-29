@@ -7,8 +7,8 @@
 	<div class="x-close"></div>
 	<div class="x-panel-title">告警测试</div>
 	<form class="x-panel-body x-form">
-		<div><label class="x-label">设备编号</label><input name="deviceNo" readOnly /></div>
-		<div><label class="x-label">终端编号</label><input name="terminalNo" readOnly /></div>
+		<div><label class="x-label">设备编号</label><input name="deviceNo" /></div>
+		<div><label class="x-label">终端编号</label><input name="terminalNo" /></div>
 		<div>
 			<label class="x-label">是否报警</label><select name="isAlarm"><option value="1">是</option><option value="0">否</option></select>
 			<label class="x-label" style="width: auto;">信号强度</label><input name="deviceSignal" style="width: 48px;" />

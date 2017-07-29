@@ -1,9 +1,11 @@
 package com.defu.atom.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.regex.Pattern;
 
 import com.defu.atom.db.Database.Terminalonlinercd;
 
@@ -27,21 +29,33 @@ public class SvcTerminalonlinercd extends AbstractService implements ISvcTermina
 	public AbstractDao getDao() {
 		return dao;
 	}
-
 	public boolean beforeAdd(List<Map<String, Object>> params) {
-		if(params == null || params.size() < 1) return false;
-		for(Map<String, Object> e: params) {
-			if(!e.containsKey(Terminalonlinercd.id.prop)) e.put(Terminalonlinercd.id.prop, null);
-			if(!e.containsKey(Terminalonlinercd.terminalNo.prop)) e.put(Terminalonlinercd.terminalNo.prop, null);
-			if(!e.containsKey(Terminalonlinercd.time.prop)) e.put(Terminalonlinercd.time.prop, null);
-			if(!e.containsKey(Terminalonlinercd.state.prop)) e.put(Terminalonlinercd.state.prop, null);
-			if(!e.containsKey(Terminalonlinercd.terminalSignal.prop)) e.put(Terminalonlinercd.terminalSignal.prop, null);
+		boolean rst = super.beforeAdd(params);
+		if(rst) {
+    		for(Map<String, Object> e: params) {
+				checkTimeField(e);
+    		}
 		}
-		return true;
+		return rst;
 	}
 
+	public boolean beforeAdd(Map<String, Object> params) {
+		boolean rst = super.beforeAdd(params);
+		if(rst) {
+			checkTimeField(params);
+		}
+		return rst;
+	}
 	
-	
+	private void checkTimeField(Map<String, Object> params) {
+		Object v;
+		v = params.get(Terminalonlinercd.time.prop);
+		if(v != null) {
+			if(Pattern.matches("^\\d+$", v.toString())) {
+				params.put(Terminalonlinercd.time.prop, dateFormat.format(new Date(Long.parseLong(v.toString()))));
+			}
+		}
+		
+	}
 
-	
 }

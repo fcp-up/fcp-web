@@ -1,9 +1,11 @@
 package com.defu.atom.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.regex.Pattern;
 
 import com.defu.atom.db.Database.Alarm;
 
@@ -32,26 +34,40 @@ public class SvcAlarm extends AbstractService implements ISvcAlarm {
 	public AbstractDao getDao() {
 		return dao;
 	}
-
 	public boolean beforeAdd(List<Map<String, Object>> params) {
-		if(params == null || params.size() < 1) return false;
-		for(Map<String, Object> e: params) {
-			if(!e.containsKey(Alarm.id.prop)) e.put(Alarm.id.prop, null);
-			if(!e.containsKey(Alarm.deviceNo.prop)) e.put(Alarm.deviceNo.prop, null);
-			if(!e.containsKey(Alarm.terminalNo.prop)) e.put(Alarm.terminalNo.prop, null);
-			if(!e.containsKey(Alarm.isAlarm.prop)) e.put(Alarm.isAlarm.prop, null);
-			if(!e.containsKey(Alarm.pressure.prop)) e.put(Alarm.pressure.prop, null);
-			if(!e.containsKey(Alarm.time.prop)) e.put(Alarm.time.prop, null);
-			if(!e.containsKey(Alarm.state.prop)) e.put(Alarm.state.prop, null);
-			if(!e.containsKey(Alarm.sendTime.prop)) e.put(Alarm.sendTime.prop, null);
-			if(!e.containsKey(Alarm.toPhone.prop)) e.put(Alarm.toPhone.prop, null);
-			if(!e.containsKey(Alarm.deviceSignal.prop)) e.put(Alarm.deviceSignal.prop, null);
+		boolean rst = super.beforeAdd(params);
+		if(rst) {
+    		for(Map<String, Object> e: params) {
+				checkTimeField(e);
+    		}
 		}
-		return true;
+		return rst;
 	}
 
+	public boolean beforeAdd(Map<String, Object> params) {
+		boolean rst = super.beforeAdd(params);
+		if(rst) {
+			checkTimeField(params);
+		}
+		return rst;
+	}
 	
-	
+	private void checkTimeField(Map<String, Object> params) {
+		Object v;
+		v = params.get(Alarm.time.prop);
+		if(v != null) {
+			if(Pattern.matches("^\\d+$", v.toString())) {
+				params.put(Alarm.time.prop, dateFormat.format(new Date(Long.parseLong(v.toString()))));
+			}
+		}
+		
+		v = params.get(Alarm.sendTime.prop);
+		if(v != null) {
+			if(Pattern.matches("^\\d+$", v.toString())) {
+				params.put(Alarm.sendTime.prop, dateFormat.format(new Date(Long.parseLong(v.toString()))));
+			}
+		}
+		
+	}
 
-	
 }
