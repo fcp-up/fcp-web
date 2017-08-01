@@ -431,6 +431,13 @@ $.copy(tools, {
 		body.css({overflow: 'hidden', width: '100%', height: '100%'}).children('.x-print-hidden-dom').removeClass('x-hidden x-print-hidden-dom');
 		
 	},
+	mapToJson: function(map){
+		return JSON.stringify(map);
+	},
+	jsonToMap: function(json){
+		return eval('(' + json + ')');
+		return JSON.parse(json);
+	},
 	serializeParams: function(map){
 		return map == null ? null : {
 			params : JSON.stringify(map)

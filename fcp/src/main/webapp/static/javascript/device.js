@@ -65,7 +65,7 @@ fcp.deviceList = $('#deviceList').gridpanel({
 			tools.msgbox({title: '设备报警测试', msg: '请选中一个设备', positive: $.emptyFn});
 			return;
 		}
-		fcp.alarmFormWin.saveSuccess = function(){fcp.terminalList.loadData();};
+		fcp.alarmFormWin.saveSuccess = function(){fcp.deviceList.loadData();};
 		var win = fcp.alarmFormWin.open().setSaveUrl('../alarm/deviceAlarm');
 		win.form.deviceNo.val(nid.attr('nid'));
 		win.form.terminalNo.val(nid.attr('term'));

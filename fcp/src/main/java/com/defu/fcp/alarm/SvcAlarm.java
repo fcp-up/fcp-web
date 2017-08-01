@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.defu.atom.db.Database.*;
+import com.defu.fcp.HttpSocketServer;
 import com.defu.fcp.ThreadPool;
 import com.defu.fcp.device.ISvcDevice;
 import com.defu.fcp.terminal.ISvcTerminal;
@@ -93,7 +94,7 @@ public class SvcAlarm extends com.defu.atom.service.impl.SvcAlarm implements Run
 					if(mp == null) continue;
 					e.put(Alarm.toPhone.prop, mp.get(Terminal.alarmPhone.prop));
 				}
-
+				
 				if (log.isDebugEnabled())
 					log.debug("请求告警：" + e);
 				if(msg.size() > queueSize) {
@@ -104,7 +105,15 @@ public class SvcAlarm extends com.defu.atom.service.impl.SvcAlarm implements Run
 				}
 				
 				msg.offer(e);
+
+				//通知到web客户端
+				//获取设备
+				mp.clear();
+				mp.put(Device.no.prop, e.get(Alarm.deviceNo.prop));
+				mp = devsvc.single(mp);
 				
+				HttpSocketServer.notifyDeviceAlarm(mp, e);
+
 			}
 		}
 

@@ -12,6 +12,7 @@ import com.defu.atom.db.Database.Device;
 import com.defu.atom.db.Database.Terminal;
 import com.defu.atom.db.Database.Terminalonlinercd;
 import com.defu.atom.service.ISvcTerminalonlinercd;
+import com.defu.fcp.HttpSocketServer;
 import com.defu.fcp.device.ISvcDevice;
 
 @Service
@@ -58,6 +59,15 @@ public class SvcTerminal extends com.defu.atom.service.impl.SvcTerminal implemen
 				rcdsvc.add(t);
 				
 				rst.put(no, 0);
+
+				//通知到web客户端
+				//获取设备
+				params.clear();
+				params.put(Terminal.no.prop, no);
+				params = single(params);
+				
+				HttpSocketServer.notifyTermOnline(params, t);
+
 			}
 			catch(Exception ex){
 				rst.put(no, 1);

@@ -22,7 +22,7 @@ public class Tools {
 		return mapper.writeValueAsString(map);
 	}
 
-	public static String ListToJsonStr(List<?> list) throws JsonProcessingException {
+	public static String listToJsonStr(List<?> list) throws JsonProcessingException {
 		if(list == null) return null;
 		return mapper.writeValueAsString(list);
 	}

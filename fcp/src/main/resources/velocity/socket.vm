@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	#parse("common/head.vm")
+</head>
+<body>
+<div id="reqform" class="x-form x-container" style="right: 10px; height: 160px; left: 10px; top: 10px; border-radius: 5px;">
+	<div>
+		<textarea name="msg" style="width: 600px; height: 150px;"></textarea>
+		<span class="x-button-middle x-hover" handler="send" style="vertical-align: bottom;">发送</span>
+	</div>
+</div>
+<div id="view" class="x-form x-container" style="right: 10px; top: 205px; left: 10px; bottom: 10px; border-radius: 5px;"></div>
+#include("common/js.vm")
+<script>
+var app = {
+	sessionId: '$sessionId'
+};
+var WSP = {
+	ST: {
+		wsvr	: 1,
+		client	: 2
+	},
+	STSTR: {
+		1: '发送',
+		2: '浏览器客户端'
+	},
+	MT: {
+		txt: 	1,
+		arch: 	2,
+		termOnline: 	3,
+		deviceAlarm: 	4
+	}
+};
+var archId = {
+	terminal	: 1,
+	device		: 2
+}, archName = {
+	1: '终端',
+	2: '设备'
+}
+	
+$('#reqform').formpanel({
+	send: function(){
+		socket.send(tools.mapToJson({type: 1, msg: this.form.msg.val()}));
+	}
+});
+$('#view').panel({
+	dblclick: function(){
+		this.el.html('');
+	}
+});
+var socket = new $.SocketClient({
+//	url: 'ws://localhost:8081/app/ws/socket/sessionId',
+	url: ['ws://', location.href.replace(/https?:\/\/([^\/]+).*/, '$1'), '/fcp/ws/socket/', app.sessionId].join(''),
+	onopen: function(evt){
+	},
+	onclose: function(evt){
+	},
+	onmessage: function(evt){
+		var msg = eval('(' + evt.data + ')');
+		switch(msg.type) {
+		case WSP.MT.txt: 
+			msg = [msg.source.addr, '：', msg.msg, '<br>'].join('');
+			break;
+		case WSP.MT.arch:
+			msg = [archName[msg.msg], '发生变化<br>'].join('');
+			break;
+		case WSP.MT.termOnline:
+			msg = ['终端在线状态变化：', msg.msg, '<br>'].join('');
+			break;
+		case WSP.MT.deviceAlarm:
+			msg = ['设备告警：', msg.msg, '<br>'].join('');
+			break;
+		}
+		$('#view').append(msg);
+	},
+	onerror: function(evt){
+	}
+});
+</script>
+</body>
+</html>
