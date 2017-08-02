@@ -75,8 +75,8 @@
 				<if test='params.get("id") != null'>and f_id = ${params.get("id")}</if>
 				<if test='params.get("id") == null'>and f_id is null</if>
 			</if>
-			<if test='params.get("f_idList") != null'>
-				and f_id in(<foreach collection='params.get("f_idList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection='params.get("idList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minId") != null'>and f_id >= ${params.minId}</if>
 			<if test='params.get("maxId") != null'>and f_id &lt; ${params.maxId}</if>
@@ -84,8 +84,8 @@
 				<if test='params.get("terminalNo") != null'>and f_terminalNo = '${params.get("terminalNo")}'</if>
 				<if test='params.get("terminalNo") == null'>and f_terminalNo is null</if>
 			</if>
-			<if test='params.get("f_terminalNoList") != null'>
-				and f_terminalNo in(<foreach collection='params.get("f_terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("terminalNoList") != null'>
+				and f_terminalNo in(<foreach collection='params.get("terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= '${params.minTerminalNo}'</if>
 			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; '${params.maxTerminalNo}'</if>
@@ -96,8 +96,8 @@
 				<if test='params.get("time") != null'>and f_time = '${params.get("time")}'</if>
 				<if test='params.get("time") == null'>and f_time is null</if>
 			</if>
-			<if test='params.get("f_timeList") != null'>
-				and f_time in(<foreach collection='params.get("f_timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("timeList") != null'>
+				and f_time in(<foreach collection='params.get("timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minTime") != null'>and f_time >= '${params.minTime}'</if>
 			<if test='params.get("maxTime") != null'>and f_time &lt; '${params.maxTime}'</if>
@@ -105,8 +105,8 @@
 				<if test='params.get("state") != null'>and f_state = ${params.get("state")}</if>
 				<if test='params.get("state") == null'>and f_state is null</if>
 			</if>
-			<if test='params.get("f_stateList") != null'>
-				and f_state in(<foreach collection='params.get("f_stateList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("stateList") != null'>
+				and f_state in(<foreach collection='params.get("stateList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minState") != null'>and f_state >= ${params.minState}</if>
 			<if test='params.get("maxState") != null'>and f_state &lt; ${params.maxState}</if>
@@ -114,8 +114,8 @@
 				<if test='params.get("terminalSignal") != null'>and f_terminalSignal = ${params.get("terminalSignal")}</if>
 				<if test='params.get("terminalSignal") == null'>and f_terminalSignal is null</if>
 			</if>
-			<if test='params.get("f_terminalSignalList") != null'>
-				and f_terminalSignal in(<foreach collection='params.get("f_terminalSignalList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("terminalSignalList") != null'>
+				and f_terminalSignal in(<foreach collection='params.get("terminalSignalList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minTerminalSignal") != null'>and f_terminalSignal >= ${params.minTerminalSignal}</if>
 			<if test='params.get("maxTerminalSignal") != null'>and f_terminalSignal &lt; ${params.maxTerminalSignal}</if>
@@ -153,8 +153,8 @@
 					<if test='tag.get("id") != null'>and f_id = ${tag.get("id")}</if>
 					<if test='tag.get("id") == null'>and f_id is null</if>
 				</if>
-				<if test='tag.get("f_idList") != null'>
-					and f_id in(<foreach collection='tag.get("f_idList")' item="item" index="index" separator=",">${item}</foreach>)
+				<if test='tag.get("idList") != null'>
+					and f_id in(<foreach collection='tag.get("idList")' item="item" index="index" separator=",">${item}</foreach>)
 				</if>
 				<if test='tag.get("minId") != null'>and f_id >= ${tag.minId}</if>
 				<if test='tag.get("maxId") != null'>and f_id &lt; ${tag.maxId}</if>
@@ -162,8 +162,8 @@
 					<if test='tag.get("terminalNo") != null'>and f_terminalNo = '${tag.get("terminalNo")}'</if>
 					<if test='tag.get("terminalNo") == null'>and f_terminalNo is null</if>
 				</if>
-				<if test='tag.get("f_terminalNoList") != null'>
-					and f_terminalNo in(<foreach collection='tag.get("f_terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
+				<if test='tag.get("terminalNoList") != null'>
+					and f_terminalNo in(<foreach collection='tag.get("terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 				</if>
 				<if test='tag.get("minTerminalNo") != null'>and f_terminalNo >= '${tag.minTerminalNo}'</if>
 				<if test='tag.get("maxTerminalNo") != null'>and f_terminalNo &lt; '${tag.maxTerminalNo}'</if>
@@ -174,8 +174,8 @@
 					<if test='tag.get("time") != null'>and f_time = '${tag.get("time")}'</if>
 					<if test='tag.get("time") == null'>and f_time is null</if>
 				</if>
-				<if test='tag.get("f_timeList") != null'>
-					and f_time in(<foreach collection='tag.get("f_timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
+				<if test='tag.get("timeList") != null'>
+					and f_time in(<foreach collection='tag.get("timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 				</if>
 				<if test='tag.get("minTime") != null'>and f_time >= '${tag.minTime}'</if>
 				<if test='tag.get("maxTime") != null'>and f_time &lt; '${tag.maxTime}'</if>
@@ -183,8 +183,8 @@
 					<if test='tag.get("state") != null'>and f_state = ${tag.get("state")}</if>
 					<if test='tag.get("state") == null'>and f_state is null</if>
 				</if>
-				<if test='tag.get("f_stateList") != null'>
-					and f_state in(<foreach collection='tag.get("f_stateList")' item="item" index="index" separator=",">${item}</foreach>)
+				<if test='tag.get("stateList") != null'>
+					and f_state in(<foreach collection='tag.get("stateList")' item="item" index="index" separator=",">${item}</foreach>)
 				</if>
 				<if test='tag.get("minState") != null'>and f_state >= ${tag.minState}</if>
 				<if test='tag.get("maxState") != null'>and f_state &lt; ${tag.maxState}</if>
@@ -192,8 +192,8 @@
 					<if test='tag.get("terminalSignal") != null'>and f_terminalSignal = ${tag.get("terminalSignal")}</if>
 					<if test='tag.get("terminalSignal") == null'>and f_terminalSignal is null</if>
 				</if>
-				<if test='tag.get("f_terminalSignalList") != null'>
-					and f_terminalSignal in(<foreach collection='tag.get("f_terminalSignalList")' item="item" index="index" separator=",">${item}</foreach>)
+				<if test='tag.get("terminalSignalList") != null'>
+					and f_terminalSignal in(<foreach collection='tag.get("terminalSignalList")' item="item" index="index" separator=",">${item}</foreach>)
 				</if>
 				<if test='tag.get("minTerminalSignal") != null'>and f_terminalSignal >= ${tag.minTerminalSignal}</if>
 				<if test='tag.get("maxTerminalSignal") != null'>and f_terminalSignal &lt; ${tag.maxTerminalSignal}</if>
@@ -213,8 +213,8 @@
 				<if test='params.get("id") != null'>and f_id = ${params.get("id")}</if>
 				<if test='params.get("id") == null'>and f_id is null</if>
 			</if>
-			<if test='params.get("f_idList") != null'>
-				and f_id in(<foreach collection='params.get("f_idList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection='params.get("idList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minId") != null'>and f_id >= ${params.minId}</if>
 			<if test='params.get("maxId") != null'>and f_id &lt; ${params.maxId}</if>
@@ -222,8 +222,8 @@
 				<if test='params.get("terminalNo") != null'>and f_terminalNo = '${params.get("terminalNo")}'</if>
 				<if test='params.get("terminalNo") == null'>and f_terminalNo is null</if>
 			</if>
-			<if test='params.get("f_terminalNoList") != null'>
-				and f_terminalNo in(<foreach collection='params.get("f_terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("terminalNoList") != null'>
+				and f_terminalNo in(<foreach collection='params.get("terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= '${params.minTerminalNo}'</if>
 			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; '${params.maxTerminalNo}'</if>
@@ -234,8 +234,8 @@
 				<if test='params.get("time") != null'>and f_time = '${params.get("time")}'</if>
 				<if test='params.get("time") == null'>and f_time is null</if>
 			</if>
-			<if test='params.get("f_timeList") != null'>
-				and f_time in(<foreach collection='params.get("f_timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("timeList") != null'>
+				and f_time in(<foreach collection='params.get("timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minTime") != null'>and f_time >= '${params.minTime}'</if>
 			<if test='params.get("maxTime") != null'>and f_time &lt; '${params.maxTime}'</if>
@@ -243,8 +243,8 @@
 				<if test='params.get("state") != null'>and f_state = ${params.get("state")}</if>
 				<if test='params.get("state") == null'>and f_state is null</if>
 			</if>
-			<if test='params.get("f_stateList") != null'>
-				and f_state in(<foreach collection='params.get("f_stateList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("stateList") != null'>
+				and f_state in(<foreach collection='params.get("stateList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minState") != null'>and f_state >= ${params.minState}</if>
 			<if test='params.get("maxState") != null'>and f_state &lt; ${params.maxState}</if>
@@ -252,8 +252,8 @@
 				<if test='params.get("terminalSignal") != null'>and f_terminalSignal = ${params.get("terminalSignal")}</if>
 				<if test='params.get("terminalSignal") == null'>and f_terminalSignal is null</if>
 			</if>
-			<if test='params.get("f_terminalSignalList") != null'>
-				and f_terminalSignal in(<foreach collection='params.get("f_terminalSignalList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("terminalSignalList") != null'>
+				and f_terminalSignal in(<foreach collection='params.get("terminalSignalList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minTerminalSignal") != null'>and f_terminalSignal >= ${params.minTerminalSignal}</if>
 			<if test='params.get("maxTerminalSignal") != null'>and f_terminalSignal &lt; ${params.maxTerminalSignal}</if>
@@ -274,8 +274,8 @@
 				<if test='params.get("id") != null'>and f_id = ${params.get("id")}</if>
 				<if test='params.get("id") == null'>and f_id is null</if>
 			</if>
-			<if test='params.get("f_idList") != null'>
-				and f_id in(<foreach collection='params.get("f_idList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection='params.get("idList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minId") != null'>and f_id >= ${params.minId}</if>
 			<if test='params.get("maxId") != null'>and f_id &lt; ${params.maxId}</if>
@@ -283,8 +283,8 @@
 				<if test='params.get("terminalNo") != null'>and f_terminalNo = '${params.get("terminalNo")}'</if>
 				<if test='params.get("terminalNo") == null'>and f_terminalNo is null</if>
 			</if>
-			<if test='params.get("f_terminalNoList") != null'>
-				and f_terminalNo in(<foreach collection='params.get("f_terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("terminalNoList") != null'>
+				and f_terminalNo in(<foreach collection='params.get("terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= '${params.minTerminalNo}'</if>
 			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; '${params.maxTerminalNo}'</if>
@@ -295,8 +295,8 @@
 				<if test='params.get("time") != null'>and f_time = '${params.get("time")}'</if>
 				<if test='params.get("time") == null'>and f_time is null</if>
 			</if>
-			<if test='params.get("f_timeList") != null'>
-				and f_time in(<foreach collection='params.get("f_timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("timeList") != null'>
+				and f_time in(<foreach collection='params.get("timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minTime") != null'>and f_time >= '${params.minTime}'</if>
 			<if test='params.get("maxTime") != null'>and f_time &lt; '${params.maxTime}'</if>
@@ -304,8 +304,8 @@
 				<if test='params.get("state") != null'>and f_state = ${params.get("state")}</if>
 				<if test='params.get("state") == null'>and f_state is null</if>
 			</if>
-			<if test='params.get("f_stateList") != null'>
-				and f_state in(<foreach collection='params.get("f_stateList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("stateList") != null'>
+				and f_state in(<foreach collection='params.get("stateList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minState") != null'>and f_state >= ${params.minState}</if>
 			<if test='params.get("maxState") != null'>and f_state &lt; ${params.maxState}</if>
@@ -313,8 +313,8 @@
 				<if test='params.get("terminalSignal") != null'>and f_terminalSignal = ${params.get("terminalSignal")}</if>
 				<if test='params.get("terminalSignal") == null'>and f_terminalSignal is null</if>
 			</if>
-			<if test='params.get("f_terminalSignalList") != null'>
-				and f_terminalSignal in(<foreach collection='params.get("f_terminalSignalList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("terminalSignalList") != null'>
+				and f_terminalSignal in(<foreach collection='params.get("terminalSignalList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minTerminalSignal") != null'>and f_terminalSignal >= ${params.minTerminalSignal}</if>
 			<if test='params.get("maxTerminalSignal") != null'>and f_terminalSignal &lt; ${params.maxTerminalSignal}</if>
@@ -333,8 +333,8 @@
 				<if test='params.get("id") != null'>and f_id = ${params.get("id")}</if>
 				<if test='params.get("id") == null'>and f_id is null</if>
 			</if>
-			<if test='params.get("f_idList") != null'>
-				and f_id in(<foreach collection='params.get("f_idList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("idList") != null'>
+				and f_id in(<foreach collection='params.get("idList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minId") != null'>and f_id >= ${params.minId}</if>
 			<if test='params.get("maxId") != null'>and f_id &lt; ${params.maxId}</if>
@@ -342,8 +342,8 @@
 				<if test='params.get("terminalNo") != null'>and f_terminalNo = '${params.get("terminalNo")}'</if>
 				<if test='params.get("terminalNo") == null'>and f_terminalNo is null</if>
 			</if>
-			<if test='params.get("f_terminalNoList") != null'>
-				and f_terminalNo in(<foreach collection='params.get("f_terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("terminalNoList") != null'>
+				and f_terminalNo in(<foreach collection='params.get("terminalNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minTerminalNo") != null'>and f_terminalNo >= '${params.minTerminalNo}'</if>
 			<if test='params.get("maxTerminalNo") != null'>and f_terminalNo &lt; '${params.maxTerminalNo}'</if>
@@ -354,8 +354,8 @@
 				<if test='params.get("time") != null'>and f_time = '${params.get("time")}'</if>
 				<if test='params.get("time") == null'>and f_time is null</if>
 			</if>
-			<if test='params.get("f_timeList") != null'>
-				and f_time in(<foreach collection='params.get("f_timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("timeList") != null'>
+				and f_time in(<foreach collection='params.get("timeList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minTime") != null'>and f_time >= '${params.minTime}'</if>
 			<if test='params.get("maxTime") != null'>and f_time &lt; '${params.maxTime}'</if>
@@ -363,8 +363,8 @@
 				<if test='params.get("state") != null'>and f_state = ${params.get("state")}</if>
 				<if test='params.get("state") == null'>and f_state is null</if>
 			</if>
-			<if test='params.get("f_stateList") != null'>
-				and f_state in(<foreach collection='params.get("f_stateList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("stateList") != null'>
+				and f_state in(<foreach collection='params.get("stateList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minState") != null'>and f_state >= ${params.minState}</if>
 			<if test='params.get("maxState") != null'>and f_state &lt; ${params.maxState}</if>
@@ -372,8 +372,8 @@
 				<if test='params.get("terminalSignal") != null'>and f_terminalSignal = ${params.get("terminalSignal")}</if>
 				<if test='params.get("terminalSignal") == null'>and f_terminalSignal is null</if>
 			</if>
-			<if test='params.get("f_terminalSignalList") != null'>
-				and f_terminalSignal in(<foreach collection='params.get("f_terminalSignalList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("terminalSignalList") != null'>
+				and f_terminalSignal in(<foreach collection='params.get("terminalSignalList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minTerminalSignal") != null'>and f_terminalSignal >= ${params.minTerminalSignal}</if>
 			<if test='params.get("maxTerminalSignal") != null'>and f_terminalSignal &lt; ${params.maxTerminalSignal}</if>

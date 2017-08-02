@@ -88,8 +88,8 @@
 				<if test='params.get("no") != null'>and f_no = '${params.get("no")}'</if>
 				<if test='params.get("no") == null'>and f_no is null</if>
 			</if>
-			<if test='params.get("f_noList") != null'>
-				and f_no in(<foreach collection='params.get("f_noList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("noList") != null'>
+				and f_no in(<foreach collection='params.get("noList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minNo") != null'>and f_no >= '${params.minNo}'</if>
 			<if test='params.get("maxNo") != null'>and f_no &lt; '${params.maxNo}'</if>
@@ -100,8 +100,8 @@
 				<if test='params.get("name") != null'>and f_name = '${params.get("name")}'</if>
 				<if test='params.get("name") == null'>and f_name is null</if>
 			</if>
-			<if test='params.get("f_nameList") != null'>
-				and f_name in(<foreach collection='params.get("f_nameList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("nameList") != null'>
+				and f_name in(<foreach collection='params.get("nameList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minName") != null'>and f_name >= '${params.minName}'</if>
 			<if test='params.get("maxName") != null'>and f_name &lt; '${params.maxName}'</if>
@@ -112,8 +112,8 @@
 				<if test='params.get("parentNo") != null'>and f_parentNo = '${params.get("parentNo")}'</if>
 				<if test='params.get("parentNo") == null'>and f_parentNo is null</if>
 			</if>
-			<if test='params.get("f_parentNoList") != null'>
-				and f_parentNo in(<foreach collection='params.get("f_parentNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("parentNoList") != null'>
+				and f_parentNo in(<foreach collection='params.get("parentNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minParentNo") != null'>and f_parentNo >= '${params.minParentNo}'</if>
 			<if test='params.get("maxParentNo") != null'>and f_parentNo &lt; '${params.maxParentNo}'</if>
@@ -124,8 +124,8 @@
 				<if test='params.get("level") != null'>and f_level = ${params.get("level")}</if>
 				<if test='params.get("level") == null'>and f_level is null</if>
 			</if>
-			<if test='params.get("f_levelList") != null'>
-				and f_level in(<foreach collection='params.get("f_levelList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("levelList") != null'>
+				and f_level in(<foreach collection='params.get("levelList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minLevel") != null'>and f_level >= ${params.minLevel}</if>
 			<if test='params.get("maxLevel") != null'>and f_level &lt; ${params.maxLevel}</if>
@@ -133,8 +133,8 @@
 				<if test='params.get("kind") != null'>and f_kind = ${params.get("kind")}</if>
 				<if test='params.get("kind") == null'>and f_kind is null</if>
 			</if>
-			<if test='params.get("f_kindList") != null'>
-				and f_kind in(<foreach collection='params.get("f_kindList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("kindList") != null'>
+				and f_kind in(<foreach collection='params.get("kindList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minKind") != null'>and f_kind >= ${params.minKind}</if>
 			<if test='params.get("maxKind") != null'>and f_kind &lt; ${params.maxKind}</if>
@@ -172,8 +172,8 @@
 					<if test='tag.get("no") != null'>and f_no = '${tag.get("no")}'</if>
 					<if test='tag.get("no") == null'>and f_no is null</if>
 				</if>
-				<if test='tag.get("f_noList") != null'>
-					and f_no in(<foreach collection='tag.get("f_noList")' item="item" index="index" separator=",">'${item}'</foreach>)
+				<if test='tag.get("noList") != null'>
+					and f_no in(<foreach collection='tag.get("noList")' item="item" index="index" separator=",">'${item}'</foreach>)
 				</if>
 				<if test='tag.get("minNo") != null'>and f_no >= '${tag.minNo}'</if>
 				<if test='tag.get("maxNo") != null'>and f_no &lt; '${tag.maxNo}'</if>
@@ -184,8 +184,8 @@
 					<if test='tag.get("name") != null'>and f_name = '${tag.get("name")}'</if>
 					<if test='tag.get("name") == null'>and f_name is null</if>
 				</if>
-				<if test='tag.get("f_nameList") != null'>
-					and f_name in(<foreach collection='tag.get("f_nameList")' item="item" index="index" separator=",">'${item}'</foreach>)
+				<if test='tag.get("nameList") != null'>
+					and f_name in(<foreach collection='tag.get("nameList")' item="item" index="index" separator=",">'${item}'</foreach>)
 				</if>
 				<if test='tag.get("minName") != null'>and f_name >= '${tag.minName}'</if>
 				<if test='tag.get("maxName") != null'>and f_name &lt; '${tag.maxName}'</if>
@@ -196,8 +196,8 @@
 					<if test='tag.get("parentNo") != null'>and f_parentNo = '${tag.get("parentNo")}'</if>
 					<if test='tag.get("parentNo") == null'>and f_parentNo is null</if>
 				</if>
-				<if test='tag.get("f_parentNoList") != null'>
-					and f_parentNo in(<foreach collection='tag.get("f_parentNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
+				<if test='tag.get("parentNoList") != null'>
+					and f_parentNo in(<foreach collection='tag.get("parentNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 				</if>
 				<if test='tag.get("minParentNo") != null'>and f_parentNo >= '${tag.minParentNo}'</if>
 				<if test='tag.get("maxParentNo") != null'>and f_parentNo &lt; '${tag.maxParentNo}'</if>
@@ -208,8 +208,8 @@
 					<if test='tag.get("level") != null'>and f_level = ${tag.get("level")}</if>
 					<if test='tag.get("level") == null'>and f_level is null</if>
 				</if>
-				<if test='tag.get("f_levelList") != null'>
-					and f_level in(<foreach collection='tag.get("f_levelList")' item="item" index="index" separator=",">${item}</foreach>)
+				<if test='tag.get("levelList") != null'>
+					and f_level in(<foreach collection='tag.get("levelList")' item="item" index="index" separator=",">${item}</foreach>)
 				</if>
 				<if test='tag.get("minLevel") != null'>and f_level >= ${tag.minLevel}</if>
 				<if test='tag.get("maxLevel") != null'>and f_level &lt; ${tag.maxLevel}</if>
@@ -217,8 +217,8 @@
 					<if test='tag.get("kind") != null'>and f_kind = ${tag.get("kind")}</if>
 					<if test='tag.get("kind") == null'>and f_kind is null</if>
 				</if>
-				<if test='tag.get("f_kindList") != null'>
-					and f_kind in(<foreach collection='tag.get("f_kindList")' item="item" index="index" separator=",">${item}</foreach>)
+				<if test='tag.get("kindList") != null'>
+					and f_kind in(<foreach collection='tag.get("kindList")' item="item" index="index" separator=",">${item}</foreach>)
 				</if>
 				<if test='tag.get("minKind") != null'>and f_kind >= ${tag.minKind}</if>
 				<if test='tag.get("maxKind") != null'>and f_kind &lt; ${tag.maxKind}</if>
@@ -238,8 +238,8 @@
 				<if test='params.get("no") != null'>and f_no = '${params.get("no")}'</if>
 				<if test='params.get("no") == null'>and f_no is null</if>
 			</if>
-			<if test='params.get("f_noList") != null'>
-				and f_no in(<foreach collection='params.get("f_noList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("noList") != null'>
+				and f_no in(<foreach collection='params.get("noList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minNo") != null'>and f_no >= '${params.minNo}'</if>
 			<if test='params.get("maxNo") != null'>and f_no &lt; '${params.maxNo}'</if>
@@ -250,8 +250,8 @@
 				<if test='params.get("name") != null'>and f_name = '${params.get("name")}'</if>
 				<if test='params.get("name") == null'>and f_name is null</if>
 			</if>
-			<if test='params.get("f_nameList") != null'>
-				and f_name in(<foreach collection='params.get("f_nameList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("nameList") != null'>
+				and f_name in(<foreach collection='params.get("nameList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minName") != null'>and f_name >= '${params.minName}'</if>
 			<if test='params.get("maxName") != null'>and f_name &lt; '${params.maxName}'</if>
@@ -262,8 +262,8 @@
 				<if test='params.get("parentNo") != null'>and f_parentNo = '${params.get("parentNo")}'</if>
 				<if test='params.get("parentNo") == null'>and f_parentNo is null</if>
 			</if>
-			<if test='params.get("f_parentNoList") != null'>
-				and f_parentNo in(<foreach collection='params.get("f_parentNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("parentNoList") != null'>
+				and f_parentNo in(<foreach collection='params.get("parentNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minParentNo") != null'>and f_parentNo >= '${params.minParentNo}'</if>
 			<if test='params.get("maxParentNo") != null'>and f_parentNo &lt; '${params.maxParentNo}'</if>
@@ -274,8 +274,8 @@
 				<if test='params.get("level") != null'>and f_level = ${params.get("level")}</if>
 				<if test='params.get("level") == null'>and f_level is null</if>
 			</if>
-			<if test='params.get("f_levelList") != null'>
-				and f_level in(<foreach collection='params.get("f_levelList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("levelList") != null'>
+				and f_level in(<foreach collection='params.get("levelList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minLevel") != null'>and f_level >= ${params.minLevel}</if>
 			<if test='params.get("maxLevel") != null'>and f_level &lt; ${params.maxLevel}</if>
@@ -283,8 +283,8 @@
 				<if test='params.get("kind") != null'>and f_kind = ${params.get("kind")}</if>
 				<if test='params.get("kind") == null'>and f_kind is null</if>
 			</if>
-			<if test='params.get("f_kindList") != null'>
-				and f_kind in(<foreach collection='params.get("f_kindList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("kindList") != null'>
+				and f_kind in(<foreach collection='params.get("kindList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minKind") != null'>and f_kind >= ${params.minKind}</if>
 			<if test='params.get("maxKind") != null'>and f_kind &lt; ${params.maxKind}</if>
@@ -305,8 +305,8 @@
 				<if test='params.get("no") != null'>and f_no = '${params.get("no")}'</if>
 				<if test='params.get("no") == null'>and f_no is null</if>
 			</if>
-			<if test='params.get("f_noList") != null'>
-				and f_no in(<foreach collection='params.get("f_noList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("noList") != null'>
+				and f_no in(<foreach collection='params.get("noList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minNo") != null'>and f_no >= '${params.minNo}'</if>
 			<if test='params.get("maxNo") != null'>and f_no &lt; '${params.maxNo}'</if>
@@ -317,8 +317,8 @@
 				<if test='params.get("name") != null'>and f_name = '${params.get("name")}'</if>
 				<if test='params.get("name") == null'>and f_name is null</if>
 			</if>
-			<if test='params.get("f_nameList") != null'>
-				and f_name in(<foreach collection='params.get("f_nameList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("nameList") != null'>
+				and f_name in(<foreach collection='params.get("nameList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minName") != null'>and f_name >= '${params.minName}'</if>
 			<if test='params.get("maxName") != null'>and f_name &lt; '${params.maxName}'</if>
@@ -329,8 +329,8 @@
 				<if test='params.get("parentNo") != null'>and f_parentNo = '${params.get("parentNo")}'</if>
 				<if test='params.get("parentNo") == null'>and f_parentNo is null</if>
 			</if>
-			<if test='params.get("f_parentNoList") != null'>
-				and f_parentNo in(<foreach collection='params.get("f_parentNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("parentNoList") != null'>
+				and f_parentNo in(<foreach collection='params.get("parentNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minParentNo") != null'>and f_parentNo >= '${params.minParentNo}'</if>
 			<if test='params.get("maxParentNo") != null'>and f_parentNo &lt; '${params.maxParentNo}'</if>
@@ -341,8 +341,8 @@
 				<if test='params.get("level") != null'>and f_level = ${params.get("level")}</if>
 				<if test='params.get("level") == null'>and f_level is null</if>
 			</if>
-			<if test='params.get("f_levelList") != null'>
-				and f_level in(<foreach collection='params.get("f_levelList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("levelList") != null'>
+				and f_level in(<foreach collection='params.get("levelList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minLevel") != null'>and f_level >= ${params.minLevel}</if>
 			<if test='params.get("maxLevel") != null'>and f_level &lt; ${params.maxLevel}</if>
@@ -350,8 +350,8 @@
 				<if test='params.get("kind") != null'>and f_kind = ${params.get("kind")}</if>
 				<if test='params.get("kind") == null'>and f_kind is null</if>
 			</if>
-			<if test='params.get("f_kindList") != null'>
-				and f_kind in(<foreach collection='params.get("f_kindList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("kindList") != null'>
+				and f_kind in(<foreach collection='params.get("kindList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minKind") != null'>and f_kind >= ${params.minKind}</if>
 			<if test='params.get("maxKind") != null'>and f_kind &lt; ${params.maxKind}</if>
@@ -370,8 +370,8 @@
 				<if test='params.get("no") != null'>and f_no = '${params.get("no")}'</if>
 				<if test='params.get("no") == null'>and f_no is null</if>
 			</if>
-			<if test='params.get("f_noList") != null'>
-				and f_no in(<foreach collection='params.get("f_noList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("noList") != null'>
+				and f_no in(<foreach collection='params.get("noList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minNo") != null'>and f_no >= '${params.minNo}'</if>
 			<if test='params.get("maxNo") != null'>and f_no &lt; '${params.maxNo}'</if>
@@ -382,8 +382,8 @@
 				<if test='params.get("name") != null'>and f_name = '${params.get("name")}'</if>
 				<if test='params.get("name") == null'>and f_name is null</if>
 			</if>
-			<if test='params.get("f_nameList") != null'>
-				and f_name in(<foreach collection='params.get("f_nameList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("nameList") != null'>
+				and f_name in(<foreach collection='params.get("nameList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minName") != null'>and f_name >= '${params.minName}'</if>
 			<if test='params.get("maxName") != null'>and f_name &lt; '${params.maxName}'</if>
@@ -394,8 +394,8 @@
 				<if test='params.get("parentNo") != null'>and f_parentNo = '${params.get("parentNo")}'</if>
 				<if test='params.get("parentNo") == null'>and f_parentNo is null</if>
 			</if>
-			<if test='params.get("f_parentNoList") != null'>
-				and f_parentNo in(<foreach collection='params.get("f_parentNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			<if test='params.get("parentNoList") != null'>
+				and f_parentNo in(<foreach collection='params.get("parentNoList")' item="item" index="index" separator=",">'${item}'</foreach>)
 			</if>
 			<if test='params.get("minParentNo") != null'>and f_parentNo >= '${params.minParentNo}'</if>
 			<if test='params.get("maxParentNo") != null'>and f_parentNo &lt; '${params.maxParentNo}'</if>
@@ -406,8 +406,8 @@
 				<if test='params.get("level") != null'>and f_level = ${params.get("level")}</if>
 				<if test='params.get("level") == null'>and f_level is null</if>
 			</if>
-			<if test='params.get("f_levelList") != null'>
-				and f_level in(<foreach collection='params.get("f_levelList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("levelList") != null'>
+				and f_level in(<foreach collection='params.get("levelList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minLevel") != null'>and f_level >= ${params.minLevel}</if>
 			<if test='params.get("maxLevel") != null'>and f_level &lt; ${params.maxLevel}</if>
@@ -415,8 +415,8 @@
 				<if test='params.get("kind") != null'>and f_kind = ${params.get("kind")}</if>
 				<if test='params.get("kind") == null'>and f_kind is null</if>
 			</if>
-			<if test='params.get("f_kindList") != null'>
-				and f_kind in(<foreach collection='params.get("f_kindList")' item="item" index="index" separator=",">${item}</foreach>)
+			<if test='params.get("kindList") != null'>
+				and f_kind in(<foreach collection='params.get("kindList")' item="item" index="index" separator=",">${item}</foreach>)
 			</if>
 			<if test='params.get("minKind") != null'>and f_kind >= ${params.minKind}</if>
 			<if test='params.get("maxKind") != null'>and f_kind &lt; ${params.maxKind}</if>
