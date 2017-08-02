@@ -1,5 +1,6 @@
 window['fcp'] = window['fcp'] || {};
 fcp.terminalList = $('#terminalList').gridpanel({
+	data: {},
 	url: 'list',
 	tpl: [
 		'<tr nid="{no}">',
@@ -15,12 +16,23 @@ fcp.terminalList = $('#terminalList').gridpanel({
 			'<td class="x-widen">{lastOnlineTime}</td>',
 		'</tr>'
 	].join(''),
+	clean: function(){
+		this.data = {};
+		this.renderData([]);
+	},
 	fixedRecord: function(r){
+		this.data[r.no] = r;
 		var online = r.lastOnlineState == 1;
 		r.stateStr = online ? '在线' : '离线';
 		r.stateCls = online ? ' x-color-green' : ' x-color-red';
 		r.lastOnlineTime = r.lastOnlineTime && new Date(r.lastOnlineTime).format() || '';
 		return r;
+	},
+	update: function(el){
+		var no = this.el.find('tr.x-selected:first').attr('nid');
+		if(!no) return;
+		fcp.terminalFormWin.saveSuccess = function(){fcp.terminalList.loadData();};
+		fcp.terminalFormWin.loadRecord(this.data[no]).disable({no: true}).open().setSaveUrl('../terminal').form.name.focus();
 	},
 	add: function(el){
 		fcp.terminalFormWin.saveSuccess = function(){fcp.terminalList.loadData();};

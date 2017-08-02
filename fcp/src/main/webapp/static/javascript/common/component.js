@@ -984,7 +984,7 @@ $.GridWindow = $.extendClass($.Window, {
 			
 			this.el.mask();
 			this.el.progress('数据加载中...');
-			this.renderData([]);
+			this.clean();
 			$.ajax({
 				url:url, type: this.requestType, data:this.fixParams(p), dataType:'json', context: this, 
 				success:function(d){
@@ -1015,6 +1015,12 @@ $.GridWindow = $.extendClass($.Window, {
 				}
 			});
 			return this;
+		},
+		/**
+		 * 清理，在加载数据前调用
+		 */
+		clean: function(){
+			this.renderData([]);
 		},
 		fixPagingBar: function(t, pi, ps){
 			this.el.find('[name="total"]').val(t);
@@ -1065,7 +1071,7 @@ $.GridWindow = $.extendClass($.Window, {
 			me.find('input[for="all"]').check(false);
 			me.nextAll().remove();
 			me.parent().append(hs);
-			this.el.find('[handler="del_batch"]').addClass('x-disabled');
+			this.el.find('[handler="del_batch"], [handler="update"]').addClass('x-disabled');
 			return this;
 		},
 		/**
@@ -1115,7 +1121,7 @@ $.GridWindow = $.extendClass($.Window, {
 		ref:function(){return this.loadData();},
 		getUrl:function(){return this.url;},
 		rowSelected: function(){
-			this.el.find('[handler="del_batch"]')[this.el.find('tr.x-selected').length > 0 ? 'removeClass' : 'addClass']('x-disabled');
+			this.el.find('[handler="del_batch"], [handler="update"]')[this.el.find('tr.x-selected').length > 0 ? 'removeClass' : 'addClass']('x-disabled');
 			return this;
 		},
 		beforeSelectRow: function(el){
@@ -1245,8 +1251,10 @@ $.TreeGridPanel = $.extendClass($.TreePanel, $.copy({
 	}
 }, $.GridPanel.prototype));
 
+
 $.FormPanel = $.extendClass($.Panel, {
 	type: 'formpanel',
+	close: $.emptyFn,
 	labels: {}
 });
 
@@ -1496,11 +1504,13 @@ $.FormWindow = $.extendClass($.Window, {
 			}
 			
 			this.form = {};
+			this.formChain = [];
 			this._defaults = {};
 			this._initDisabled = {};
 			
 			var me = this,
 				form = this.form,
+				chain = this.formChain,
 				dft = this._defaults,
 				idis = this._initDisabled,
 				hint, fields = this.el.find('[name]');
@@ -1509,12 +1519,15 @@ $.FormWindow = $.extendClass($.Window, {
 				f = $(f);
 				i = f.attr('name');
 				if(/^(checkbox|radio)$/i.test(f.type())) {
-					form[i] = form[i] || fields.filter('[name="' + i + '"]');
+					if(form[i]) return;
+					form[i] = fields.filter('[name="' + i + '"]');
 					dft[i] = form[i].filter(':checked').val();
+					chain.push(form[i]);
 				}
 				else {
 					form[i] = f;
 					dft[i] = f.val();
+					chain.push(form[i]);
 				}
 				idis[i] = f.disabled();
 				
@@ -1562,8 +1575,29 @@ $.FormWindow = $.extendClass($.Window, {
 					ci.click();
 					return this;
 				}
-				if(this.saveOnEnter && !evt.ctrlKey && !evt.shiftKey) {
-					this.save();
+				if(evt.ctrlKey) {
+					if(this.saveOnEnter) {
+						this.save();
+					}
+				}
+				else if(!/^textarea$/i.test(el.nodeName())) {
+					var next, find = false;
+					$.each(this.formChain, function(i, f){
+						if(f[0] == el[0]) {
+							find = true;
+						}
+						else {
+							next = f;
+							return false;
+						}
+					});
+					if(next == null) {
+						$.each(this.form, function(i, f){
+							next = f;
+							return false;
+						});
+					}
+					next.focus();
 				}
 			}
 			this.onFieldKeyup(el, evt);
@@ -1668,7 +1702,13 @@ $.FormWindow = $.extendClass($.Window, {
 		fixedFormValue: function(obj){
 			return obj;
 		},
-		fixedPostValue: function(obj){
+		/**
+		 * 获取提交到后台的数据
+		 * @param obj 验证过后的数据对象
+		 * @param form form表单
+		 * @return 提交到后台的数据
+		 */
+		fixedPostValue: function(obj, form){
 			return obj;
 		},
 		getFieldValue: function(k, f){
@@ -1682,33 +1722,49 @@ $.FormWindow = $.extendClass($.Window, {
 			default: return f.val();
 			}
 		},
-		getSaveUrl: function(){return this.saveUrl;},
+		/**
+		 * 获取提交时的url
+		 * @param obj 验证过后的数据对象
+		 * @param form form表单
+		 */
+		getSaveUrl: function(obj, form){return this.saveUrl;},
 		setSaveUrl: function(url){this.saveUrl = url; return this;},
 		/**
+		 * 获取提交后响应的数据类型
+		 * @param obj 验证过后的数据对象
+		 * @param form form表单
+		 */
+		getDataType: function(obj, form){
+			return 'json';
+		},
+		/**
 		 * 获取请求类型
-		 * @param {} obj 请求参数
+		 * @param obj 验证过后的数据对象
 		 * @param {} form 请求form表单
 		 * @return 'post'|'put'
 		 */
 		getRequestType: function(obj, form){
 			return 'post';
 		},
+		requestSuccess: function(rsp, vd){
+			if(rsp.code == 0) {
+				if(this.saveSuccess(rsp.data, vd) !== false) {
+					this.close();
+				}
+			}
+			else {
+				this.saveError(rsp.data, vd);
+			}
+		},
 		save: function(){
-			var vd = this.fixedPostValue(this.validate(this.getFormValue(), this.form));
+			var obj = this.validate(this.getFormValue(), this.form), vd = this.fixedPostValue(obj, this.form);
 			if(vd === false) return;
-			if(this.maskOnSaving) this.el.mask().progress('数据保存中...');
+			if(this.maskOnSaving) this.el.mask().progress('数据处理中...');
 			$.ajax({
-				url: this.getSaveUrl(vd, this.form), data: tools.serializeParams(vd), type: this.getRequestType(vd, this.form), dataType: 'json', context: this, 
+				url: this.getSaveUrl(obj, this.form), data: tools.serializeParams(vd), type: this.getRequestType(obj, this.form), dataType: this.getDataType(obj, this.form), context: this, 
 				success: function(d){
 					if(this.maskOnSaving) this.el.unprogress().unmask();
-					if(d.code == 0) {
-						if(this.saveSuccess(d.data, vd) !== false) {
-							this.close();
-						}
-					}
-					else {
-						this.saveError(d.data, vd);
-					}
+					this.requestSuccess(d, vd);
 				},
 				error: function(){
 					if(this.maskOnSaving) this.el.unprogress().unmask();
@@ -1777,6 +1833,13 @@ $.FormWindow = $.extendClass($.Window, {
 			return this;
 			
 		},
+		/**
+		 * 禁用
+		 * @param dsb 禁用配置<pre>
+		 * 1.是一个map，则根据map指定的键禁用对应的字段输入元素
+		 * 2.是一个boolean，则禁用整个form包括其按钮（取消按钮除外）
+		 * </pre>
+		 */
 		disable: function(dsb){
 			var _set = $.isObject(dsb);
 			
@@ -1816,6 +1879,7 @@ $.SocketClient = $.extendClass(function(opt){
 	
 	this.bind();
 	
+	$.__COMPONENT.push(this);
 }, {
 	bind: function(so){
 		var constructor = window.WebSocket || window.MozWebSocket;

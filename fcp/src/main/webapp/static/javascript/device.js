@@ -1,5 +1,6 @@
 window['fcp'] = window['fcp'] || {};
 fcp.deviceList = $('#deviceList').gridpanel({
+	data: {},
 	url: 'list',
 	tpl: [
 		'<tr nid="{no}" term="{terminalNo}">',
@@ -15,9 +16,20 @@ fcp.deviceList = $('#deviceList').gridpanel({
 			'<td class="x-widen">{address}</td>',
 		'</tr>'
 	].join(''),
+	clean: function(){
+		this.data = {};
+		this.renderData([]);
+	},
 	fixedRecord: function(r){
+		this.data[r.no] = r;
 		r.lastAlarmTime = r.lastAlarmTime && new Date(r.lastAlarmTime).format() || '';
 		return r;
+	},
+	update: function(el){
+		var no = this.el.find('tr.x-selected:first').attr('nid');
+		if(!no) return;
+		fcp.deviceFormWin.saveSuccess = function(){fcp.deviceList.loadData();};
+		fcp.deviceFormWin.loadRecord(this.data[no]).disable({no: true}).open().setSaveUrl('../device').form.name.focus();
 	},
 	add: function(el){
 		fcp.deviceFormWin.saveSuccess = function(){fcp.deviceList.loadData();};

@@ -9,6 +9,7 @@
 			<div class="x-button" handler="loadData"><span class="x-icon-16 x-icon-ref"></span>刷新</div>
 			<div class="x-button" handler="add"><span class="x-icon-16 x-icon-add"></span>添加</div>
 			<div class="x-button x-disabled" handler="del_batch"><span class="x-icon-16 x-icon-del"></span>删除</div>
+			<div class="x-button x-disabled" handler="update"><span class="x-icon-16 x-icon-del"></span>修改</div>
             <div class="x-separator"></div>
 			<div class="x-button" handler="setPhone"><span class="x-icon-16 x-icon-save"></span>设置报警电话</div>
 			<div class="x-button" handler="tstOnline"><span class="x-icon-16 x-icon-exec"></span>上线测试</div>
