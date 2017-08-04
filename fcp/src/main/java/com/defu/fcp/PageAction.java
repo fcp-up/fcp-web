@@ -40,6 +40,12 @@ public class PageAction {
 		return "terminal";
 	}
 
+	@RequestMapping("session.js")
+	public String session(Model m, HttpSession session, HttpServletRequest req, HttpServletResponse rsp) {
+		setCommon(m, session, req, rsp);
+		return "session";
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void setCommon(Model m, HttpSession session, HttpServletRequest req, HttpServletResponse rsp) {
 		Object o = session.getAttribute(Const.SessionKey.curUser);

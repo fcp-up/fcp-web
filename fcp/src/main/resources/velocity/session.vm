@@ -1,0 +1,2 @@
+window['fcp'] = window['fcp'] || {};
+fcp.sessionId = '$sessionId';
