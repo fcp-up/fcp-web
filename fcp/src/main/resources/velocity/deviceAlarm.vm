@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	#parse("common/head.vm")
+</head>
+<body>
+	<div class="x-container x-grid x-panel" id="deviceAlarmList">
+		<div class="x-toolbar">
+			<span class="x-label" for="startTime">起始日期：</span>
+			<span class="x-combo"><input name="startTime" readOnly _type="date" style="width: 80px;" /><span class="x-icon-datepicker"></span></span>
+			<span class="x-label" for="endTime">截至日期：</span>
+			<span class="x-combo"><input name="endTime" readOnly _type="date" style="width: 80px;" /><span class="x-icon-datepicker"></span></span>
+            <div class="x-separator"></div>
+			<div class="x-button" handler="loadData"><span class="x-icon-16 x-icon-query"></span>统计</div>
+		</div>
+#parse("common/footer-pagingToolbar.vm")
+		<div class="x-panel-body">
+			<table cellspaging="0" cellpadding="0" class="x-column-widen">
+				<tr class="x-column-header">
+					<td class="x-text-center" style="width: 35px;">序号</td>
+					<td class="x-text-center x-widen" style="width: 120px;">设备编号</td>
+					<td class="x-text-center x-widen" style="width: 150px;">设备地址</td>
+					<td class="x-text-center x-widen" style="width: 120px;">终端编号</td>
+					<td class="x-text-center x-widen" style="width: 150px;">终端地址</td>
+					<td class="x-text-center x-widen" style="width: 60px;">设备状态</td>
+					<td class="x-text-center x-widen" style="width: 130px;">数据时间</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	#include("common/js.vm")
+	<script type="text/javascript" src="static/javascript/deviceAlarm.js"></script>
+	#include("common/msgAndComboList.vm")
+</body>
+</html>

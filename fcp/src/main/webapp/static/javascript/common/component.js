@@ -23,6 +23,7 @@ $.Cpt = function(opt){
 	this.initComponent();
 	this.initEvents();
 	this.init();
+	this.udfInit();
 	$.__COMPONENT.push(this);
 };
 $.Cpt.prototype = {
@@ -33,6 +34,7 @@ $.Cpt.prototype = {
 	__dblclicktime: 0,
 	initComponent:$.emptyFn,
 	init:$.emptyFn,
+	udfInit:$.emptyFn,
 	initEvents:function(){
 		var me = this;
 		$.each(me.events, function(i, e){
@@ -51,16 +53,21 @@ $.Cpt.prototype = {
 					if($.isFunction(obj.dblclick)) {
 						obj.__clicktime = new Date().getTime();
 						$.defer(function(){
-							if(obj.__clicktime - obj.__dblclicktime > obj.dblclickspace * 1000) obj.click(evt, this);
+							if(obj.__clicktime - obj.__dblclicktime > obj.dblclickspace * 1000) {
+								obj.click(evt, this);
+								if(!/^(input|textarea)$/i.test($(evt.target).nodeName())) obj.el.attr('tabindex', 0).focus();
+							}
 						}, obj.dblclickspace);
 					}
 					else {
 						obj.click(evt);
+						if(!/^(input|textarea)$/i.test($(evt.target).nodeName())) obj.el.attr('tabindex', 0).focus();
 					}
 				}
 				else if(en == 'dblclick') {
 					obj.__dblclicktime = new Date().getTime();
 					obj.dblclick(evt);
+					if(!/^(input|textarea)$/i.test($(evt.target).nodeName())) obj.el.attr('tabindex', 0).focus();
 				}
 				else {
 					obj[en](evt);
@@ -91,7 +98,6 @@ $.Cpt.prototype = {
 		for(var p in this) delete this[p];
 	},
 	elclick: function(el, evt){
-//		if(!/input/.test(el.nodeName())) this.el.attr('tabindex', 0).focus();
 		var hel;
 		if(el.attr('handler')) {
 			hel = el;
@@ -814,7 +820,15 @@ $.GridWindow = $.extendClass($.Window, {
 (function(){
 	var prototype = {
 		multiSelected: false,
+		editOnDblClick: false,
 		requestType: 'GET',
+		init: function(){
+			if(this.el.hasClass('blclick-edit')) this.editOnDblClick = true;
+			if(this.editOnDblClick) this.dblclick = function(evt) {
+				var el = $(evt.target), td = el.parentsUntil(this.el, 'td:last');
+				if(td.hasClass('x-gridEditor')) td.find('input').disable(false);
+			}
+		},
 		initPageSize: function(){
 			var el = this.el, h;
 			$.cycle(function(){
@@ -975,11 +989,11 @@ $.GridWindow = $.extendClass($.Window, {
 			if(psel.length > 0) {
 				ps = ps || psel.val() - 0 || 30;
 				psel.val(ps);
+				p.pageSize = ps;
 				
 				var piel = this.el.find('.x-panel-footer [name="pageIndex"]'), pi = piel.val() - 0 || 1;
 				piel.val(pi);
-				p.start = ps * (pi - 1);
-				p.limit = ps;
+				p.pageIndex = pi;
 			}
 			
 			this.el.mask();
@@ -998,7 +1012,7 @@ $.GridWindow = $.extendClass($.Window, {
 						return;
 					}
 					if(ps > 0) {
-						pi = this.fixPagingBar(d.total, pi, ps);
+						pi = this.fixPagingBar(d.pageCount, pi, ps);
 					}
 					this.renderData(d.data, pi);
 					this.el.unprogress();
@@ -1023,19 +1037,17 @@ $.GridWindow = $.extendClass($.Window, {
 			this.renderData([]);
 		},
 		fixPagingBar: function(t, pi, ps){
-			this.el.find('[name="total"]').val(t);
 			if(pi == null) pi = this.el.find('.x-panel-footer [name="pageIndex"]').val() - 0 || 0;
 			if(ps == null) ps = this.el.find('.x-panel-footer [name="pageSize"]').val() - 0 || 0;
-			var pn = t / ps >> 0, op;
-			if(t % ps != 0) pn++;
-			this.el.find('.x-panel-footer [name="pageNum"]').html(pn);
+			var pn, op;
+			this.el.find('.x-panel-footer [name="pageNum"]').html(t);
 			
 			if(pi < 2) op = 'addClass';
 			else op = 'removeClass';
 			this.el.find('.x-panel-footer [handler="firstPage"]')[op]('x-disabled').children()[op]('x-disabled');
 			this.el.find('.x-panel-footer [handler="prevPage"]')[op]('x-disabled').children()[op]('x-disabled');
 			
-			if(pi >= pn) op = 'addClass';
+			if(pi >= t) op = 'addClass';
 			else op = 'removeClass';
 			this.el.find('.x-panel-footer [handler="nextPage"]')[op]('x-disabled').children()[op]('x-disabled');
 			this.el.find('.x-panel-footer [handler="lastPage"]')[op]('x-disabled').children()[op]('x-disabled');
@@ -1044,7 +1056,7 @@ $.GridWindow = $.extendClass($.Window, {
 			op = pn + ps;
 			op = Math.min(op, t);
 			
-			this.el.find('.x-panel-footer [name="display"]').html(['显示', pn + 1, '-', op, '，共', t, '条'].join(''));
+			this.el.find('.x-panel-footer [name="display"]').html(['显示', pn + 1, '-', op].join(''));
 			return pn + 1;
 		},
 		fixParams: function(p){return p;},
@@ -1156,8 +1168,15 @@ $.GridWindow = $.extendClass($.Window, {
 				case 32://space
 					this.selectFocusRow();
 					break;
+				case 13:
+					if(el.is('td.x-gridEditor input')) el.disable(true);
+					break;
+				case 83:
+					if(evt.ctrlKey) this.save(el, evt);
+					break;
 			}
 		},
+		save: $.emptyFn,
 		keydown: function(evt){
 			var el = $(evt.target);
 			if(!el.is('.x-panel-footer input')) {
@@ -1251,6 +1270,210 @@ $.TreeGridPanel = $.extendClass($.TreePanel, $.copy({
 	}
 }, $.GridPanel.prototype));
 
+
+$.DrawerPanel = $.extendClass($.Panel, {
+	type: 'drawer',
+	drawerElSelector: '.x-drawer',
+	drawerHandlerElSelector: '.x-drawer .x-drawer-title',
+	drawerEcElSelector: '.x-drawer .x-drawer-title>.x-tools-ec',
+	drawerTitleElSelector: '.x-drawer .x-drawer-title',
+	drawerBodyElSelector: '.x-drawer .x-drawer-body',
+	expandElClass: 'x-expand',
+	__drawerEls: null,
+	activeDrawerIndex: -1,
+	windowresize: function(evt){
+		this.judgeViewHeight();
+		this.judgeView();
+	},
+	judgeViewHeight: function(){
+		var vh, tec = this.drawerTitleElSelector;
+		if((vh = this.el.height()) > 0) {
+			this.drawerEls().each(function(i, e){
+				e = $(e);
+				if(e.hasClass('x-hidden')) return;
+				vh = vh - $(e).children(tec).outerHeight();
+			});
+			this.viewHeight = vh - 1;
+		}
+	},
+	judgeView: function(){
+		var vh = this.el.children(this.drawerElSelector + '.' + this.expandElClass);
+		if(vh.children(this.drawerBodyElSelector).length > 0) vh.css('height', this.viewHeight + vh.children(this.drawerTitleElSelector).outerHeight());
+	},
+	initComponent: function(){
+		$.cycle(function(){
+			var vh, tec = this.drawerTitleElSelector, ed, ec = this.expandElClass;
+			if((vh = this.el.height()) > 0) {
+				this.drawerEls().each(function(i, e){
+					e = $(e);
+					if(e.hasClass('x-hidden')) return;
+					if(e.hasClass(ec)) ed = ed || e;
+					vh = vh - $(e).children(tec).outerHeight();
+					e.removeClass(ec);
+				});
+				this.viewHeight = vh - 1;
+				ed && this.expand(ed);
+				return false;
+			}
+		}, this, 0.01);
+	},
+	elclick: function(el, evt){
+		var h = this.getDrawerHandlerEl(el), dw = this.getDrawerEl(el);
+		if(h && h.length > 0 && dw.length > 0) {
+			this[this.expanded(dw) ? 'x-collapse' : 'x-expand'](dw, el, evt);
+		}
+		if(dw && el[0] != dw.children(this.drawerBodyElSelector)[0]) {
+			this.el.children('.x-active').removeClass('x-active');
+			dw && dw.addClass('x-active');
+		}
+		this.drawerElClick(el, evt);
+	},
+	drawerIndex:function(drawerEl){
+		drawerEl = drawerEl[0];
+		var index = -1;
+		this.drawerEls().each(function(i, dw){
+			if(dw == drawerEl) {
+				index = i; return false;
+			}
+		});
+		return index;
+	},
+	drawerEls: function(){
+		if(this.__drawerEls == null) this.__drawerEls = this.el.children(this.drawerElSelector);
+		return this.__drawerEls;
+	},
+	expanded: function(drawerEl){
+		return drawerEl.hasClass(this.expandElClass);
+	},
+	expand: function(drawerEl, el, evt){
+		var index = this.drawerIndex(drawerEl);
+		if(this.beforeExpand(drawerEl, index, el, evt) !== false) {
+			this.activeDrawerIndex = index;
+			this.collapse(drawerEl.siblings(this.drawerElSelector + '.' + this.expandElClass));
+			var me = this;
+			me.onExpand(drawerEl, index);
+			drawerEl.addClass(this.expandElClass);
+			if(drawerEl.children(this.drawerBodyElSelector).length > 0) {
+				if(this.animate !== false) drawerEl.animate(
+					{height: this.viewHeight + drawerEl.children(this.drawerTitleElSelector).outerHeight() + 'px'}, 'fast', null, function(){
+						me.onExpanded(drawerEl, index);
+						me = null;
+					}
+				);
+				else {
+					drawerEl.css('height', this.viewHeight + drawerEl.children(this.drawerTitleElSelector).outerHeight());
+					me.onExpanded(drawerEl, index);
+					me = null;
+				}
+			}
+			else {
+				me.onExpanded(drawerEl, index);
+				me = null;
+			}
+		}
+	},
+	collapse: function(drawerEl, el, evt){
+		var index = this.drawerIndex(drawerEl);
+		if(this.beforeCollapse(drawerEl, index, el, evt) !== false) {
+			var me = this;
+			me.onCollapse(drawerEl, index);
+			drawerEl.removeClass(this.expandElClass);
+			if(this.animate !== false) drawerEl.animate(
+				{height: drawerEl.children(this.drawerTitleElSelector).outerHeight()}, 'fast', null, function(){
+					me.onCollapsed(drawerEl, index);
+					me = null;
+				}
+			);
+			else {
+				drawerEl.css('height', drawerEl.children(this.drawerTitleElSelector).outerHeight());
+				me.onCollapsed(drawerEl, index);
+				me = null;
+			}
+		}
+	},
+	getDrawerEl: function(el){
+		if(el.is(this.drawerElSelector) && el.parent()[0] == this.el[0]) el = el;
+		else el = el.parentsUntil(this.el[0], this.drawerElSelector).last();
+		return el;
+	},
+	getDrawerHandlerEl: function(el){
+		if(el.is(this.drawerHandlerElSelector)) el = el;
+		else el = el.parents(this.drawerHandlerElSelector + ':first');
+		if(el.parent().parent()[0] != this.el[0]) return;
+		return el;
+	},
+	beforeCollapse: function(drawer, index){
+		return drawer.children(this.drawerBodyElSelector).length > 0;
+	},	//function(drawerEl, index){}收缩前执行，若返回false，则不收缩
+	beforeExpand: function(drawer, index){
+		return drawer.children(this.drawerBodyElSelector).length > 0;
+	},	//function(drawerEl, index){}展开前执行，若返回false，则不展开
+	onCollapse: $.emptyFn,		//function(drawerEl, index){}收缩开始时执行
+	onCollapsed: $.emptyFn,		//function(drawerEl, index){}收缩完成后执行
+	onExpand: $.emptyFn,		//function(drawerEl, index){}展开开始时执行
+	onExpanded: $.emptyFn,		//function(drawerEl, index){}展开完成时执行
+	drawerElClick: $.emptyFn	//function(el, event){}点击抽屉中任意一个元素执行
+});
+
+$.MultiDrawerPanel = $.extendClass($.Panel, {
+	type: 'multi-drawer',
+	drawerElSelector: '.x-multi-drawer',
+	drawerHandlerElSelector: '.x-multi-drawer .x-multi-drawer-title',
+	drawerEcElSelector: '.x-multi-drawer .x-multi-drawer-title>.x-tools-ec',
+	drawerTitleElSelector: '.x-multi-drawer .x-multi-drawer-title',
+	drawerBodyElSelector: '.x-multi-drawer .x-multi-drawer-body',
+	expandElClass: 'x-expand',
+	__drawerEls: null,
+	drawerIndex:function(drawerEl){
+		drawerEl = drawerEl[0];
+		var index = -1;
+		this.drawerEls().each(function(i, dw){
+			if(dw == drawerEl) {
+				index = i; return false;
+			}
+		});
+		return index;
+	},
+	elclick: function(el, evt){
+		var h = this.getDrawerHandlerEl(el), dw = this.getDrawerEl(el);
+		if(h && h.length > 0 && dw.length > 0) {
+			this[this.expanded(dw) ? 'x-collapse' : 'x-expand'](dw, el, evt);
+		}
+		if(el[0] != dw.children(this.drawerBodyElSelector)[0]) {
+			this.el.children('.x-active').removeClass('x-active');
+			dw.addClass('x-active');
+		}
+		this.drawerElClick(el, evt);
+	},
+	expanded: function(drawerEl){
+		return drawerEl.hasClass(this.expandElClass);
+	},
+	expand: function(drawerEl, el, evt){
+		if(this.beforeExpand(drawerEl, index, el, evt) !== false) drawerEl.addClass(this.expandElClass);
+	},
+	collapse: function(drawerEl, el, evt){
+		var index = this.drawerIndex(drawerEl);
+		if(this.beforeCollapse(drawerEl, index, el, evt) !== false) drawerEl.removeClass(this.expandElClass);
+	},
+	getDrawerEl: function(el){
+		if(el.is(this.drawerElSelector) && el.parent()[0] == this.el[0]) el = el;
+		else el = el.parentsUntil(this.el[0], this.drawerElSelector).last();
+		return el;
+	},
+	getDrawerHandlerEl: function(el){
+		if(el.is(this.drawerHandlerElSelector)) el = el;
+		else el = el.parents(this.drawerHandlerElSelector).eq(0);
+		if(el.parent().parent()[0] != this.el[0]) return;
+		return el;
+	},
+	beforeCollapse: $.emptyFn,	//function(drawerEl, index){}收缩前执行，若返回false，则不收缩
+	beforeExpand: $.emptyFn,	//function(drawerEl, index){}展开前执行，若返回false，则不展开
+	onCollapse: $.emptyFn,		//function(drawerEl, index){}收缩开始时执行
+	onCollapsed: $.emptyFn,		//function(drawerEl, index){}收缩完成后执行
+	onExpand: $.emptyFn,		//function(drawerEl, index){}展开开始时执行
+	onExpanded: $.emptyFn,		//function(drawerEl, index){}展开完成时执行
+	drawerElClick: $.emptyFn	//function(el, event){}点击抽屉中任意一个元素执行
+});
 
 $.FormPanel = $.extendClass($.Panel, {
 	type: 'formpanel',

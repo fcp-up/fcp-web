@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import com.defu.atom.db.Database.*;
 import com.defu.fcp.HttpSocketServer;
 import com.defu.fcp.ThreadPool;
+import com.defu.fcp.alarm.dao.IDaoAlarmExt;
 import com.defu.fcp.device.ISvcDevice;
 import com.defu.fcp.terminal.ISvcTerminal;
 import com.defu.sms.IPhoneMessage;
@@ -32,6 +33,7 @@ public class SvcAlarm extends com.defu.atom.service.impl.SvcAlarm implements Run
 	@Autowired @Qualifier("yunpiansms") IPhoneMessage yunpiansms;
 	@Autowired ISvcTerminal termsvc;
 	@Autowired ISvcDevice devsvc;
+	@Autowired IDaoAlarmExt dao;
 
 	// 编码格式。发送编码格式统一用UTF-8
 	private static String ENCODING = "UTF-8";
@@ -40,6 +42,14 @@ public class SvcAlarm extends com.defu.atom.service.impl.SvcAlarm implements Run
 	private int queueSize = 1000;
 	private Queue<Map<String, Object>> msg = new ConcurrentLinkedQueue<>();
 	boolean working = false;
+	
+	public List<Map<String, Object>> deviceAlarmList(Map<String, Object> params) {
+		return dao.deviceAlarmList(params);
+	}
+	
+	public long deviceAlarmCount(Map<String, Object> params) {
+		return dao.deviceAlarmCount(params);
+	}
 	
 	@Override
 	public boolean beforeAdd(List<Map<String, Object>> params) {

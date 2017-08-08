@@ -85,7 +85,10 @@ public class SystemListener extends ContextLoaderListener implements
 
 	@Override
 	public void sessionDestroyed(HttpSessionEvent arg0) {
-		new FileApi().deleteFile(Const.webRoot + Const.RelativePath.usrTmpDir + "/" + arg0.getSession().getId());
+		String sessionId = arg0.getSession().getId();
+		
+		new FileApi().deleteFile(Const.webRoot + Const.RelativePath.usrTmpDir + "/" + sessionId);
+		HttpSocketServer.closeClient(sessionId);
 	}
 
 	@Override

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.defu.fcp.alarm.dao.IDaoAlarmExt">
+	<select id="deviceAlarmCount" parameterType="java.util.Map" resultType="Long">
+		select count(f_id)
+		from tb_alarm
+		<where>
+			<if test='params.get("startTime") != null'>
+				and f_time >= #{params.startTime}
+			</if>
+			<if test='params.get("endTime") != null'>
+				and f_time &lt; #{params.endTime}
+			</if>
+			<if test='params.get("terminalNo") != null'>
+				and f_terminalNo = #{params.terminalNo}
+			</if>
+			<if test='params.get("deviceNo") != null'>
+				and f_deviceNo = #{params.deviceNo}
+			</if>
+		</where>
+	</select>
+	<select id="deviceAlarmList" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			alarm.f_id as 'alarmId',
+			alarm.f_deviceNo as 'deviceNo',
+			alarm.f_terminalNo as 'terminalNo',
+			alarm.f_isAlarm as 'isAlarm',
+			alarm.f_pressure as 'pressure',
+			alarm.f_time as 'time',
+			alarm.f_state as 'deviceState',
+			alarm.f_deviceSignal as 'deviceSignal',
+			tmn.f_address as 'terminalAddr',
+			dvc.f_address as 'deviceAddr'
+		from tb_alarm alarm
+		left join tb_terminal tmn on alarm.f_terminalNo = tmn.f_no
+		left join tb_device dvc on alarm.f_deviceNo = dvc.f_no
+		<where>
+			<if test='params.get("startTime") != null'>
+				and alarm.f_time >= #{params.startTime}
+			</if>
+			<if test='params.get("endTime") != null'>
+				and alarm.f_time &lt; #{params.endTime}
+			</if>
+			<if test='params.get("terminalNo") != null'>
+				and alarm.f_terminalNo = #{params.terminalNo}
+			</if>
+			<if test='params.get("deviceNo") != null'>
+				and alarm.f_deviceNo = #{params.deviceNo}
+			</if>
+		</where>
+		<if test="params._sort != null">
+			order by 
+			<foreach collection="params._sort" item="item" index="index" separator=",">
+				${item.name} <if test="item.sort == 1">desc</if>
+			</foreach>
+		</if>
+		<if test="params._start != null and params._limit != null">
+			limit ${params._start}, ${params._limit}
+		</if>
+	</select>
+</mapper>

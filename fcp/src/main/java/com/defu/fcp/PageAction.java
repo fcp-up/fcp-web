@@ -28,6 +28,12 @@ public class PageAction {
 		return "alarm";
 	}
 
+	@RequestMapping("alarm/deviceAlarm/index")
+	public String deviceAlarm(Model m, HttpSession session, HttpServletRequest req, HttpServletResponse rsp) {
+		setCommon(m, session, req, rsp);
+		return "deviceAlarm";
+	}
+
 	@RequestMapping("device/index")
 	public String device(Model m, HttpSession session, HttpServletRequest req, HttpServletResponse rsp) {
 		setCommon(m, session, req, rsp);

@@ -1,0 +1,43 @@
+#if("$!pageSize"=="")
+	#set($pageSize=20)
+#end
+#if("$!pageIndex"=="")
+	#set($pageIndex=1)
+#end
+#if("$!nextDisabled"=="")
+	#set($nextDisabled=" x-disabled")
+#end
+<div class="x-panel-footer $!footer_pagingToolbar_class" style="$!footer_pagingToolbar_style">
+    <span class="x-tbtext x-right" name="display">$!{display}</span>
+    <span class="x-tbtext">每页显示</span>
+    <input type="hidden" name="total" value="$!{total}" />
+    <input name="pageSize" value="$!{pageSize}" />
+    <span class="x-tbtext" style="padding-x-right: 2px;">条</span>
+    <span class="x-separator"></span>
+    <div class="x-button x-disabled" handler="firstPage" title="第一页"><span class="x-icon-16 x-icon-first x-disabled"></span></div>
+    <div class="x-button x-disabled" handler="prevPage" title="上一页"><span class="x-icon-16 x-icon-prev x-disabled"></span></div>
+    <span class="x-separator"></span>
+    <span class="x-tbtext" style="padding-left: 2px;">当前第</span>
+    <input name="pageIndex" value="$!{pageIndex}" />
+    <span class="x-tbtext">页，共</span>
+    <span class="x-tbtext" name="pageNum">$!{pageNum}</span>
+    <span class="x-tbtext" style="padding-x-right: 2px;">页</span>
+    <span class="x-separator"></span>
+    <div class="x-button$!{nextDisabled}" handler="nextPage" title="下一页"><span class="x-icon-16 x-icon-next$!{nextDisabled}"></span></div>
+    <div class="x-button$!{nextDisabled}" handler="lastPage" title="最后页"><span class="x-icon-16 x-icon-last$!{nextDisabled}"></span></div>
+    <span class="x-separator"></span>
+    <span class="x-button" handler="go"><span class="x-icon-16 x-icon-go"></span>转到</span>
+    <span class="x-separator"></span>
+    <div class="x-button" handler="loadData" title="刷新"><span class="x-icon-16 x-icon-ref"></span></div>
+	#if("$!footer_toolButtons"!="")
+	<span class="x-separator"></span>
+	$footer_toolButtons
+	#end
+</div>
+#set($footer_pagingToolbar_style="")
+#set($total="")
+#set($pageSize="")
+#set($pageIndex="")
+#set($pageNum="")
+#set($nextDisabled="")
+#set($footer_toolButtons="")

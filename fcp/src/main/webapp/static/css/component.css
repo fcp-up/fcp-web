@@ -429,8 +429,7 @@ td.x-gridEditor{padding: 1px;}
 
 .x-multi-table{cellspaging:0; cellpadding:0;}
 .x-multi-table td{word-wrap: break-word; word-break: break-all;}
-
-img{border: 1px solid #ccc; border-radius: 5px;}
+.x-grid table{border: 1px solid #ccc; border-radius: 5px;}
 
 
 

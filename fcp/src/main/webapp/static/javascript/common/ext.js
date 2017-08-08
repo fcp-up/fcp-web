@@ -650,9 +650,6 @@
 		return this.replace(/^\s+|\s+$/, '');
 	};
 	
-	/**
-	 * 延迟执行一个方法，参考$.defer
-	 */
 	Function.prototype.defer = function(){
 		var args = [this];
 		$.each(arguments, function(i, arg){

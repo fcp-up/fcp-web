@@ -85,7 +85,7 @@ $.copy(tools, {
 		if($.isString(t)) tpl = t;
 		if(tpl == null) tpl = [
 			'<div class="x-nodeitem">',
-				'<div class="{class}"{__atr__}>{__content__}</div>{__children__}',
+				'<div class="x-{class}"{__atr__}>{__content__}</div>{__children__}',
 			'</div>'
 		].join('');
 		
@@ -127,8 +127,8 @@ $.copy(tools, {
 				p = p.parent;
 			}
 			if(node[dspatr]) {
-//				hs.push('<span class="x-icon-ec ', ecc, '"></span><span class="', node.iconCls || 'x-icon-node', '"></span><span class="x-txt">', node[dspatr], '</span>');IE6
-				hs.push('<span class="x-icon-ec"></span><span class="', node.iconCls || 'x-icon-node', '"></span><span class="x-txt">', ct(node, ctpl), '</span>');
+//				hs.push('<span class="x-icon-ec ', ecc, '"></span><span class="x-', node.iconCls || 'x-icon-node', '"></span><span class="x-txt">', node[dspatr], '</span>');IE6
+				hs.push('<span class="x-icon-ec"></span><span class="x-', node.iconCls || 'x-icon-node', '"></span><span class="x-txt">', ct(node, ctpl), '</span>');
 			}
 			
 			node.__content__ = hs.join('');
@@ -225,6 +225,83 @@ $.copy(tools, {
 		$('#simplemsg').html(msg).animate({bottom: '2px'}, 'x-slow').delay(tl * 1000).animate({bottom: '-310px'}, 'x-slow', function(){
 			fn.apply(scope || window, ps || []);
 		});
+	},
+	/**
+	 * 选择下拉框
+	 * @param {} opt
+	 */
+	optionCombo: function(opt){
+		opt = opt || {};
+		
+		var cbl = $('#combolist'), hs = [], me = opt.scope || window, cid, 
+			data = opt.data || [], valueKey = opt.valueKey || opt.key, dplKey = opt.dplKey || opt.valueKey || opt.key,
+			t = opt.tpl, tpl, fixed = opt.fixed, el = opt.tag, map = {},
+			comboWidth = opt.comboWidth || function(el){return el.width();},
+			onItemClicked = opt.onItemClicked || function(rcd, opt){
+				var ipts = opt.tag.children('input'), hipts = ipts.filter('[type="hidden"]');
+				ipts.val(rcd[opt.dplKey]);
+				hipts.val(rcd[opt.valueKey]);
+				$.isFunction(opt.onSelected) && opt.onSelected.call(opt.scope, rcd, opt);
+			};
+		
+		if($.isString(t)) tpl = t;
+		if(tpl == null) tpl = [
+			'<div class="x-item{__slctCls__}" ', valueKey, '="{', valueKey, '}">{', dplKey, '}</div>'
+		].join('');
+		
+		if(!$.isFunction(t)) t = function(rcd, tpl){
+			return tpl.replace(/{(\w+)}/g, function(a, b){return rcd[b] == null ? '' : rcd[b];});
+		};
+		
+		fixed = fixed || function(rcd) {return rcd;};
+		
+		cid = opt.getCurValue && opt.getCurValue.call(me, opt);
+		
+		opt.fixed = fixed;
+		opt.comboWidth = comboWidth;
+		opt.onItemClicked = onItemClicked;
+		opt.curSelectValue = cid;
+		opt.scope = me;
+		opt.data = data;
+		opt.valueKey = valueKey;
+		opt.dplKey = dplKey;
+		opt.tag = el;
+		
+		$.each(data, function(i, rcd){
+			rcd = fixed.call(me, rcd, opt);
+			
+			map[rcd[valueKey]] = rcd;
+			
+			if(cid != null && cid == rcd[valueKey] || cid == null && i == 0) rcd.__slctCls__ = '  x-selected';
+			
+			hs.push(t.call(me, rcd, tpl, opt));
+			
+			delete rcd.__slctCls__;
+		});
+		cbl.html(hs.join('')).css({height: 'auto', width: comboWidth.call(me, el, opt)});
+		cbl.setClass('x-show x-option').position({my: 'left top', at: 'left bottom', of: el});
+		
+		tag = {
+			scope: me,
+			tag: el,
+			data: data,
+			map: map,
+			opt: opt,
+			onHide: function(cbh){
+				var rcd = tools.CBH.map[$('#combolist .x-item.x-selected').attr(tools.CBH.opt.valueKey)];
+				tools.CBH.opt.onItemClicked.call(tools.CBH.opt.scope, rcd, opt);
+			}
+		};
+		
+		if($.isFunction(opt.beforeItemClicked)) {
+			tag.elclick = function(el) {
+				if(!el.hasClass('x-item')) el = el.parentsUntil('#combolist', 'x-item:first');
+				var rcd = tools.CBH.map[el.attr(tools.CBH.opt.valueKey)];
+				return opt.beforeItemClicked.call(tools.CBH.opt.scope, rcd, el);
+			}
+		}
+		
+		tools.CBH = tag;
 	},
 	//messagebox handler
 	MBH:{},
@@ -360,7 +437,7 @@ $.copy(tools, {
 //			content.attr('id', id);
 //		}
 //		content.children('div.a4').css({margin: 0, boxShadow: 'none'});
-//		document.body.innerHTML = content.html().replace(/<div class="bottom\-section\-placeholder"><\/div>/, '');
+//		document.body.innerHTML = content.html().replace(/<div class="x-bottom\-section\-placeholder"><\/div>/, '');
 //		$(document.body).css({overflow: 'auto'});
 //		window.print();
 //		document.body.innerHTML = html;
@@ -431,17 +508,17 @@ $.copy(tools, {
 		body.css({overflow: 'hidden', width: '100%', height: '100%'}).children('.x-print-hidden-dom').removeClass('x-hidden x-print-hidden-dom');
 		
 	},
+	serializeParams: function(map){
+		return map == null ? null : {
+			params : this.mapToJson(map)
+		};
+	},
 	mapToJson: function(map){
 		return JSON.stringify(map);
 	},
 	jsonToMap: function(json){
 		return eval('(' + json + ')');
 		return JSON.parse(json);
-	},
-	serializeParams: function(map){
-		return map == null ? null : {
-			params : JSON.stringify(map)
-		};
 	},
 	__dynamicInt: 0,
 	dynamicInt: function(){

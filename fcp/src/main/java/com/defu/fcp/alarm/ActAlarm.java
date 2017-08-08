@@ -1,5 +1,6 @@
 package com.defu.fcp.alarm;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,9 +67,23 @@ public class ActAlarm extends com.defu.atom.action.ActAlarm {
 		}
 
 		rst.put("code", 0);
-		rst.put("data", svc.list(mp));
-		if(mp.get("pageSize") != null) {
-			long c = svc.count(mp), s = Long.parseLong(mp.get("pageSize").toString());
+		
+		if(mp.get("pageSize") != null && mp.get("pageIndex") != null) {
+			int s = Integer.parseInt(mp.get("pageSize").toString()), idx = Integer.parseInt(mp.get("pageIndex").toString());
+			mp.put("_start", s * (idx - 1));
+			mp.put("_limit", s * idx);
+		}
+		
+		if(mp.get("startTime") != null) {
+			mp.put("startTime", new Date(Long.parseLong(mp.get("startTime").toString())));
+		}
+		if(mp.get("endTime") != null) {
+			mp.put("endTime", new Date(Long.parseLong(mp.get("endTime").toString())));
+		}
+		
+		rst.put("data", svc.deviceAlarmList(mp));
+		if(mp.get("pageSize") != null && mp.get("pageIndex") != null) {
+			long c = svc.deviceAlarmCount(mp), s = Long.parseLong(mp.get("pageSize").toString());
 			if(c % s != 0) s = c / s + 1;
 			else s = c / s;
 			rst.put("pageCount", s);
