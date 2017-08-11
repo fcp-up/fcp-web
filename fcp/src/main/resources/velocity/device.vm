@@ -9,10 +9,18 @@
 			<div class="x-button" handler="loadData"><span class="x-icon-16 x-icon-ref"></span>刷新</div>
 			<div class="x-button" handler="add"><span class="x-icon-16 x-icon-add"></span>添加</div>
 			<div class="x-button x-disabled" handler="del_batch"><span class="x-icon-16 x-icon-del"></span>删除</div>
-			<div class="x-button x-disabled" handler="update"><span class="x-icon-16 x-icon-del"></span>修改</div>
+			<div class="x-button x-disabled" handler="update"><span class="x-icon-16 x-icon-mod"></span>修改</div>
             <div class="x-separator"></div>
 			<div class="x-button" handler="tstAlarm"><span class="x-icon-16 x-icon-save"></span>报警测试</div>
+            <div class="x-separator"></div>
+			<span class="x-tbtext">终端编号/名称：</span>
+			<input name="terminalKey" style="width: 60px;" />
+            <div class="x-separator"></div>
+			<span class="x-tbtext">设备编号/名称：</span>
+			<input name="deviceKey" style="width: 60px;" />
+			<div class="x-button" handler="loadData"><span class="x-icon-16 x-icon-query"></span>查询</div>
 		</div>
+		#parse("common/footer-pagingToolbar.vm")
 		<div class="x-panel-body">
 			<table cellspaging="0" cellpadding="0" class="x-column-widen">
 				<tr class="x-column-header">

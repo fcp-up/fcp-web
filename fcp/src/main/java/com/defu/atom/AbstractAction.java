@@ -23,6 +23,12 @@ public abstract class AbstractAction {
 	}
 
 	protected Map<String, Object> listParams(Map<String, Object> params) throws InvalidParamsException {
+		if(params.get("pageSize") != null && params.get("pageIndex") != null) {
+			int s = Integer.parseInt(params.get("pageSize").toString()), idx = Integer.parseInt(params.get("pageIndex").toString());
+			params.put("_start", s * (idx - 1));
+			params.put("_limit", s * idx);
+		}
+		
 		return params;
 	}
 
@@ -93,7 +99,15 @@ public abstract class AbstractAction {
 			IAbstractService svc = getService();
 			Map<String, Object> p = this.listParams(jsonStrtoMap(params));
 			rst.put("data", svc.list(p));
-			rst.put("total", svc.count(p));
+			
+			if(p.get("pageSize") != null && p.get("pageIndex") != null) {
+				long c = svc.count(p), s = Long.parseLong(p.get("pageSize").toString());
+				if(c % s != 0) s = c / s + 1;
+				else s = c / s;
+				rst.put("pageCount", s);
+				rst.put("total", c);
+			}
+			
 			rst.put("code", 0);
 		}
 		catch(InvalidParamsException|IOException ex) {

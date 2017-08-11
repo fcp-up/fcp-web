@@ -1,6 +1,11 @@
 window['fcp'] = window['fcp'] || {};
 fcp.deviceFormWin = $('#deviceFormWin').formwin({
 	saveUrl: 'device',
+	loadRecord: function(rcd){
+		$.FormWindow.prototype.loadRecord.apply(this, arguments);
+		this.oldTerminalNo = rcd.terminalNo;
+		return this;
+	},
 	slctTerm: function(el){
 		var cbl = $('#combolist');
 		cbl.setClass('x-show x-option').position({my: 'left top', at: 'left bottom+1', of: el}).
@@ -25,7 +30,7 @@ fcp.deviceFormWin = $('#deviceFormWin').formwin({
 					hs = [];
 				
 				$.each(rs || [], function(i, r){
-					r.name = r.name || '终端--' + r.no;
+					r.name = (r.name || '终端') + '-' + r.no;
 					hs.push(tpl.replace(/{(\w+)}/g, function(a, b){return r[b] == null ? '' : r[b];}));
 				});
 				cbl.html(hs.join(''));
@@ -49,6 +54,7 @@ fcp.deviceFormWin = $('#deviceFormWin').formwin({
 				tag: {no: obj.no},
 				obj: obj
 			};
+			if(this.oldTerminalNo) obj.tag.terminalNo = this.oldTerminalNo;
 			delete obj.obj.no;
 		}
 		return obj;

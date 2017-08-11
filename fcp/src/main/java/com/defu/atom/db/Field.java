@@ -56,5 +56,9 @@ public class Field {
 		this.signed = signed;
 		this.defaults = defaults;
 	}
+	
+	public String firstCharUpperName() {
+		return name.substring(0, 1).toUpperCase() + name.substring(1);
+	}
 
 }

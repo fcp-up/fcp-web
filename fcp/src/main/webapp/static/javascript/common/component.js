@@ -1059,7 +1059,7 @@ $.GridWindow = $.extendClass($.Window, {
 			this.el.find('.x-panel-footer [name="display"]').html(['显示', pn + 1, '-', op].join(''));
 			return pn + 1;
 		},
-		fixParams: function(p){return p;},
+		fixParams: function(p){return tools.serializeParams(p);},
 		fixData: function(d){
 			if(d.code != 0) {
 				tools.msgbox({msg: '加载数据异常，请联系管理员', positive: $.emptyFn});

@@ -66,8 +66,6 @@ public class ActAlarm extends com.defu.atom.action.ActAlarm {
 			return rst;
 		}
 
-		rst.put("code", 0);
-		
 		if(mp.get("pageSize") != null && mp.get("pageIndex") != null) {
 			int s = Integer.parseInt(mp.get("pageSize").toString()), idx = Integer.parseInt(mp.get("pageIndex").toString());
 			mp.put("_start", s * (idx - 1));
@@ -88,6 +86,8 @@ public class ActAlarm extends com.defu.atom.action.ActAlarm {
 			else s = c / s;
 			rst.put("pageCount", s);
 		}
+
+		rst.put("code", 0);
 		
 		return rst;
 	}

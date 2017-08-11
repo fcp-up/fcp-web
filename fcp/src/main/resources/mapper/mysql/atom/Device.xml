@@ -649,6 +649,14 @@
 			</if>
 			<if test='params.get("minVisible") != null'>and f_visible >= ${params.minVisible}</if>
 			<if test='params.get("maxVisible") != null'>and f_visible &lt; ${params.maxVisible}</if>
+			<if test='params.get("terminalKey") != null'>
+				and f_terminalNo in (
+					select f_no from tb_terminal where f_name like '%${params.terminalKey}%' or f_no like '%${params.terminalKey}%'
+				)
+			</if>
+			<if test='params.get("deviceKey") != null'>
+				and (f_name like '%${params.deviceKey}%' or f_no like '%${params.deviceKey}%')
+			</if>
 		</where>
 	</select>
 	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
@@ -770,6 +778,14 @@
 			</if>
 			<if test='params.get("minVisible") != null'>and f_visible >= ${params.minVisible}</if>
 			<if test='params.get("maxVisible") != null'>and f_visible &lt; ${params.maxVisible}</if>
+			<if test='params.get("terminalKey") != null'>
+				and f_terminalNo in (
+					select f_no from tb_terminal where f_name like '%${params.terminalKey}%' or f_no like '%${params.terminalKey}%'
+				)
+			</if>
+			<if test='params.get("deviceKey") != null'>
+				and (f_name like '%${params.deviceKey}%' or f_no like '%${params.deviceKey}%')
+			</if>
 		</where>
 		<if test="params._sort != null">
 			order by 

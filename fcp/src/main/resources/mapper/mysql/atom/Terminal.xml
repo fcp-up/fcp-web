@@ -703,6 +703,9 @@
 			<if test='params.get("subName") != null'>and f_name like '%${params.subName}%'</if>
 			<if test='params.get("startsWithName") != null'>and f_name like '%${params.startsWithName}'</if>
 			<if test='params.get("endsWithName") != null'>and f_name like '${params.endsWithName}%'</if>
+			<if test='params.get("terminalKey") != null'>
+				and (f_no like '%${params.terminalKey}%' or f_name like '%${params.terminalKey}%')
+			</if>
 		</where>
 	</select>
 	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
@@ -834,6 +837,9 @@
 			<if test='params.get("subName") != null'>and f_name like '%${params.subName}%'</if>
 			<if test='params.get("startsWithName") != null'>and f_name like '%${params.startsWithName}'</if>
 			<if test='params.get("endsWithName") != null'>and f_name like '${params.endsWithName}%'</if>
+			<if test='params.get("terminalKey") != null'>
+				and (f_no like '%${params.terminalKey}%' or f_name like '%${params.terminalKey}%')
+			</if>
 		</where>
 		<if test="params._sort != null">
 			order by 

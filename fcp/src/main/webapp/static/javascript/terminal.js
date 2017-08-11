@@ -16,6 +16,15 @@ fcp.terminalList = $('#terminalList').gridpanel({
 			'<td class="x-widen">{lastOnlineTime}</td>',
 		'</tr>'
 	].join(''),
+	getParams: function(){
+		var p = {}, tlb = this.el.children('.x-toolbar'), v;
+		
+		if(v = tlb.children('[name="terminalKey"]').val()) {
+			p.terminalKey = v;
+		}
+		
+		return p;
+	},
 	clean: function(){
 		this.data = {};
 		this.renderData([]);

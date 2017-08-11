@@ -16,20 +16,33 @@ fcp.deviceList = $('#deviceList').gridpanel({
 			'<td class="x-widen">{address}</td>',
 		'</tr>'
 	].join(''),
+	getParams: function(){
+		var p = {}, tlb = this.el.children('.x-toolbar'), v;
+		
+		if(v = tlb.children('[name="terminalKey"]').val()) {
+			p.terminalKey = v;
+		}
+		if(v = tlb.children('[name="deviceKey"]').val()) {
+			p.deviceKey = v;
+		}
+		
+		return p;
+	},
 	clean: function(){
 		this.data = {};
 		this.renderData([]);
 	},
 	fixedRecord: function(r){
-		this.data[r.no] = r;
+		this.data[r.no + '-' + (r.terminalNo || '')] = r;
 		r.lastAlarmTime = r.lastAlarmTime && new Date(r.lastAlarmTime).format() || '';
 		return r;
 	},
 	update: function(el){
-		var no = this.el.find('tr.x-selected:first').attr('nid');
+		el = this.el.find('tr.x-selected:first');
+		var no = el.attr('nid');
 		if(!no) return;
 		fcp.deviceFormWin.saveSuccess = function(){fcp.deviceList.loadData();};
-		fcp.deviceFormWin.loadRecord(this.data[no]).disable({no: true}).open().setSaveUrl('../device').form.name.focus();
+		fcp.deviceFormWin.loadRecord(this.data[no + '-' + (el.attr('term') || '')]).disable({no: true}).open().setSaveUrl('../device').form.name.focus();
 	},
 	add: function(el){
 		fcp.deviceFormWin.saveSuccess = function(){fcp.deviceList.loadData();};

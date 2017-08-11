@@ -13,6 +13,10 @@
             <div class="x-separator"></div>
 			<div class="x-button" handler="setPhone"><span class="x-icon-16 x-icon-save"></span>设置报警电话</div>
 			<div class="x-button" handler="tstOnline"><span class="x-icon-16 x-icon-exec"></span>上线测试</div>
+            <div class="x-separator"></div>
+			<span class="x-tbtext">终端编号/名称：</span>
+			<input name="terminalKey" style="width: 60px;" />
+			<div class="x-button" handler="loadData"><span class="x-icon-16 x-icon-query"></span>查询</div>
 		</div>
 		<div class="x-panel-body">
 			<table cellspaging="0" cellpadding="0" class="x-column-widen">
