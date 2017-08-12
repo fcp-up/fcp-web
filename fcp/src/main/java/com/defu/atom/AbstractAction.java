@@ -26,7 +26,7 @@ public abstract class AbstractAction {
 		if(params.get("pageSize") != null && params.get("pageIndex") != null) {
 			int s = Integer.parseInt(params.get("pageSize").toString()), idx = Integer.parseInt(params.get("pageIndex").toString());
 			params.put("_start", s * (idx - 1));
-			params.put("_limit", s * idx);
+			params.put("_limit", s);
 		}
 		
 		return params;

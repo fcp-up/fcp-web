@@ -1012,7 +1012,7 @@ $.GridWindow = $.extendClass($.Window, {
 						return;
 					}
 					if(ps > 0) {
-						pi = this.fixPagingBar(d.pageCount, pi, ps);
+						pi = this.fixPagingBar(d.total, pi, ps);
 					}
 					this.renderData(d.data, pi);
 					this.el.unprogress();
@@ -1039,15 +1039,16 @@ $.GridWindow = $.extendClass($.Window, {
 		fixPagingBar: function(t, pi, ps){
 			if(pi == null) pi = this.el.find('.x-panel-footer [name="pageIndex"]').val() - 0 || 0;
 			if(ps == null) ps = this.el.find('.x-panel-footer [name="pageSize"]').val() - 0 || 0;
-			var pn, op;
-			this.el.find('.x-panel-footer [name="pageNum"]').html(t);
+			var pn = t / ps >> 0, op;
+			if(t % ps != 0) pn++;
+			this.el.find('.x-panel-footer [name="pageNum"]').html(pn);
 			
 			if(pi < 2) op = 'addClass';
 			else op = 'removeClass';
 			this.el.find('.x-panel-footer [handler="firstPage"]')[op]('x-disabled').children()[op]('x-disabled');
 			this.el.find('.x-panel-footer [handler="prevPage"]')[op]('x-disabled').children()[op]('x-disabled');
 			
-			if(pi >= t) op = 'addClass';
+			if(pi >= pn) op = 'addClass';
 			else op = 'removeClass';
 			this.el.find('.x-panel-footer [handler="nextPage"]')[op]('x-disabled').children()[op]('x-disabled');
 			this.el.find('.x-panel-footer [handler="lastPage"]')[op]('x-disabled').children()[op]('x-disabled');
