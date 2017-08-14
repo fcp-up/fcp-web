@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.defu.atom.IAbstractService;
+import com.defu.fcp.atom.IAbstractService;
 import com.defu.util.Tools;
 
 @Controller
-public class ActAlarm extends com.defu.atom.action.ActAlarm {
+public class ActAlarm extends com.defu.fcp.atom.action.ActAlarm {
 	@Autowired ISvcAlarm svc;
 
 	protected final Log log = LogFactory.getLog(getClass());

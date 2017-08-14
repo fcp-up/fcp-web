@@ -8,15 +8,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.defu.atom.db.Database.Device;
-import com.defu.atom.db.Database.Terminal;
-import com.defu.atom.db.Database.Terminalonlinercd;
-import com.defu.atom.service.ISvcTerminalonlinercd;
+import com.defu.fcp.atom.db.Database.Device;
+import com.defu.fcp.atom.db.Database.Terminal;
+import com.defu.fcp.atom.db.Database.Terminalonlinercd;
+import com.defu.fcp.atom.service.ISvcTerminalonlinercd;
 import com.defu.fcp.HttpSocketServer;
 import com.defu.fcp.device.ISvcDevice;
 
 @Service
-public class SvcTerminal extends com.defu.atom.service.impl.SvcTerminal implements ISvcTerminal {
+public class SvcTerminal extends com.defu.fcp.atom.service.impl.SvcTerminal implements ISvcTerminal {
 	@Autowired ISvcTerminalonlinercd rcdsvc;
 	@Autowired ISvcDevice devsvc;
 	
@@ -29,7 +29,7 @@ public class SvcTerminal extends com.defu.atom.service.impl.SvcTerminal implemen
 			no = (String)t.get(Terminalonlinercd.terminalNo.prop);
 			if(no == null) continue;
 			
-			time = dateFormat.format(t.get(Terminalonlinercd.time.prop) != null ? new Date(Long.parseLong(t.get(Terminalonlinercd.state.prop).toString())) : new Date());
+			time = format.format(t.get(Terminalonlinercd.time.prop) != null ? new Date(Long.parseLong(t.get(Terminalonlinercd.state.prop).toString())) : new Date());
 			
 			try{
 				params.clear();

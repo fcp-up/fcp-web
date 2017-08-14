@@ -6,22 +6,22 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Service;
 
-import com.defu.atom.dao.*;
+import com.defu.fcp.atom.dao.*;
 
 @Service
 @Aspect
 public class AspectProcessor {
 
-	@Pointcut("execution(public * com.defu.atom.dao..*.add*(..))")
+	@Pointcut("execution(public * com.defu.fcp.atom.dao..*.add*(..))")
 	public void addAspect() {
 	}
 
-	@Pointcut("execution(public * com.defu.atom.dao..*.delete*(..))")
+	@Pointcut("execution(public * com.defu.fcp.atom.dao..*.delete*(..))")
 	public void delAspect() {
 		
 	}
 
-	@Pointcut("execution(public * com.defu.atom.dao..*.update*(..))")
+	@Pointcut("execution(public * com.defu.fcp.atom.dao..*.update*(..))")
 	public void updateAspect() {
 		
 	}

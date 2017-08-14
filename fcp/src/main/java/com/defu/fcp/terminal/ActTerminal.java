@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.defu.atom.IAbstractService;
-import com.defu.atom.db.Database.Device;
+import com.defu.fcp.atom.IAbstractService;
+import com.defu.fcp.atom.db.Database.Device;
 import com.defu.fcp.alarm.ISvcAlarm;
 import com.defu.util.Tools;
 
 @Controller
-public class ActTerminal extends com.defu.atom.action.ActTerminal {
+public class ActTerminal extends com.defu.fcp.atom.action.ActTerminal {
 	@Autowired ISvcAlarm alarmSvc;
 	@Autowired ISvcTerminal svc;
 	
