@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.defu.fcp.atom.db.Database.Terminalonlinercd;
+
 import com.defu.fcp.atom.AbstractDao;
 import com.defu.fcp.atom.AbstractService;
 import com.defu.fcp.atom.dao.IDaoTerminalonlinercd;
-import com.defu.fcp.atom.db.Database.Terminalonlinercd;
 import com.defu.fcp.atom.service.ISvcTerminalonlinercd;
 
 /**
@@ -51,7 +52,7 @@ public class SvcTerminalonlinercd extends AbstractService implements ISvcTermina
 		v = params.get(Terminalonlinercd.time.prop);
 		if(v != null) {
 			if(Pattern.matches("^\\d+$", v.toString())) {
-				params.put(Terminalonlinercd.time.prop, dateFormat.format(new Date(Long.parseLong(v.toString()))));
+				params.put(Terminalonlinercd.time.prop, format.format(new Date(Long.parseLong(v.toString()))));
 			}
 		}
 		

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.defu.fcp.atom.AbstractDao;
 
 public abstract class AbstractService implements IAbstractService {
-	protected static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	protected static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	@Override
 	public long count(Map<String, Object> params) {

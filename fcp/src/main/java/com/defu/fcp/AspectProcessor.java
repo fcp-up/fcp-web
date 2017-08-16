@@ -12,16 +12,16 @@ import com.defu.fcp.atom.dao.*;
 @Aspect
 public class AspectProcessor {
 
-	@Pointcut("execution(public * com.defu.atom.dao..*.add*(..))")
+	@Pointcut("execution(public * com.defu.fcp.atom.dao..*.add*(..))")
 	public void addAspect() {
 	}
 
-	@Pointcut("execution(public * com.defu.atom.dao..*.delete*(..))")
+	@Pointcut("execution(public * com.defu.fcp.atom.dao..*.delete*(..))")
 	public void delAspect() {
 		
 	}
 
-	@Pointcut("execution(public * com.defu.atom.dao..*.update*(..))")
+	@Pointcut("execution(public * com.defu.fcp.atom.dao..*.update*(..))")
 	public void updateAspect() {
 		
 	}

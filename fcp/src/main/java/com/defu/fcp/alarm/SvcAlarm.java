@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 import com.defu.fcp.HttpSocketServer;
 import com.defu.fcp.ThreadPool;
 import com.defu.fcp.alarm.dao.IDaoAlarmExt;
-import com.defu.fcp.atom.db.Database.*;
+import com.defu.fcp.atom.db.Database.Alarm;
+import com.defu.fcp.atom.db.Database.Device;
+import com.defu.fcp.atom.db.Database.Terminal;
 import com.defu.fcp.device.ISvcDevice;
 import com.defu.fcp.terminal.ISvcTerminal;
 import com.defu.sms.IPhoneMessage;
@@ -73,16 +75,21 @@ public class SvcAlarm extends com.defu.fcp.atom.service.impl.SvcAlarm implements
 				mp.put(Device.terminalNo.prop, e.get(Alarm.terminalNo.prop));
 				if(devsvc.list(mp).size() < 1) {
 					//终端不存在库中
-					mp.put(Device.lastAlarmTime.prop, dateFormat.format(new Date()));
+					mp.put(Device.lastAlarmTime.prop, format.format(new Date()));
 					mp.put(Device.lastSignal.prop, e.get(Alarm.deviceSignal.prop));
+					mp.put(Device.lastIsAlarm.prop, e.get(Alarm.isAlarm.prop));
+					mp.put(Device.lastPressure.prop, e.get(Alarm.pressure.prop));
+					
 					devsvc.add(mp);
 				}
 				else {
 					//更新设备状态
 					Map<String, Object> obj = new HashMap<>(), upd = new HashMap<>();
 
-					obj.put(Device.lastAlarmTime.prop, dateFormat.format(new Date()));
+					obj.put(Device.lastAlarmTime.prop, format.format(new Date()));
 					obj.put(Device.lastSignal.prop, e.get(Alarm.deviceSignal.prop));
+					obj.put(Device.lastIsAlarm.prop, e.get(Alarm.isAlarm.prop));
+					obj.put(Device.lastPressure.prop, e.get(Alarm.pressure.prop));
 					upd.put("obj", obj);
 					
 					upd.put("tag", mp);
@@ -91,7 +98,7 @@ public class SvcAlarm extends com.defu.fcp.atom.service.impl.SvcAlarm implements
 				}
 				
 				//报警时间
-				if(!e.containsKey(Alarm.time.prop)) e.put(Alarm.time.prop, dateFormat.format(new Date()));
+				if(!e.containsKey(Alarm.time.prop)) e.put(Alarm.time.prop, format.format(new Date()));
 				
 				//报警电话
 				tel = (String)e.get(Alarm.toPhone.prop);
@@ -183,7 +190,7 @@ public class SvcAlarm extends com.defu.fcp.atom.service.impl.SvcAlarm implements
 		if(id != null) {
 			Map<String, Object> obj = new HashMap<>(), tag = new HashMap<>(), upd = new HashMap<>();
 			
-			obj.put(Alarm.sendTime.prop, dateFormat.format(new Date()));
+			obj.put(Alarm.sendTime.prop, format.format(new Date()));
 			obj.put(Alarm.toPhone.prop, alarm.get(Alarm.toPhone.prop));
 			upd.put("obj", obj);
 			

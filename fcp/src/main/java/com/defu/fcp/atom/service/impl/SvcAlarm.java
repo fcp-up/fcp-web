@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.defu.fcp.atom.db.Database.Alarm;
+
 import com.defu.fcp.atom.AbstractDao;
 import com.defu.fcp.atom.AbstractService;
 import com.defu.fcp.atom.dao.IDaoAlarm;
-import com.defu.fcp.atom.db.Database.Alarm;
 import com.defu.fcp.atom.service.ISvcAlarm;
 
 /**
@@ -56,14 +57,14 @@ public class SvcAlarm extends AbstractService implements ISvcAlarm {
 		v = params.get(Alarm.time.prop);
 		if(v != null) {
 			if(Pattern.matches("^\\d+$", v.toString())) {
-				params.put(Alarm.time.prop, dateFormat.format(new Date(Long.parseLong(v.toString()))));
+				params.put(Alarm.time.prop, format.format(new Date(Long.parseLong(v.toString()))));
 			}
 		}
 		
 		v = params.get(Alarm.sendTime.prop);
 		if(v != null) {
 			if(Pattern.matches("^\\d+$", v.toString())) {
-				params.put(Alarm.sendTime.prop, dateFormat.format(new Date(Long.parseLong(v.toString()))));
+				params.put(Alarm.sendTime.prop, format.format(new Date(Long.parseLong(v.toString()))));
 			}
 		}
 		

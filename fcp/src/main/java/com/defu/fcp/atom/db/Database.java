@@ -109,6 +109,11 @@ public final class Database {
 		public static final Field no = new Field("tb_device", "f_no", "no", 12, "String", false, false, "");
 
 		/**
+		 * 终端编号
+		 */
+		public static final Field terminalNo = new Field("tb_device", "f_terminalNo", "terminalNo", 12, "String", false, false, null);
+
+		/**
 		 * 设备名称
 		 */
 		public static final Field name = new Field("tb_device", "f_name", "name", 12, "String", false, false, null);
@@ -122,6 +127,16 @@ public final class Database {
 		 * 最近一次报警时间
 		 */
 		public static final Field lastAlarmTime = new Field("tb_device", "f_lastAlarmTime", "lastAlarmTime", 93, "java.util.Date", false, false, null);
+
+		/**
+		 * 最近电池压力
+		 */
+		public static final Field lastPressure = new Field("tb_device", "f_lastPressure", "lastPressure", 12, "String", false, false, null);
+
+		/**
+		 * 最近一次消息是否报警
+		 */
+		public static final Field lastIsAlarm = new Field("tb_device", "f_lastIsAlarm", "lastIsAlarm", -6, "Integer", false, true, null);
 
 		/**
 		 * 设备经度
@@ -144,18 +159,13 @@ public final class Database {
 		public static final Field address = new Field("tb_device", "f_address", "address", 12, "String", false, false, null);
 
 		/**
-		 * 终端编号
-		 */
-		public static final Field terminalNo = new Field("tb_device", "f_terminalNo", "terminalNo", 12, "String", false, false, null);
-
-		/**
 		 * 是否显示。1：显示；0：不显示
 		 */
 		public static final Field visible = new Field("tb_device", "f_visible", "visible", -6, "Integer", false, true, null);
 
 	
 		public static final String _table = "tb_device";
-		public static final Field _key = new Field("tb_device", "f_no", "no", 12, "String", false, false, "");
+		public static final Field _key = new Field("tb_device", "f_terminalNo", "terminalNo", 12, "String", false, false, null);
 		public static final Field _increase = null;
 	}
 

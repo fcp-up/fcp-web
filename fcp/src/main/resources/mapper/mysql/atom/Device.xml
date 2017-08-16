@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.defu.atom.dao.IDaoDevice">
+<mapper namespace="com.defu.fcp.atom.dao.IDaoDevice">
 	<insert id="add" parameterType="java.util.Map">
 		insert into tb_device
 		<trim prefix="(" suffix=")" suffixOverrides="," >
@@ -19,6 +19,12 @@
 			</if>
 			<if test='params.containsKey("lastAlarmTime") == true'>
 				f_lastAlarmTime,
+			</if>
+			<if test='params.containsKey("lastPressure") == true'>
+				f_lastPressure,
+			</if>
+			<if test='params.containsKey("lastIsAlarm") == true'>
+				f_lastIsAlarm,
 			</if>
 			<if test='params.containsKey("longitude") == true'>
 				f_longitude,
@@ -57,6 +63,14 @@
 				<if test='params.get("lastAlarmTime") != null'>#{params.lastAlarmTime},</if>
 				<if test='params.get("lastAlarmTime") == null'>null,</if>
 			</if>
+			<if test='params.containsKey("lastPressure") == true'>
+				<if test='params.get("lastPressure") != null'>#{params.lastPressure},</if>
+				<if test='params.get("lastPressure") == null'>null,</if>
+			</if>
+			<if test='params.containsKey("lastIsAlarm") == true'>
+				<if test='params.get("lastIsAlarm") != null'>#{params.lastIsAlarm},</if>
+				<if test='params.get("lastIsAlarm") == null'>null,</if>
+			</if>
 			<if test='params.containsKey("longitude") == true'>
 				<if test='params.get("longitude") != null'>#{params.longitude},</if>
 				<if test='params.get("longitude") == null'>null,</if>
@@ -80,7 +94,7 @@
 		</trim>
 	</insert>
 	<insert id="addBatch" parameterType="java.util.Map">
-		insert into tb_device (f_no, f_terminalNo, f_name, f_lastSignal, f_lastAlarmTime, f_longitude, f_latitude, f_alarmPhone, f_address, f_visible) values
+		insert into tb_device (f_no, f_terminalNo, f_name, f_lastSignal, f_lastAlarmTime, f_lastPressure, f_lastIsAlarm, f_longitude, f_latitude, f_alarmPhone, f_address, f_visible) values
 		<foreach collection="list" item="item" index="index" separator=",">
 			(
 			<if test='item.containsKey("no") == false or item.get("no") == null'>
@@ -112,6 +126,18 @@
 			</if>
 			<if test='item.get("lastAlarmTime") != null'>
 				'${item.get("lastAlarmTime")}', 			
+			</if>
+			<if test='item.containsKey("lastPressure") == false or item.get("lastPressure") == null'>
+				null, 
+			</if>
+			<if test='item.get("lastPressure") != null'>
+				'${item.get("lastPressure")}', 			
+			</if>
+			<if test='item.containsKey("lastIsAlarm") == false or item.get("lastIsAlarm") == null'>
+				null, 
+			</if>
+			<if test='item.get("lastIsAlarm") != null'>
+				${item.get("lastIsAlarm")}, 			
 			</if>
 			<if test='item.containsKey("longitude") == false or item.get("longitude") == null'>
 				null, 
@@ -203,6 +229,27 @@
 			</if>
 			<if test='params.get("minLastAlarmTime") != null'>and f_lastAlarmTime >= '${params.minLastAlarmTime}'</if>
 			<if test='params.get("maxLastAlarmTime") != null'>and f_lastAlarmTime &lt; '${params.maxLastAlarmTime}'</if>
+			<if test='params.containsKey("lastPressure") == true'>
+				<if test='params.get("lastPressure") != null'>and f_lastPressure = '${params.get("lastPressure")}'</if>
+				<if test='params.get("lastPressure") == null'>and f_lastPressure is null</if>
+			</if>
+			<if test='params.get("lastPressureList") != null'>
+				and f_lastPressure in(<foreach collection='params.get("lastPressureList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			</if>
+			<if test='params.get("minLastPressure") != null'>and f_lastPressure >= '${params.minLastPressure}'</if>
+			<if test='params.get("maxLastPressure") != null'>and f_lastPressure &lt; '${params.maxLastPressure}'</if>
+			<if test='params.get("subLastPressure") != null'>and f_lastPressure like '%${params.subLastPressure}%'</if>
+			<if test='params.get("startsWithLastPressure") != null'>and f_lastPressure like '%${params.startsWithLastPressure}'</if>
+			<if test='params.get("endsWithLastPressure") != null'>and f_lastPressure like '${params.endsWithLastPressure}%'</if>
+			<if test='params.containsKey("lastIsAlarm") == true'>
+				<if test='params.get("lastIsAlarm") != null'>and f_lastIsAlarm = ${params.get("lastIsAlarm")}</if>
+				<if test='params.get("lastIsAlarm") == null'>and f_lastIsAlarm is null</if>
+			</if>
+			<if test='params.get("lastIsAlarmList") != null'>
+				and f_lastIsAlarm in(<foreach collection='params.get("lastIsAlarmList")' item="item" index="index" separator=",">${item}</foreach>)
+			</if>
+			<if test='params.get("minLastIsAlarm") != null'>and f_lastIsAlarm >= ${params.minLastIsAlarm}</if>
+			<if test='params.get("maxLastIsAlarm") != null'>and f_lastIsAlarm &lt; ${params.maxLastIsAlarm}</if>
 			<if test='params.containsKey("longitude") == true'>
 				<if test='params.get("longitude") != null'>and f_longitude = ${params.get("longitude")}</if>
 				<if test='params.get("longitude") == null'>and f_longitude is null</if>
@@ -279,6 +326,14 @@
 				<if test='obj.containsKey("lastAlarmTime") == true'>
 					<if test='obj.get("lastAlarmTime") != null'>f_lastAlarmTime = #{obj.lastAlarmTime},</if>
 					<if test='obj.get("lastAlarmTime") == null'>f_lastAlarmTime = null,</if>
+				</if>
+				<if test='obj.containsKey("lastPressure") == true'>
+					<if test='obj.get("lastPressure") != null'>f_lastPressure = #{obj.lastPressure},</if>
+					<if test='obj.get("lastPressure") == null'>f_lastPressure = null,</if>
+				</if>
+				<if test='obj.containsKey("lastIsAlarm") == true'>
+					<if test='obj.get("lastIsAlarm") != null'>f_lastIsAlarm = #{obj.lastIsAlarm},</if>
+					<if test='obj.get("lastIsAlarm") == null'>f_lastIsAlarm = null,</if>
 				</if>
 				<if test='obj.containsKey("longitude") == true'>
 					<if test='obj.get("longitude") != null'>f_longitude = #{obj.longitude},</if>
@@ -358,6 +413,27 @@
 				</if>
 				<if test='tag.get("minLastAlarmTime") != null'>and f_lastAlarmTime >= '${tag.minLastAlarmTime}'</if>
 				<if test='tag.get("maxLastAlarmTime") != null'>and f_lastAlarmTime &lt; '${tag.maxLastAlarmTime}'</if>
+				<if test='tag.containsKey("lastPressure") == true'>
+					<if test='tag.get("lastPressure") != null'>and f_lastPressure = '${tag.get("lastPressure")}'</if>
+					<if test='tag.get("lastPressure") == null'>and f_lastPressure is null</if>
+				</if>
+				<if test='tag.get("lastPressureList") != null'>
+					and f_lastPressure in(<foreach collection='tag.get("lastPressureList")' item="item" index="index" separator=",">'${item}'</foreach>)
+				</if>
+				<if test='tag.get("minLastPressure") != null'>and f_lastPressure >= '${tag.minLastPressure}'</if>
+				<if test='tag.get("maxLastPressure") != null'>and f_lastPressure &lt; '${tag.maxLastPressure}'</if>
+				<if test='tag.get("subLastPressure") != null'>and f_lastPressure like '%${tag.subLastPressure}%'</if>
+				<if test='tag.get("startsWithLastPressure") != null'>and f_lastPressure like '%${tag.startsWithLastPressure}'</if>
+				<if test='tag.get("endsWithLastPressure") != null'>and f_lastPressure like '${tag.endsWithLastPressure}%'</if>
+				<if test='tag.containsKey("lastIsAlarm") == true'>
+					<if test='tag.get("lastIsAlarm") != null'>and f_lastIsAlarm = ${tag.get("lastIsAlarm")}</if>
+					<if test='tag.get("lastIsAlarm") == null'>and f_lastIsAlarm is null</if>
+				</if>
+				<if test='tag.get("lastIsAlarmList") != null'>
+					and f_lastIsAlarm in(<foreach collection='tag.get("lastIsAlarmList")' item="item" index="index" separator=",">${item}</foreach>)
+				</if>
+				<if test='tag.get("minLastIsAlarm") != null'>and f_lastIsAlarm >= ${tag.minLastIsAlarm}</if>
+				<if test='tag.get("maxLastIsAlarm") != null'>and f_lastIsAlarm &lt; ${tag.maxLastIsAlarm}</if>
 				<if test='tag.containsKey("longitude") == true'>
 					<if test='tag.get("longitude") != null'>and f_longitude = ${tag.get("longitude")}</if>
 					<if test='tag.get("longitude") == null'>and f_longitude is null</if>
@@ -419,6 +495,8 @@
 			f_name as 'name',
 			f_lastSignal as 'lastSignal',
 			f_lastAlarmTime as 'lastAlarmTime',
+			f_lastPressure as 'lastPressure',
+			f_lastIsAlarm as 'lastIsAlarm',
 			f_longitude as 'longitude',
 			f_latitude as 'latitude',
 			f_alarmPhone as 'alarmPhone',
@@ -480,6 +558,27 @@
 			</if>
 			<if test='params.get("minLastAlarmTime") != null'>and f_lastAlarmTime >= '${params.minLastAlarmTime}'</if>
 			<if test='params.get("maxLastAlarmTime") != null'>and f_lastAlarmTime &lt; '${params.maxLastAlarmTime}'</if>
+			<if test='params.containsKey("lastPressure") == true'>
+				<if test='params.get("lastPressure") != null'>and f_lastPressure = '${params.get("lastPressure")}'</if>
+				<if test='params.get("lastPressure") == null'>and f_lastPressure is null</if>
+			</if>
+			<if test='params.get("lastPressureList") != null'>
+				and f_lastPressure in(<foreach collection='params.get("lastPressureList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			</if>
+			<if test='params.get("minLastPressure") != null'>and f_lastPressure >= '${params.minLastPressure}'</if>
+			<if test='params.get("maxLastPressure") != null'>and f_lastPressure &lt; '${params.maxLastPressure}'</if>
+			<if test='params.get("subLastPressure") != null'>and f_lastPressure like '%${params.subLastPressure}%'</if>
+			<if test='params.get("startsWithLastPressure") != null'>and f_lastPressure like '%${params.startsWithLastPressure}'</if>
+			<if test='params.get("endsWithLastPressure") != null'>and f_lastPressure like '${params.endsWithLastPressure}%'</if>
+			<if test='params.containsKey("lastIsAlarm") == true'>
+				<if test='params.get("lastIsAlarm") != null'>and f_lastIsAlarm = ${params.get("lastIsAlarm")}</if>
+				<if test='params.get("lastIsAlarm") == null'>and f_lastIsAlarm is null</if>
+			</if>
+			<if test='params.get("lastIsAlarmList") != null'>
+				and f_lastIsAlarm in(<foreach collection='params.get("lastIsAlarmList")' item="item" index="index" separator=",">${item}</foreach>)
+			</if>
+			<if test='params.get("minLastIsAlarm") != null'>and f_lastIsAlarm >= ${params.minLastIsAlarm}</if>
+			<if test='params.get("maxLastIsAlarm") != null'>and f_lastIsAlarm &lt; ${params.maxLastIsAlarm}</if>
 			<if test='params.containsKey("longitude") == true'>
 				<if test='params.get("longitude") != null'>and f_longitude = ${params.get("longitude")}</if>
 				<if test='params.get("longitude") == null'>and f_longitude is null</if>
@@ -598,6 +697,27 @@
 			</if>
 			<if test='params.get("minLastAlarmTime") != null'>and f_lastAlarmTime >= '${params.minLastAlarmTime}'</if>
 			<if test='params.get("maxLastAlarmTime") != null'>and f_lastAlarmTime &lt; '${params.maxLastAlarmTime}'</if>
+			<if test='params.containsKey("lastPressure") == true'>
+				<if test='params.get("lastPressure") != null'>and f_lastPressure = '${params.get("lastPressure")}'</if>
+				<if test='params.get("lastPressure") == null'>and f_lastPressure is null</if>
+			</if>
+			<if test='params.get("lastPressureList") != null'>
+				and f_lastPressure in(<foreach collection='params.get("lastPressureList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			</if>
+			<if test='params.get("minLastPressure") != null'>and f_lastPressure >= '${params.minLastPressure}'</if>
+			<if test='params.get("maxLastPressure") != null'>and f_lastPressure &lt; '${params.maxLastPressure}'</if>
+			<if test='params.get("subLastPressure") != null'>and f_lastPressure like '%${params.subLastPressure}%'</if>
+			<if test='params.get("startsWithLastPressure") != null'>and f_lastPressure like '%${params.startsWithLastPressure}'</if>
+			<if test='params.get("endsWithLastPressure") != null'>and f_lastPressure like '${params.endsWithLastPressure}%'</if>
+			<if test='params.containsKey("lastIsAlarm") == true'>
+				<if test='params.get("lastIsAlarm") != null'>and f_lastIsAlarm = ${params.get("lastIsAlarm")}</if>
+				<if test='params.get("lastIsAlarm") == null'>and f_lastIsAlarm is null</if>
+			</if>
+			<if test='params.get("lastIsAlarmList") != null'>
+				and f_lastIsAlarm in(<foreach collection='params.get("lastIsAlarmList")' item="item" index="index" separator=",">${item}</foreach>)
+			</if>
+			<if test='params.get("minLastIsAlarm") != null'>and f_lastIsAlarm >= ${params.minLastIsAlarm}</if>
+			<if test='params.get("maxLastIsAlarm") != null'>and f_lastIsAlarm &lt; ${params.maxLastIsAlarm}</if>
 			<if test='params.containsKey("longitude") == true'>
 				<if test='params.get("longitude") != null'>and f_longitude = ${params.get("longitude")}</if>
 				<if test='params.get("longitude") == null'>and f_longitude is null</if>
@@ -649,13 +769,21 @@
 			</if>
 			<if test='params.get("minVisible") != null'>and f_visible >= ${params.minVisible}</if>
 			<if test='params.get("maxVisible") != null'>and f_visible &lt; ${params.maxVisible}</if>
-			<if test='params.get("terminalKey") != null'>
+			<if test='params.get("subTerminalNo") != null'>
 				and f_terminalNo in (
-					select f_no from tb_terminal where f_name like '%${params.terminalKey}%' or f_no like '%${params.terminalKey}%'
+					select f_no from tb_terminal where f_no like '%${params.subTerminalNo}%'
 				)
 			</if>
-			<if test='params.get("deviceKey") != null'>
-				and (f_name like '%${params.deviceKey}%' or f_no like '%${params.deviceKey}%')
+			<if test='params.get("subTerminalName") != null'>
+				and f_terminalNo in (
+					select f_no from tb_terminal where f_name like '%${params.subTerminalName}%'
+				)
+			</if>
+			<if test='params.get("subDeviceNo") != null'> 
+				and f_no like '%${params.subDeviceNo}%'
+			</if>
+			<if test='params.get("subDeviceName") != null'> 
+				and f_name like '%${params.subDeviceName}%'
 			</if>
 		</where>
 	</select>
@@ -666,6 +794,8 @@
 			f_name as 'name',
 			f_lastSignal as 'lastSignal',
 			f_lastAlarmTime as 'lastAlarmTime',
+			f_lastPressure as 'lastPressure',
+			f_lastIsAlarm as 'lastIsAlarm',
 			f_longitude as 'longitude',
 			f_latitude as 'latitude',
 			f_alarmPhone as 'alarmPhone',
@@ -727,6 +857,27 @@
 			</if>
 			<if test='params.get("minLastAlarmTime") != null'>and f_lastAlarmTime >= '${params.minLastAlarmTime}'</if>
 			<if test='params.get("maxLastAlarmTime") != null'>and f_lastAlarmTime &lt; '${params.maxLastAlarmTime}'</if>
+			<if test='params.containsKey("lastPressure") == true'>
+				<if test='params.get("lastPressure") != null'>and f_lastPressure = '${params.get("lastPressure")}'</if>
+				<if test='params.get("lastPressure") == null'>and f_lastPressure is null</if>
+			</if>
+			<if test='params.get("lastPressureList") != null'>
+				and f_lastPressure in(<foreach collection='params.get("lastPressureList")' item="item" index="index" separator=",">'${item}'</foreach>)
+			</if>
+			<if test='params.get("minLastPressure") != null'>and f_lastPressure >= '${params.minLastPressure}'</if>
+			<if test='params.get("maxLastPressure") != null'>and f_lastPressure &lt; '${params.maxLastPressure}'</if>
+			<if test='params.get("subLastPressure") != null'>and f_lastPressure like '%${params.subLastPressure}%'</if>
+			<if test='params.get("startsWithLastPressure") != null'>and f_lastPressure like '%${params.startsWithLastPressure}'</if>
+			<if test='params.get("endsWithLastPressure") != null'>and f_lastPressure like '${params.endsWithLastPressure}%'</if>
+			<if test='params.containsKey("lastIsAlarm") == true'>
+				<if test='params.get("lastIsAlarm") != null'>and f_lastIsAlarm = ${params.get("lastIsAlarm")}</if>
+				<if test='params.get("lastIsAlarm") == null'>and f_lastIsAlarm is null</if>
+			</if>
+			<if test='params.get("lastIsAlarmList") != null'>
+				and f_lastIsAlarm in(<foreach collection='params.get("lastIsAlarmList")' item="item" index="index" separator=",">${item}</foreach>)
+			</if>
+			<if test='params.get("minLastIsAlarm") != null'>and f_lastIsAlarm >= ${params.minLastIsAlarm}</if>
+			<if test='params.get("maxLastIsAlarm") != null'>and f_lastIsAlarm &lt; ${params.maxLastIsAlarm}</if>
 			<if test='params.containsKey("longitude") == true'>
 				<if test='params.get("longitude") != null'>and f_longitude = ${params.get("longitude")}</if>
 				<if test='params.get("longitude") == null'>and f_longitude is null</if>
@@ -778,13 +929,21 @@
 			</if>
 			<if test='params.get("minVisible") != null'>and f_visible >= ${params.minVisible}</if>
 			<if test='params.get("maxVisible") != null'>and f_visible &lt; ${params.maxVisible}</if>
-			<if test='params.get("terminalKey") != null'>
+			<if test='params.get("subTerminalNo") != null'>
 				and f_terminalNo in (
-					select f_no from tb_terminal where f_name like '%${params.terminalKey}%' or f_no like '%${params.terminalKey}%'
+					select f_no from tb_terminal where f_no like '%${params.subTerminalNo}%'
 				)
 			</if>
-			<if test='params.get("deviceKey") != null'> 
-				and (f_name like '%${params.deviceKey}%' or f_no like '%${params.deviceKey}%')
+			<if test='params.get("subTerminalName") != null'>
+				and f_terminalNo in (
+					select f_no from tb_terminal where f_name like '%${params.subTerminalName}%'
+				)
+			</if>
+			<if test='params.get("subDeviceNo") != null'> 
+				and f_no like '%${params.subDeviceNo}%'
+			</if>
+			<if test='params.get("subDeviceName") != null'> 
+				and f_name like '%${params.subDeviceName}%'
 			</if>
 		</where>
 		<if test="params._sort != null">

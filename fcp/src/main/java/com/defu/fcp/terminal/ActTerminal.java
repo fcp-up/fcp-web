@@ -13,12 +13,13 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.defu.fcp.alarm.ISvcAlarm;
 import com.defu.fcp.atom.IAbstractService;
-import com.defu.fcp.atom.db.Database.Device;
+import com.defu.fcp.atom.db.Database.Terminal;
 import com.defu.util.Tools;
 
 @Controller
@@ -52,7 +53,7 @@ public class ActTerminal extends com.defu.fcp.atom.action.ActTerminal {
 	}
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "alarmPhone")
+	@RequestMapping(value = "alarmPhone", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> alarmPhone(@RequestParam(value = "params", required = false) String params, HttpSession session, HttpServletRequest req, HttpServletResponse rsp) {
 
 		List<Map<String, Object>> list = null;
@@ -61,8 +62,8 @@ public class ActTerminal extends com.defu.fcp.atom.action.ActTerminal {
 		try{
 			list = (List<Map<String, Object>>)Tools.jsonStrtoList(params);
 			for(Map<String, Object> e: list) {
-				e.put(Device.alarmPhone.prop, e.get("phoneNo"));
-				e.put(Device.terminalNo.prop, e.get("terminalNo"));
+				e.put(Terminal.alarmPhone.prop, e.get("phoneNo"));
+				e.put(Terminal.no.prop, e.get("terminalNo"));
 			}
 		}
 		catch(Exception ex){

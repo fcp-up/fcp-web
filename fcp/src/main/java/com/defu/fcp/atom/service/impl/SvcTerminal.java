@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.defu.fcp.atom.db.Database.Terminal;
+
 import com.defu.fcp.atom.AbstractDao;
 import com.defu.fcp.atom.AbstractService;
 import com.defu.fcp.atom.dao.IDaoTerminal;
-import com.defu.fcp.atom.db.Database.Terminal;
 import com.defu.fcp.atom.service.ISvcTerminal;
 
 /**
@@ -57,7 +58,7 @@ public class SvcTerminal extends AbstractService implements ISvcTerminal {
 		v = params.get(Terminal.lastOnlineTime.prop);
 		if(v != null) {
 			if(Pattern.matches("^\\d+$", v.toString())) {
-				params.put(Terminal.lastOnlineTime.prop, dateFormat.format(new Date(Long.parseLong(v.toString()))));
+				params.put(Terminal.lastOnlineTime.prop, format.format(new Date(Long.parseLong(v.toString()))));
 			}
 		}
 		

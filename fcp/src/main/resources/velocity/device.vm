@@ -11,6 +11,7 @@
 			<div class="x-button x-disabled" handler="del_batch"><span class="x-icon-16 x-icon-del"></span>删除</div>
 			<div class="x-button x-disabled" handler="update"><span class="x-icon-16 x-icon-mod"></span>修改</div>
             <div class="x-separator"></div>
+			<div class="x-button" handler="setPhone"><span class="x-icon-16 x-icon-save"></span>设置报警电话</div>
 			<div class="x-button" handler="tstAlarm"><span class="x-icon-16 x-icon-save"></span>报警测试</div>
             <div class="x-separator"></div>
 			<span class="x-tbtext">终端编号/名称：</span>
@@ -43,5 +44,6 @@
 	#include("common/msgAndComboList.vm")
 	#include("win/deviceFormWin.vm")
 	#include("win/alarmFormWin.vm")
+	#include("win/devicePhoneFormWin.vm")
 </body>
 </html>
