@@ -783,7 +783,7 @@
 					select f_no from tb_terminal where f_name like '%${params.terminalKey}%' or f_no like '%${params.terminalKey}%'
 				)
 			</if>
-			<if test='params.get("deviceKey") != null'>
+			<if test='params.get("deviceKey") != null'> 
 				and (f_name like '%${params.deviceKey}%' or f_no like '%${params.deviceKey}%')
 			</if>
 		</where>
