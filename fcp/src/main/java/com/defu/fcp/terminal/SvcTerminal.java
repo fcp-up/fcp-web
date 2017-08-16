@@ -8,11 +8,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.defu.fcp.atom.db.Database.Device;
+import com.defu.fcp.HttpSocketServer;
 import com.defu.fcp.atom.db.Database.Terminal;
 import com.defu.fcp.atom.db.Database.Terminalonlinercd;
 import com.defu.fcp.atom.service.ISvcTerminalonlinercd;
-import com.defu.fcp.HttpSocketServer;
 import com.defu.fcp.device.ISvcDevice;
 
 @Service
@@ -84,27 +83,17 @@ public class SvcTerminal extends com.defu.fcp.atom.service.impl.SvcTerminal impl
 		String no;
 		
 		for(Map<String, Object> t: list) {
-			no = (String)t.get(Device.terminalNo.prop);
+			no = (String)t.get(Terminal.no.prop);
 			if(no == null) continue;
 			
 			try{
-				mp = new HashMap<>();
-				mp.put(Device.terminalNo.prop, no);
-				params.put("tag", mp);
-
-				mp = new HashMap<>();
-				mp.put(Device.alarmPhone.prop, t.get(Device.alarmPhone.prop));
-				params.put("obj", mp);
-				
-				devsvc.update(params);
-
 				
 				mp = new HashMap<>();
 				mp.put(Terminal.no.prop, no);
 				params.put("tag", mp);
 
 				mp = new HashMap<>();
-				mp.put(Terminal.alarmPhone.prop, t.get(Device.alarmPhone.prop));
+				mp.put(Terminal.alarmPhone.prop, t.get(Terminal.alarmPhone.prop));
 				params.put("obj", mp);
 				
 				update(params);

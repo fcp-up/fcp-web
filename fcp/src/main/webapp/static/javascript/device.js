@@ -84,6 +84,18 @@ fcp.deviceList = $('#deviceList').gridpanel({
 		
 		return this;
 	},
+	setPhone: function(el){
+		var nid = this.el.find('tr.x-selected:first');
+		if(!nid.attr('nid')) {
+			tools.msgbox({title: '设置终端报警电话', msg: '请选中一个终端', positive: $.emptyFn});
+			return;
+		}
+		fcp.devicePhoneFormWin.saveSuccess = function(){fcp.deviceList.loadData();};
+		var win = fcp.devicePhoneFormWin.open().setSaveUrl('alarmPhone');
+		win.form.deviceNo.val(nid.attr('nid'));
+		win.form.terminalNo.val(nid.attr('term'));
+		win.form.phoneNo.focus();
+	},
 	tstAlarm: function(){
 		var nid = this.el.find('tr.x-selected:first');
 		if(!nid.attr('nid')) {

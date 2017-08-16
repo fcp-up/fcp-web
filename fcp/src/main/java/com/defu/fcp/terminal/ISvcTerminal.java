@@ -23,7 +23,7 @@ public interface ISvcTerminal extends com.defu.fcp.atom.service.ISvcTerminal {
 	Map<String, Object> postOnline(List<Map<String, Object>> list);
 	
 	/**
-	 * 设置报名变化
+	 * 设置报警电话
 	 * @param list 报警电话列表<pre>
 	 * {
 	 * 	terminalNo: 终端编号

@@ -1,0 +1,19 @@
+<div class="x-window" id="devicePhoneFormWin">
+	<style>
+	#devicePhoneFormWin{width: 300px; height: 180px; margin-left: -150px;}
+	#devicePhoneFormWin input{width: 150px;}
+	#devicePhoneFormWin .x-label{width: 70px; text-align: right; margin-right: 5px;}
+	</style>
+	<div class="x-close"></div>
+	<div class="x-panel-title">终端报警电话设置</div>
+	<form class="x-panel-body x-form">
+		<div><label class="x-label">终端编号</label><input readOnly name="terminalNo" /></div>
+		<div><label class="x-label">设备编号</label><input readOnly name="deviceNo" /></div>
+		<div><label class="x-label">报警电话</label><input name="phoneNo" /></div>
+	</form>
+	<div class="x-panel-footer">
+		<div class="x-button" handler="cancel"><span class="x-icon-16 x-icon-nega"></span>取消</div>
+		<div class="x-button" handler="save"><span class="x-icon-16 x-icon-save"></span>提交</div>
+	</div>
+</div>
+<script type="text/javascript" src="static/javascript/win/devicePhoneFormWin.js"></script>
