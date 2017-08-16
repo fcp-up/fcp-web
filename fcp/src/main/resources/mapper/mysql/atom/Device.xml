@@ -637,6 +637,9 @@
 				${item.name} <if test="item.sort == 1">desc</if>
 			</foreach>
 		</if>
+		<if test="params._sort == null">
+			order by f_lastAlarmTime desc
+		</if>
 		limit 0, 1
 	</select>
 	<select id="count" parameterType="java.util.Map" resultType="Long">
@@ -951,6 +954,9 @@
 			<foreach collection="params._sort" item="item" index="index" separator=",">
 				${item.name} <if test="item.sort == 1">desc</if>
 			</foreach>
+		</if>
+		<if test="params._sort == null">
+			order by f_lastAlarmTime desc
 		</if>
 		<if test="params._start != null and params._limit != null">
 			limit ${params._start}, ${params._limit}
