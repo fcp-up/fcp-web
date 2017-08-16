@@ -19,16 +19,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.defu.atom.db.Database.*;
 import com.defu.fcp.HttpSocketServer;
 import com.defu.fcp.ThreadPool;
 import com.defu.fcp.alarm.dao.IDaoAlarmExt;
+import com.defu.fcp.atom.db.Database.*;
 import com.defu.fcp.device.ISvcDevice;
 import com.defu.fcp.terminal.ISvcTerminal;
 import com.defu.sms.IPhoneMessage;
 
 @Service
-public class SvcAlarm extends com.defu.atom.service.impl.SvcAlarm implements Runnable, ISvcAlarm {
+public class SvcAlarm extends com.defu.fcp.atom.service.impl.SvcAlarm implements Runnable, ISvcAlarm {
 	@Autowired @Qualifier("catsms") IPhoneMessage catsms;
 	@Autowired @Qualifier("yunpiansms") IPhoneMessage yunpiansms;
 	@Autowired ISvcTerminal termsvc;

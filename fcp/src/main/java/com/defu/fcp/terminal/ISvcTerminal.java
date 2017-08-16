@@ -3,7 +3,7 @@ package com.defu.fcp.terminal;
 import java.util.List;
 import java.util.Map;
 
-public interface ISvcTerminal extends com.defu.atom.service.ISvcTerminal {
+public interface ISvcTerminal extends com.defu.fcp.atom.service.ISvcTerminal {
 	/**
 	 * 终端上下线上报
 	 * @param list 终端上下线列表<pre>

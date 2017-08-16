@@ -8,15 +8,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.defu.atom.db.Database.Device;
-import com.defu.atom.db.Database.Terminal;
-import com.defu.atom.db.Database.Terminalonlinercd;
-import com.defu.atom.service.ISvcTerminalonlinercd;
 import com.defu.fcp.HttpSocketServer;
+import com.defu.fcp.atom.db.Database.Device;
+import com.defu.fcp.atom.db.Database.Terminal;
+import com.defu.fcp.atom.db.Database.Terminalonlinercd;
+import com.defu.fcp.atom.service.ISvcTerminalonlinercd;
 import com.defu.fcp.device.ISvcDevice;
 
 @Service
-public class SvcTerminal extends com.defu.atom.service.impl.SvcTerminal implements ISvcTerminal {
+public class SvcTerminal extends com.defu.fcp.atom.service.impl.SvcTerminal implements ISvcTerminal {
 	@Autowired ISvcTerminalonlinercd rcdsvc;
 	@Autowired ISvcDevice devsvc;
 	

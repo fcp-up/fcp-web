@@ -1,5 +1,5 @@
 package com.defu.fcp.terminal;
 
-public interface ISvcTerminalonlinercd extends com.defu.atom.service.ISvcTerminalonlinercd {
+public interface ISvcTerminalonlinercd extends com.defu.fcp.atom.service.ISvcTerminalonlinercd {
 
 }
